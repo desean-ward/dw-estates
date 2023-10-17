@@ -20,7 +20,7 @@ const signup = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
