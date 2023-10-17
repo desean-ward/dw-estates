@@ -1,7 +1,8 @@
 const User = require("../../models/user/user.modal");
 const bcrypt = require("bcrypt");
 
-const signup = async (req, res) => {
+// Note: The 'next' parameter is used to call the next middleware function in the stack.
+const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -19,11 +20,7 @@ const signup = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "User not created",
-      error: error.message,
-    });
+    next(error.message);
   }
 };
 

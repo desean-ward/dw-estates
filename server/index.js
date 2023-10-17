@@ -17,7 +17,19 @@ const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
+
+// Middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+
+  return res.status(statusCode).json({
+    type: "error",
+    success: false,
+    statusCode,
+    message,
+  });
+});
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
