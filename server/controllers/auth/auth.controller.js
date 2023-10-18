@@ -1,6 +1,7 @@
 const User = require("../../models/user/user.modal");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const errorHandler = require("../../utils/errors");
 
 // Note: The 'next' parameter is used to call the next middleware function in the stack.
 const signup = async (req, res, next) => {
@@ -44,7 +45,6 @@ const signin = async (req, res, next) => {
     res
       .cookie("access_token", token, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
       })
       .status(200)
       .json({
