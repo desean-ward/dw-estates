@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   currentUser: null,
@@ -21,6 +21,7 @@ const userSlice = createSlice({
     signinFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      console.log("state.error", state.error);
     },
     signout: (state) => {
       state.currentUser = null;

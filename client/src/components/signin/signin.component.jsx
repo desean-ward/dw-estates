@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "@/redux/client-hooks/user-selector";
 import {
   signinStart,
   signinSuccess,
@@ -24,47 +25,62 @@ const SignIn = () => {
   };
 
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { error, loading } = useSelector((state) => state.user);
-
-  const router = useRouter();
+  const { error, loading, currentUser } = useSelector(
+    (state) => state.persistedReducer.user
+  );
+  console.log("CurrentUser", currentUser.data)
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
+  // Handle input change
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormFields({ ...formFields, [id]: value });
+    error && error.length && dispatch(signinFailure(null));
   };
 
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch(`${URL}/api/auth/signin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formFields),
-      });
+    if (formFields.email !== "" && formFields.password !== "") {
+      try {
+        dispatch(signinStart());
 
-      const data = await res.json();
-      console.log("data", data);
+        const res = await fetch(`${URL}/api/auth/signin`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formFields),
+        });
 
-      // If the user is not created successfully, display the error message
-      if (data.success === false) {
-        dispatch(signinFailure(data.message));
+        const data = await res.json();
+
+        // If the user is not signed successfully, display the error message
+        if (data.success === false) {
+          console.log("data", data);
+          dispatch(signinFailure(data.message));
+          console.log("data.message", data.message);
+          return;
+        }
+
+        // If the user is signed in successfully, redirect to the login page
+        dispatch(signinSuccess(data));
+        router.push("/");
+        return;
+      } catch (error) {
+        console.log("error.message", error);
+        dispatch(signinFailure(error.message));
         return;
       }
 
-      // If the user is created successfully, redirect to the login page
-      dispatch(signinSuccess(data));
-      router.push("/");
-    } catch (error) {
-      dispatch(signinFailure(error.message));
+      setFormFields(defaultFormFields);
+    } else {
+      dispatch(signinFailure("Please fill in all fields"));
     }
-
-    setFormFields(defaultFormFields);
   };
 
   return (
