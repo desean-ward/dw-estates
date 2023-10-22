@@ -10,6 +10,7 @@ import {
   SignInLink,
   SignInSection,
 } from "./signup.styles";
+import OAuth from "../oauth/oauth.component";
 
 const SignUp = () => {
   const defaultFormFields = {
@@ -96,6 +97,10 @@ const SignUp = () => {
         />
         <SignUpButton type='submit'>
           {loading ? "Please Wait..." : "Sign Up"}
+        </SignUpButton>
+
+        <SignUpButton type='button' $google>
+          <OAuth />
         </SignUpButton>
       </SignUpForm>
 

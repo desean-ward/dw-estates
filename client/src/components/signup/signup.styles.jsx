@@ -18,13 +18,14 @@ export const SignUpInput = tw.input`
 `;
 
 export const SignUpButton = tw.button`
-    bg-slate-700
+    ${(props) => (props.$google ? "bg-google" : "bg-slate-700")}
     text-white 
     p-3
     rounded-lg 
     uppercase 
     hover:opacity-95 
-`;
+    
+    `;
 
 export const SignInSection = tw.section`
     flex gap-2 justify-center

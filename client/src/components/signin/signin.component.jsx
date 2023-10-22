@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser } from "@/redux/client-hooks/user-selector";
+
 import {
   signinStart,
   signinSuccess,
@@ -17,6 +17,7 @@ import {
   SignUpLink,
   SignUpSection,
 } from "./signin.styles";
+import OAuth from "../oauth/oauth.component";
 
 const SignIn = () => {
   const defaultFormFields = {
@@ -28,11 +29,13 @@ const SignIn = () => {
   const { error, loading, currentUser } = useSelector(
     (state) => state.persistedReducer.user
   );
-  console.log("CurrentUser", currentUser.data)
+
   const dispatch = useDispatch();
   const router = useRouter();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
+
+  
 
   // Handle input change
   const handleChange = (e) => {
@@ -63,7 +66,6 @@ const SignIn = () => {
         if (data.success === false) {
           console.log("data", data);
           dispatch(signinFailure(data.message));
-          console.log("data.message", data.message);
           return;
         }
 
@@ -72,7 +74,6 @@ const SignIn = () => {
         router.push("/");
         return;
       } catch (error) {
-        console.log("error.message", error);
         dispatch(signinFailure(error.message));
         return;
       }
@@ -104,6 +105,10 @@ const SignIn = () => {
         />
         <SignInButton type='submit'>
           {loading ? "Please Wait..." : "Sign In"}
+        </SignInButton>
+
+        <SignInButton type='button' $google>
+          <OAuth />
         </SignInButton>
       </SignInForm>
 

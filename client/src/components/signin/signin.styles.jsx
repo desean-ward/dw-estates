@@ -18,11 +18,11 @@ export const SignInInput = tw.input`
 `;
 
 export const SignInButton = tw.button`
-    bg-slate-700
+    ${(props) => (props.$google ? "bg-google" : "bg-slate-700")}
     text-white 
     p-3
     rounded-lg 
-    Inpercase 
+    uppercase 
     hover:opacity-95 
 `;
 

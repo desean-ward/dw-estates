@@ -65,7 +65,68 @@ const signin = async (req, res, next) => {
   }
 };
 
+// Sign in with Google
+const google = async (req, res, next) => {
+  try {
+    // Check if the user exists
+    const user = await User.findOne({ email: req.body.email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const { password: pass, ...rest } = user._doc;
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: "User logged in successfully",
+          data: rest,
+        });
+    } else {
+      // Create a new user with the Google account
+      // The password is auto-generated
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+      const newUser = await User.create({
+        username: req.body.name,
+        email: req.body.email,
+        password: hashedPassword,
+        avatar: req.body.photo,
+      });
+
+      // Create a JWT token
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+
+      const { password: pass, ...rest } = newUser._doc;
+
+      // Set the access_token cookie in the client browser
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: "User logged in successfully",
+          data: rest,
+        });
+    }
+  } catch (error) {
+    console.log("Error in google signin", error.message);
+    next(error);
+  }
+};
+
 module.exports = {
   signup,
   signin,
+  google,
 };
