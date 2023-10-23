@@ -1,14 +1,10 @@
 "use client";
-import React from "react";
 import { useSelector } from "react-redux";
-
 import { useRouter } from "next/navigation";
 
-const ProtectedRoute = ({ children }) => {
-  const router = useRouter();
+export default function Layout({ children }) {
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
+  const router = useRouter();
 
   return <div>{currentUser ? children : router.push("/")}</div>;
-};
-
-export default ProtectedRoute;
+}
