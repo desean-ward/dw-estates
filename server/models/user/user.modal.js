@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "avatar-placeholder.jpg",
+      default: "/images/avatar-placeholder.jpg",
     },
   },
   { timestamps: true }

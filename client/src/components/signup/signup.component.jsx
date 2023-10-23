@@ -20,6 +20,7 @@ const SignUp = () => {
     username: "",
     email: "",
     password: "",
+    avatar: "/images/avatar-placeholder.jpg",
   };
 
   const [formFields, setFormFields] = useState(defaultFormFields);
@@ -51,7 +52,6 @@ const SignUp = () => {
       });
 
       const data = await res.json();
-      console.log("data", data);
 
       // If the user is not created successfully, display the error message
       if (data.success === false) {

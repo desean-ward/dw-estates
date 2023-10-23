@@ -35,17 +35,17 @@ const Header = () => {
               <LogoImage src='/images/logo.png' alt='DW Estates' />
             </LogoLink>
           </Logo>
-        
+
           <h2 className='flex flex-wrap font-bold tlext-sm fflex-wrap sm:text-xl'>
             <span className='text-slate-500'>DW</span>Estates
           </h2>
         </LogoContainer>
-        
+
         <SearchContainer>
           <SearchInput type='text' placeholder='Search...' />
           <FaSearch className='cursor-pointer text-slate-600' />
         </SearchContainer>
-        
+
         <NavContainer>
           <Nav>
             <NavList>
@@ -59,14 +59,7 @@ const Header = () => {
                 {currentUser ? (
                   <NavLink href='/profile'>
                     <AvatarContainer>
-                      <img
-                        src={
-                          currentUser.avatar
-                            ? currentUser.avatar
-                            : "/images/avatar-placeholder.jpg"
-                        }
-                        alt='profile'
-                      />
+                      <img src={currentUser.avatar} alt='profile' />
                     </AvatarContainer>
                   </NavLink>
                 ) : (
