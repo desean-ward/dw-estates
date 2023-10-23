@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const logger = require("morgan");
+const cookieParser = require("cookie-parser");
 
 const userRouter = require("./routes/user/user.route");
 const authRouter = require("./routes/auth/auth.route");
@@ -19,6 +20,8 @@ app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
 
+app.use(cookieParser());
+
 // Error Handler Middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -32,7 +35,6 @@ app.use((err, req, res, next) => {
 });
 
 // Check for token and create a req.user prop in the request
-app.use(require("./config/check-token"));
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
