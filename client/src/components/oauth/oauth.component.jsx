@@ -20,11 +20,6 @@ const OAuth = () => {
       const auth = getAuth(firebase);
 
       const result = await signInWithPopup(auth, provider);
-      console.log(
-        result.user.displayName,
-        result.user.email,
-        result.user.photoURL
-      );
 
       const res = await fetch(`${URL}/api/auth/google`, {
         method: "POST",

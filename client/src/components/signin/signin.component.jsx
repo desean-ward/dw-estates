@@ -26,7 +26,7 @@ const SignIn = () => {
   };
 
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { error, loading, currentUser } = useSelector(
+  const { error, loading } = useSelector(
     (state) => state.persistedReducer.user
   );
 
@@ -34,8 +34,6 @@ const SignIn = () => {
   const router = useRouter();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
-
-  
 
   // Handle input change
   const handleChange = (e) => {

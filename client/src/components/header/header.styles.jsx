@@ -42,7 +42,7 @@ export const NavContainer = tw.section``;
 export const Nav = tw.nav``;
 
 export const NavList = tw.ul`
-    flex gap-4
+    flex items-center gap-4
 `;
 
 export const NavItem = tw.li`
@@ -55,3 +55,11 @@ export const NavItem = tw.li`
 `;
 
 export const NavLink = tw(Link)``;
+
+export const AvatarContainer = tw.section`
+    w-10 h-10
+    flex items-center justify-center
+    border-2 border-slate-500
+    rounded-full
+    overflow-hidden
+`;

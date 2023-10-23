@@ -15,12 +15,24 @@ const signup = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    // User created successfully
-    res.status(201).json({
-      success: true,
-      message: "User created successfully",
-      data: user,
-    });
+    // Create a JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+    // Note: The 'password' field is removed from the user object before sending it to the client.
+    const { password: pass, ...rest } = user._doc;
+
+    // Set the access_token cookie in the client browser
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day
+      })
+      .status(200)
+      .json({
+        success: true,
+        message: "User created successfully",
+        ...rest,
+      });
   } catch (error) {
     next(error.message);
   }
@@ -54,7 +66,7 @@ const signin = async (req, res, next) => {
       .json({
         success: true,
         message: "User logged in successfully",
-        data: rest,
+        ...rest,
       });
   } catch (error) {
     next(error);
@@ -84,7 +96,7 @@ const google = async (req, res, next) => {
         .json({
           success: true,
           message: "User logged in successfully",
-          data: rest,
+          ...rest,
         });
     } else {
       // Create a new user with the Google account
@@ -116,7 +128,7 @@ const google = async (req, res, next) => {
         .json({
           success: true,
           message: "User logged in successfully",
-          data: rest,
+          ...rest,
         });
     }
   } catch (error) {

@@ -35,7 +35,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Create store
+// Configure the store
 export const store = configureStore({
   reducer: {
     persistedReducer,

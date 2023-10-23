@@ -2,6 +2,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { useDispatch } from "react-redux";
+import { signinSuccess } from "@/redux/features/user/userSlice";
+
 import {
   SignUpButton,
   SignUpContainer,
@@ -24,6 +27,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -59,6 +63,7 @@ const SignUp = () => {
       // If the user is created successfully, redirect to the login page
       setLoading(false);
       setError(null);
+      dispatch(signinSuccess(data));
       router.push("/");
     } catch (error) {
       console.log(error);
