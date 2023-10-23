@@ -4,13 +4,17 @@ import tw from "tailwind-styled-components";
 export const HeaderContainer = tw.div`
     sticky 
     top-0
-    flex justify-between items-center
     w-full 
-    max-w-6xl
-    mx-auto
+    
     bg-slate-200
     shadow-md
     p-4
+    `;
+
+export const HeaderContent = tw.div`
+    max-w-6xl
+    flex justify-between items-center
+    mx-auto
 `;
 
 export const LogoContainer = tw.div`
