@@ -1,7 +1,12 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { signout } from "@/redux/features/user/userSlice";
+import {
+  signout,
+  updateUserStart,
+  updateUserFailure,
+  updateUserSuccess,
+} from "@/redux/features/user/userSlice";
 
 import {
   getStorage,
@@ -12,6 +17,8 @@ import {
 
 import { firebase } from "@/firebase/firebase.config";
 
+import { BeatLoader } from "react-spinners";
+
 import {
   DeleteAccountLink,
   FormButton,
@@ -20,6 +27,7 @@ import {
   ProfileForm,
   ProfileHeader,
   ProfileImage,
+  ProfileImageContainer,
   SignOutLink,
   SignOutSection,
 } from "./profile.styles";
@@ -29,15 +37,54 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
   const [file, setFile] = useState(null);
+  const [avatarUpdated, setAvatarUpdated] = useState(false);
   const [filePercentage, setFilePercentage] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+
+  const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      dispatch(updateUserStart());
+
+      const res = await fetch(`${URL}/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      return;
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
+  };
 
   const handleSignout = () => {
     dispatch(signout());
   };
 
   const handleFileUpload = (file) => {
+    setAvatarUpdated(true);
+
     fileUploadError && setFileUploadError(false);
 
     // Create a storage reference from our storage service
@@ -85,11 +132,16 @@ const Profile = () => {
     }
   }, [file]);
 
+  // Monitor avatar change
+  useEffect(() => {
+    setAvatarUpdated(false);
+  }, [formData.avatar]);
+
   return (
     <ProfileContainer>
       <ProfileHeader>Profile</ProfileHeader>
 
-      <ProfileForm>
+      <ProfileForm onSubmit={handleSubmit}>
         <input
           type='file'
           ref={fileRef}
@@ -97,17 +149,23 @@ const Profile = () => {
           onChange={(e) => setFile(e.target.files[0])}
           hidden
         />
-        <ProfileImage
-          src={formData.avatar || currentUser.avatar}
-          alt='profile'
-          onClick={() => fileRef.current.click()}
-        />
+        <ProfileImageContainer>
+          {!avatarUpdated ? (
+            <ProfileImage
+              src={formData.avatar || currentUser.avatar}
+              alt='profile'
+              onClick={() => fileRef.current.click()}
+            />
+          ) : (
+            <BeatLoader color='#334155' />
+          )}
+        </ProfileImageContainer>
         <p>
           {fileUploadError ? (
             <span className='text-red-700'>
               Error Uploading Image (must be less than 2mb)
             </span>
-          ) : filePercentage > 0 && filePercentage < 100 ? (
+          ): filePercentage > 0 && filePercentage < 100 ? (
             <span className='text-slate-700'>Uploading {filePercentage}%</span>
           ) : filePercentage === 100 ? (
             <span className='text-green-700'>Upload Complete</span>
@@ -119,13 +177,20 @@ const Profile = () => {
         <FormInput
           type='text'
           id='username'
-          placeholder={currentUser.username}
+          defaultValue={currentUser.username}
+          onChange={handleChange}
         />
-        <FormInput type='email' id='email' placeholder={currentUser.email} />
+        <FormInput
+          type='email'
+          id='email'
+          defaultValue={currentUser.email}
+          onChange={handleChange}
+        />
         <FormInput
           type='password'
           id='password'
-          placeholder={currentUser.password}
+          defaultValue={currentUser.password}
+          onChange={handleChange}
         />
 
         <FormButton type='submit'>Update</FormButton>

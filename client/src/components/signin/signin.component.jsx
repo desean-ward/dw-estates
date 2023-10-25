@@ -52,6 +52,9 @@ const SignIn = () => {
 
         const res = await fetch(`${URL}/api/auth/signin`, {
           method: "POST",
+          credentials: "include",
+          sameSite: "none",
+          secure: true,
           headers: {
             "Content-Type": "application/json",
           },
@@ -62,7 +65,6 @@ const SignIn = () => {
 
         // If the user is not signed successfully, display the error message
         if (data.success === false) {
-          console.log("data", data);
           dispatch(signinFailure(data.message));
           return;
         }

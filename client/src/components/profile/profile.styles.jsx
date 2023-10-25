@@ -19,10 +19,16 @@ export const ProfileForm = tw.form`
     gap-4
 `;
 
+export const ProfileImageContainer = tw.div`
+    w-24 h-24
+    flex items-center justify-center
+    rounded-full
+    overflow-hidden
+`;
+
 export const ProfileImage = tw.img`
     object-cover
-    w-24 h-24
-    rounded-full
+    
     cursor-pointer
 `;
 
@@ -34,11 +40,10 @@ export const FormInput = tw.input`
     w-full
 `;
 
-
 export const FormButton = tw.button`
 w-full
 bg-slate-700
-text-white
+text-white 
 rounded-lg 
 p-3
 uppercase 

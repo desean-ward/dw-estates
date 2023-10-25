@@ -9,6 +9,8 @@ const authRouter = require("./routes/auth/auth.route");
 require("dotenv").config();
 require("./config/database");
 
+console.log(process.env.CLIENT_URL);
+
 // Initialize express
 const app = express();
 
@@ -16,11 +18,15 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 // Middleware
-app.use(logger("dev"));
-app.use(cors());
-app.use(express.json());
-
 app.use(cookieParser());
+app.use(logger("dev"));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
+app.use(express.json());
 
 // Error Handler Middleware
 app.use((err, req, res, next) => {

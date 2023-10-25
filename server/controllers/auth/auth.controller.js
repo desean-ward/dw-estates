@@ -52,7 +52,6 @@ const signin = async (req, res, next) => {
 
     // Create a JWT token
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-
     // Note: The 'password' field is removed from the user object before sending it to the client.
     const { password: pass, ...rest } = validUser._doc;
 
@@ -68,6 +67,7 @@ const signin = async (req, res, next) => {
         message: "User logged in successfully",
         ...rest,
       });
+      
   } catch (error) {
     next(error);
     res.status(error.statusCode).json({
