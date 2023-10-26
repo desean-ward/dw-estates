@@ -25,6 +25,7 @@ import { firebase } from "@/firebase/firebase.config";
 import { BeatLoader } from "react-spinners";
 
 import {
+  CreateListingsLink,
   DeleteAccountLink,
   FormButton,
   FormInput,
@@ -244,6 +245,9 @@ const Profile = () => {
         />
 
         <FormButton type='submit'>Update</FormButton>
+        <CreateListingsLink href='/create-listing'>
+          Create Listing
+        </CreateListingsLink>
       </ProfileForm>
       <SignOutSection>
         <DeleteAccountLink onClick={handleDeleteUser}>

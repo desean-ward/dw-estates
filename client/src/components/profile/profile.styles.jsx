@@ -1,3 +1,4 @@
+import Link from "next/link";
 import tw from "tailwind-styled-components";
 
 export const ProfileContainer = tw.div`
@@ -41,16 +42,26 @@ export const FormInput = tw.input`
 `;
 
 export const FormButton = tw.button`
-w-full
-bg-slate-700
-text-white 
-rounded-lg 
-p-3
-uppercase 
-hover:opacity-95
-disabled:opacity-80
+    w-full
+    bg-slate-700
+    text-white 
+    rounded-lg 
+    p-3
+    uppercase 
+    hover:opacity-95
+    disabled:opacity-80
 `;
 
+export const CreateListingsLink = tw(Link)`
+    w-full 
+    p-3 
+    text-white 
+    text-center
+    uppercase 
+    rounded-lg  
+    bg-green-700 
+    hover:opacity-95 
+`;
 export const SignOutSection = tw.div`
     flex justify-between
     gap-4
