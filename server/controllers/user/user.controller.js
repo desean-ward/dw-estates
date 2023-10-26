@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
-const User = require("../../models/user/user.modal");
+const User = require("../../models/user/user.model");
 const errorHandler = require("../../utils/errors");
-
 
 const updateUser = async (req, res, next) => {
   // Check if user is updating their own profile
