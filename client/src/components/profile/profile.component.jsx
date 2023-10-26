@@ -6,6 +6,9 @@ import {
   updateUserStart,
   updateUserFailure,
   updateUserSuccess,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "@/redux/features/user/userSlice";
 
 import {
@@ -43,6 +46,31 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
+
+  // Handle delete account
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+
+      const res = await fetch(`${URL}/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+      });
+
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -165,7 +193,7 @@ const Profile = () => {
             <span className='text-red-700'>
               Error Uploading Image (must be less than 2mb)
             </span>
-          ): filePercentage > 0 && filePercentage < 100 ? (
+          ) : filePercentage > 0 && filePercentage < 100 ? (
             <span className='text-slate-700'>Uploading {filePercentage}%</span>
           ) : filePercentage === 100 ? (
             <span className='text-green-700'>Upload Complete</span>
@@ -196,9 +224,10 @@ const Profile = () => {
         <FormButton type='submit'>Update</FormButton>
       </ProfileForm>
       <SignOutSection>
-        <DeleteAccountLink to='/delete-account'>
+        <DeleteAccountLink onClick={handleDeleteUser}>
           Delete Account
         </DeleteAccountLink>
+
         <SignOutLink onClick={handleSignout}>Sign Out</SignOutLink>
       </SignOutSection>
     </ProfileContainer>

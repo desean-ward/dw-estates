@@ -8,5 +8,6 @@ router.get("/hello", userCtrl.hello);
 
 // POST routes
 router.post("/update/:id", verifyToken, userCtrl.updateUser);
+router.delete("/delete/:id", verifyToken, userCtrl.deleteUser);
 
 module.exports = router;
