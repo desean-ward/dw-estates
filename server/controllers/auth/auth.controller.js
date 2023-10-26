@@ -67,7 +67,6 @@ const signin = async (req, res, next) => {
         message: "User logged in successfully",
         ...rest,
       });
-      
   } catch (error) {
     next(error);
     res.status(error.statusCode).json({
@@ -137,8 +136,21 @@ const google = async (req, res, next) => {
   }
 };
 
+const signout = async (req, res, next) => {
+  try {
+    // Clear cookie
+    res.clearCookie("access_token");
+
+    // Send response
+    res.status(200).json("User has been logged out");
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signup,
   signin,
   google,
+  signout,
 };

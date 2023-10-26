@@ -2,20 +2,20 @@ const bcrypt = require("bcrypt");
 const User = require("../../models/user/user.modal");
 const errorHandler = require("../../utils/errors");
 
-const hello = (req, res) => {
-  res.send("Hello World!");
-};
 
 const updateUser = async (req, res, next) => {
+  // Check if user is updating their own profile
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can only update your own profile"));
   }
 
   try {
+    // Hash password
     if (req.body.password) {
       req.body.password = bcrypt.hashSync(req.body.password, 10);
     }
 
+    // Update user
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       {
@@ -28,8 +28,11 @@ const updateUser = async (req, res, next) => {
       },
       { new: true }
     );
+
+    // Remove password from response
     const { password, ...rest } = updatedUser._doc;
 
+    // Send response
     res.status(200).json(rest);
   } catch (error) {
     console.log("Update error", error);
@@ -38,12 +41,19 @@ const updateUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
+  // Check if user is deleting their own account
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can only delete your own account"));
   }
 
   try {
+    // Delete user
     await User.findByIdAndDelete(req.params.id);
+
+    // Clear cookie
+    res.clearCookie("token");
+
+    // Send response
     res.status(200).json("User has been deleted");
   } catch (error) {
     next(error);
@@ -52,7 +62,6 @@ const deleteUser = async (req, res, next) => {
 
 // Export routes
 module.exports = {
-  hello,
   updateUser,
   deleteUser,
 };

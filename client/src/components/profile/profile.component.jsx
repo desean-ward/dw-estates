@@ -2,13 +2,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  signout,
   updateUserStart,
   updateUserFailure,
   updateUserSuccess,
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  signoutStart,
+  signoutFailure,
+  signoutSuccess,
 } from "@/redux/features/user/userSlice";
 
 import {
@@ -106,8 +108,28 @@ const Profile = () => {
     }
   };
 
-  const handleSignout = () => {
-    dispatch(signout());
+  const handleSignout = async () => {
+    try {
+      dispatch(signoutStart());
+
+      const res = await fetch(`${URL}/api/auth/signout`, {
+        method: "GET",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+      });
+
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(signoutFailure(data.message));
+        return;
+      }
+
+      dispatch(signoutSuccess(data));
+    } catch (error) {
+      dispatch(signoutFailure(error.message));
+    }
   };
 
   const handleFileUpload = (file) => {
