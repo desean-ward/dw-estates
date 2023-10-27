@@ -29,14 +29,19 @@ import {
   DeleteAccountLink,
   FormButton,
   FormInput,
+  ListingContainer,
+  ListingImage,
+  ListingImageContainer,
   ProfileContainer,
   ProfileForm,
   ProfileHeader,
   ProfileImage,
   ProfileImageContainer,
+  ShowListingsLink,
   SignOutLink,
   SignOutSection,
 } from "./profile.styles";
+import Link from "next/link";
 
 const Profile = () => {
   const fileRef = useRef(null);
@@ -47,6 +52,10 @@ const Profile = () => {
   const [filePercentage, setFilePercentage] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [updateError, setUpdateError] = useState(false);
+  const [showListingsError, setShowListingsError] = useState(false);
+  const [userListings, setUserListings] = useState(null);
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -66,6 +75,7 @@ const Profile = () => {
 
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
+        setUpdateError(data.message);
         return;
       }
 
@@ -99,13 +109,16 @@ const Profile = () => {
 
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
+        setUpdateError(data.message);
         return;
       }
 
       dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
       return;
     } catch (error) {
       dispatch(updateUserFailure(error.message));
+      setUpdateSuccess(error.message);
     }
   };
 
@@ -174,6 +187,30 @@ const Profile = () => {
         });
       }
     );
+  };
+
+  const handleShowListings = async () => {
+    try {
+      setShowListingsError(false);
+
+      const res = await fetch(`${URL}/api/user/listings/${currentUser._id}`, {
+        method: "GET",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+      });
+
+      const data = await res.json();
+      console.log(data);
+      setUserListings(data);
+
+      if (data.success === false) {
+        setShowListingsError(data.message);
+        return;
+      }
+    } catch (error) {
+      setShowListingsError(true);
+    }
   };
 
   // Handle file upload
@@ -256,6 +293,53 @@ const Profile = () => {
 
         <SignOutLink onClick={handleSignout}>Sign Out</SignOutLink>
       </SignOutSection>
+
+      <p className='mt-5 text-sm text-red-700'>{updateError && updateError}</p>
+      <p className='mt-5 text-sm text-green-700'>
+        {updateSuccess && "User updated successfully!"}
+      </p>
+
+      <ShowListingsLink onClick={handleShowListings}>
+        Show Listings
+      </ShowListingsLink>
+
+      <p className='mt-5 text-red-700'>
+        {showListingsError && showListingsError}
+      </p>
+
+      {/* Show user listings */}
+      {userListings && userListings.length > 0 && (
+        <div>
+          <h2 className='text-2xl text-center mt-7 mfont-semibold'>
+            Your Listings
+          </h2>
+          {userListings.map((listing, index) => (
+            <ListingContainer key={index}>
+              <Link href={`/listing/${listing._id}`}>
+                <ListingImageContainer>
+                  <ListingImage src={listing.imageUrls} alt='' />
+                </ListingImageContainer>
+              </Link>
+
+              <Link href={`/listing/${listing._id}`} className='flex-1'>
+                <p className='truncate hover:underline'>{listing.address}</p>
+              </Link>
+
+              <div className='relative z-50 flex flex-col'>
+                <button type='button' className='hover:text-gray-500'>
+                  Edit
+                </button>
+                <button
+                  type='button'
+                  className='text-red-700 hover:text-gray-700'
+                >
+                  Delete
+                </button>
+              </div>
+            </ListingContainer>
+          ))}
+        </div>
+      )}
     </ProfileContainer>
   );
 };

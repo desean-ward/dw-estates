@@ -79,3 +79,31 @@ export const DeleteAccountLink = tw.span`
     text-red-700
     hover:text-gray-400
 `;
+
+export const ShowListingsLink = tw.span`
+    block
+    cursor-pointer
+    hover:text-gray-400
+    text-center
+`;
+
+export const ListingContainer = tw.div`
+    h-fit
+    font-semibold
+    flex justify-between items-center
+    gap-2
+    p-3
+    border-b-2 border-slate-700/20
+    rounded-lg
+    mb-4
+`
+
+export const ListingImageContainer = tw.div`
+   
+`
+
+export const ListingImage = tw.img`
+    w-16
+    object-contain 
+`
+
