@@ -37,7 +37,7 @@ const Header = () => {
           </Logo>
 
           <h2 className='flex flex-wrap font-bold tlext-sm fflex-wrap sm:text-xl'>
-            <span className='text-slate-500'>DW</span>Estates
+            <span className='text-[var(--clr-text-accent)]'>DW</span>Estates
           </h2>
         </LogoContainer>
 

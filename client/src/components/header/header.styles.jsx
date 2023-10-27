@@ -1,12 +1,12 @@
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 
-export const HeaderContainer = tw.div`
+export const HeaderContainer = tw.header`
     sticky 
     top-0
     w-full 
     
-    bg-slate-200
+    
     shadow-md
     p-4
     `;
@@ -50,7 +50,7 @@ export const NavList = tw.ul`
 `;
 
 export const NavItem = tw.li`
-    text-slate-500
+   
     hover:text-slate-800
     cursor-pointer
     transition

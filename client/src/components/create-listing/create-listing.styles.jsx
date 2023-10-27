@@ -97,6 +97,15 @@ export const FormButton = tw.button`
     uppercase 
     hover:opacity-95
     disabled:opacity-80
+
+    ${({ type }) =>
+      type === "button" &&
+      `
+      bg-[transparent]
+      text-slate-700 hover:text-white
+      border border-slate-700
+      hover:bg-slate-700
+    `}
 `;
 
 export const UploadLink = tw(Link)`

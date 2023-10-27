@@ -7,9 +7,12 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 
-  --clr-body-primary: #F7E6D3;
+  --clr-body-primary: #C1B49C;
+  --clr-body-secondary: #3c3023;
 
   --clr-text-primary: black;
+  --clr-text-secondary: white;
+  --clr-text-accent: #8CB9C5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -29,7 +32,7 @@ body {
     )
     rgb(var(--background-start-rgb)); */
     @apply 
-    w-screen h-screen 
+    w-screen 
     bg-[--clr-body-primary] 
     text-[--clr-text-primary]
     flex flex-col 
@@ -47,4 +50,10 @@ main {
 main#app {
   @apply
     w-[80vw]
+}
+
+header {
+ @apply 
+ bg-[--clr-body-secondary]
+ text-[--clr-text-secondary]
 }
