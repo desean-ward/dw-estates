@@ -36,7 +36,7 @@ const Header = () => {
             </LogoLink>
           </Logo>
 
-          <h2 className='flex flex-wrap font-bold tlext-sm fflex-wrap sm:text-xl'>
+          <h2 className='flex flex-wrap text-sm font-bold sm:text-xl'>
             <span className='text-[var(--clr-text-accent)]'>DW</span>Estates
           </h2>
         </LogoContainer>

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const listingSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
       trim: true,
@@ -30,12 +30,12 @@ const listingSchema = new mongoose.Schema(
       required: true,
     },
 
-    bathrooms: {
+    baths: {
       type: Number,
       required: true,
     },
 
-    bedrooms: {
+    beds: {
       type: Number,
       required: true,
     },

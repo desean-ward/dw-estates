@@ -107,15 +107,3 @@ export const FormButton = tw.button`
       hover:bg-slate-700
     `}
 `;
-
-export const UploadLink = tw(Link)`
-    p-3 
-    text-green-700
-    border border-green-700
-    text-center
-    uppercase 
-    rounded-lg  
-    hover:bg-green-700
-    hover:text-white
-    hover:border-white
-`;
