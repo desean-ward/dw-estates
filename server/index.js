@@ -29,10 +29,19 @@ app.use(
 );
 app.use(express.json());
 
+// Check for token and create a req.user prop in the request
+
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
+
 // Error Handler Middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
+  console.log("STATUS CODE", statusCode);
+
   const message = err.message || "Internal Server Error";
+  console.log("MESSAGE", message);
 
   return res.status(statusCode).json({
     success: false,
@@ -40,12 +49,6 @@ app.use((err, req, res, next) => {
     message,
   });
 });
-
-// Check for token and create a req.user prop in the request
-
-app.use("/api/user", userRouter);
-app.use("/api/auth", authRouter);
-app.use("/api/listing", listingRouter);
 
 // Listen for requests
 app.listen(port, () => {
