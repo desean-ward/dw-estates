@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.post("/create", verifyToken, listingCtrl.createListing);
 
+router.delete("/delete/:id", verifyToken, listingCtrl.deleteListing);
+
 module.exports = router;

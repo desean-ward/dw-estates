@@ -213,6 +213,30 @@ const Profile = () => {
     }
   };
 
+  const handleListingDelete = async (id) => {
+    try {
+      const res = await fetch(`${URL}/api/listing/delete/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+      });
+
+      const data = await res.json();
+      console.log("DATA", data);
+
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+
+      // Remove listing from state
+      setUserListings(userListings.filter((listing) => listing._id !== id));
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   // Handle file upload
   useEffect(() => {
     if (file) {
@@ -332,6 +356,7 @@ const Profile = () => {
                 <button
                   type='button'
                   className='text-red-700 hover:text-gray-700'
+                  onClick={() => handleListingDelete(listing._id)}
                 >
                   Delete
                 </button>
