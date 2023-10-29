@@ -2,12 +2,12 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 
 export const HeaderContainer = tw.header`
-    sticky 
+    sticky
+    z-50
     top-0
     w-full 
-    
-    
     shadow-md
+    shadow-slate-800
     p-4
     `;
 
@@ -36,6 +36,7 @@ export const SearchContainer = tw.form`
 
 export const SearchInput = tw.input`
     bg-transparent
+    text-black
     border-none
     outline-none 
     w-24 sm:w-64

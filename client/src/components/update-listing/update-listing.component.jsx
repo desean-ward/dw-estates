@@ -231,7 +231,7 @@ const UpdateListing = () => {
         setSubmitError(data.message);
       }
 
-      router.push(`/listings/${data._id}`);
+      router.push(`/listing/${data._id}`);
     } catch (error) {
       setSubmitError(error.message);
       setLoading(false);

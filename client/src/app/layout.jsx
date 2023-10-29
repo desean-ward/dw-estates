@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
         <ReduxProvider>
           <Header />
           <main id='app'>{children}</main>
-          <Footer />
+          
         </ReduxProvider>
       </body>
     </html>
