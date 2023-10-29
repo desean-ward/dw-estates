@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   updateUserStart,
   updateUserFailure,
@@ -47,6 +48,7 @@ const Profile = () => {
   const fileRef = useRef(null);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
+  
   const [file, setFile] = useState(null);
   const [avatarUpdated, setAvatarUpdated] = useState(false);
   const [filePercentage, setFilePercentage] = useState(0);
@@ -58,7 +60,7 @@ const Profile = () => {
   const [userListings, setUserListings] = useState(null);
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
-
+  
   // Handle delete account
   const handleDeleteUser = async () => {
     try {
@@ -346,13 +348,16 @@ const Profile = () => {
               </Link>
 
               <Link href={`/listing/${listing._id}`} className='flex-1'>
-                <p className='truncate hover:underline'>{listing.address}</p>
+                <p className='truncate hover:underline'>{listing.title}</p>
               </Link>
 
               <div className='relative z-50 flex flex-col'>
-                <button type='button' className='hover:text-gray-500'>
+                <Link
+                  href={`/update-listing/${listing._id}`}
+                  className='hover:text-gray-500'
+                >
                   Edit
-                </button>
+                </Link>
                 <button
                   type='button'
                   className='text-red-700 hover:text-gray-700'

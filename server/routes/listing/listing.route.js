@@ -4,6 +4,8 @@ const verifyToken = require("../../utils/verity-token");
 
 const router = express.Router();
 
+router.get("/get/:id", listingCtrl.getListing);
+
 router.post("/create", verifyToken, listingCtrl.createListing);
 router.put("/update/:id", verifyToken, listingCtrl.updateListing);
 
