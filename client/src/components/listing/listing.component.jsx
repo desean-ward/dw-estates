@@ -211,7 +211,7 @@ const Listing = () => {
             )}
 
             {/* Show contact form */}
-            {contact && <Contact listing={listing} />}
+            {contact && <Contact listing={listing} show={setContact} />}
           </div>
         </ListingContent>
       )}

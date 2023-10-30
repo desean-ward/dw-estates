@@ -7,7 +7,7 @@ import {
   FormTextarea,
 } from "./contact.styles";
 
-const Contact = ({ listing }) => {
+const Contact = ({ listing, show }) => {
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
   const [landlord, setLandlord] = useState(null);
@@ -19,6 +19,7 @@ const Contact = ({ listing }) => {
 
   const handleCloseForm = () => {
     setLandlord(null);
+    show(false);
   };
 
   /**

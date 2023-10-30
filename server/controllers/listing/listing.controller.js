@@ -31,7 +31,71 @@ const getListing = async (req, res, next) => {
   }
 };
 
+// GET - get all listings
+const getListings = async (req, res, next) => {
+  try {
+    // Create a limit of 9 listings per page
+    const limit = parseInt(req.query.limit) || 9;
+    // Create a start index for pagination
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const offer = req.query.offer;
 
+    // Check if offer is undefined or false
+    if (offer === undefined || offer === "false") {
+      offer = { $in: [false, true] };
+    }
+
+    // Check if furnished is undefined or false
+    let furnished = req.query.furnished;
+    if (furnished === undefined || furnished === "false") {
+      furnished = { $in: [false, true] };
+    }
+
+    // Check if parking is undefined or false
+    let parking = req.query.parking;
+    if (parking === undefined || parking === "false") {
+      parking = { $in: [false, true] };
+    }
+
+    // Check if type is undefined or all
+    let type = req.query.type;
+    if (type === undefined || type === "all") {
+      type = { $in: ["sale", "rent"] };
+    }
+
+    // Check for query params
+    const searchTerm = req.query.searchTerm || "";
+
+    // Check if sort is defined; else, createdAt
+    const sort = req.query.sort || "createdAt";
+
+    // Check if order is defined; else, desc
+    const order = req.query.order || "desc";
+
+    // Find all listings with query params
+    const listings = await Listing.find({
+      title: { $regex: searchTerm, $options: "i" },
+      offer,
+      furnished,
+      parking,
+      type,
+    })
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+
+    // Check if listings exist
+    if (!listings) {
+      return next(errorHandler(404, "Listings not found"));
+    }
+
+    return res.status(200).json(listings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// DELETE - delete a listing by id
 const deleteListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
 
@@ -86,6 +150,7 @@ const updateListing = async (req, res, next) => {
 module.exports = {
   createListing,
   getListing,
+  getListings,
   deleteListing,
   updateListing,
 };
