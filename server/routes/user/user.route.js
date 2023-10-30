@@ -5,7 +5,8 @@ const verifyToken = require("../../utils/verity-token");
 
 // GET routes
 // Get the user's listings
-router.get('/listings/:id', verifyToken, userCtrl.getUserListings);
+router.get("/listings/:id", verifyToken, userCtrl.getUserListings);
+router.get("/:id", verifyToken, userCtrl.getUser);
 
 // POST routes
 // Update the user's profile

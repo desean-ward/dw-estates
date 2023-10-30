@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper/core";
 import "swiper/swiper-bundle.css";
@@ -13,6 +14,8 @@ import {
   ListingTitle,
   ListingAddress,
   ListingOffer,
+  ListingDetails,
+  Detail,
 } from "../listing/listing.styles";
 import { Image, ImageContainer, ListingCarousel } from "./listing.styles";
 
@@ -24,6 +27,7 @@ import {
   FaParking,
   FaShare,
 } from "react-icons/fa";
+import Contact from "../contact/contact.component";
 
 const Listing = () => {
   SwiperCore.use([Navigation, Pagination]);
@@ -32,6 +36,9 @@ const Listing = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [contact, setContact] = useState(false);
+
+  const { currentUser } = useSelector((state) => state.persistedReducer.user);
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -160,34 +167,52 @@ const Listing = () => {
             {listing.description}
           </section>
 
-          {/* Listing Amenities */}
+          {/* Listing Details */}
           <section>
-            <ul className='flex flex-wrap items-center gap-8 text-sm font-semibold'>
-              <li className='flex items-center gap-2 whitespace-nowrap'>
+            <ListingDetails className=''>
+              <Detail>
                 <FaBed className='text-lg' />{" "}
                 {listing.beds !== 1
                   ? `${listing.beds} Beds`
                   : `${listing.beds} Bed`}
-              </li>
+              </Detail>
 
-              <li className='flex items-center gap-2 whitespace-nowrap'>
+              <Detail>
                 <FaBath className='text-lg' />{" "}
                 {listing.baths !== 1
                   ? `${listing.baths} Baths`
                   : `${listing.baths} Bath`}
-              </li>
+              </Detail>
 
-              <li className='flex items-center gap-2 whitespace-nowrap'>
+              <Detail>
                 <FaParking className='text-lg' />{" "}
                 {listing.parking ? "Parking" : "No Parking"}
-              </li>
+              </Detail>
 
-              <li className='flex items-center gap-2 whitespace-nowrap'>
+              <Detail>
                 <FaChair className='text-lg' />{" "}
                 {listing.furnished ? "Furnished" : "Unfurnished"}
-              </li>
-            </ul>
+              </Detail>
+            </ListingDetails>
           </section>
+
+          {/* Contact Landlord */}
+          <div className='flex py-8'>
+            {((!currentUser) ||
+              (currentUser &&
+                listing.userRef !== currentUser._id)) && (
+              <button
+                type='button'
+                className='p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95'
+                onClick={() => setContact(true)}
+              >
+                Contact Landlord
+              </button>
+            )}
+
+            {/* Show contact form */}
+            {contact && <Contact listing={listing} />}
+          </div>
         </ListingContent>
       )}
     </ListingContainer>

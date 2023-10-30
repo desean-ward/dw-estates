@@ -15,7 +15,7 @@ export const ListingCarousel = tw.div`
 `;
 
 export const ImageContainer = tw.section`
-    h-[550px]
+    h-[450px]
     
     
 `;
@@ -39,10 +39,8 @@ export const CopyImageUrl = tw.section`
 `;
 
 export const ListingTitle = tw.section`
-    flex-col 
-    max-w-4xl 
     gap-4 
-    p-3 
+    py-3 
     mx-auto 
     my-7
 `;
@@ -53,7 +51,7 @@ export const ListingAddress = tw.p`
     my-2 mt-6 
     text-sm 
     text-slate-600
-`
+`;
 
 export const RentOrSale = tw.p`
     w-full 
@@ -72,4 +70,19 @@ export const ListingOffer = tw.p`
     text-white text-center 
     p-1 
     rounded-md
-`
+`;
+
+export const ListingDetails = tw.ul`
+    flex 
+    flex-wrap 
+    items-center 
+    gap-8 
+    text-sm 
+    font-semibold
+`;
+export const Detail = tw.li`
+    flex 
+    items-center 
+    gap-2
+    whitespace-nowrap
+`;
