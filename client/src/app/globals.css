@@ -50,7 +50,7 @@ main {
 
 main#app {
   @apply
-    w-[80vw]
+    w-[100vw]
 }
 
 header {

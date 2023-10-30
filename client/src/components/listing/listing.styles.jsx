@@ -11,11 +11,10 @@ export const ListingContent = tw.div`
 export const ListingCarousel = tw.div`
     relative
     w-screen
-    -left-[10vw]
 `;
 
 export const ImageContainer = tw.section`
-    h-[450px]
+    h-[400px]
     
     
 `;
