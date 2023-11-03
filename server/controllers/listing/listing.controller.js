@@ -36,9 +36,10 @@ const getListings = async (req, res, next) => {
   try {
     // Create a limit of 9 listings per page
     const limit = parseInt(req.query.limit) || 9;
+
     // Create a start index for pagination
     const startIndex = parseInt(req.query.startIndex) || 0;
-    const offer = req.query.offer;
+    let offer = req.query.offer;
 
     // Check if offer is undefined or false
     if (offer === undefined || offer === "false") {
@@ -91,6 +92,7 @@ const getListings = async (req, res, next) => {
 
     return res.status(200).json(listings);
   } catch (error) {
+    console.log("ERROR", error);
     next(error);
   }
 };

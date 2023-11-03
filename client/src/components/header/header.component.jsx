@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { FaSearch } from "react-icons/fa";
 
@@ -27,27 +27,46 @@ import {
 const Header = () => {
   // Grab the current user from the redux store
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
-  const [searchTerm, setSearchTerm] = useState("");
+
+  // Grab the searchTerm from the redux store
+  const { search } = useSelector((state) => state.persistedReducer.listing);
+
+  
   const router = useRouter();
+  const dispatch = useDispatch();
+  
+  // Get the searchTerm from the url
+  const searchParams = useSearchParams();
+  
+  // Get the searchTerm from the url for setting/updating the searchTerm state
+  const urlParams = new URLSearchParams(location.search);
+  
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('searchTerm') || "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(location.search);
+
+
+    // Set the searchTerm query param to the value of the input
     urlParams.set("searchTerm", searchTerm);
 
+    // Create a query string from the urlParams
     const searchQuery = urlParams.toString();
+
+    // Push the query string to the url
     router.push(`/search?${searchQuery}`);
   };
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
+  const handleChange = (e) => {
+    // Set the searchTerm state to the value of the input
+    setSearchTerm(e.target.value);
+  };
 
-    if (searchTermFromUrl) {
-      setSearchTerm(searchTermFromUrl);
-    }
-  }, [location.search]);
+  useEffect(() => {
+   setSearchTerm(searchParams.get('searchTerm') || "");
+  }, [searchParams.get('searchTerm')]);
 
   return (
     <HeaderContainer>
@@ -67,7 +86,7 @@ const Header = () => {
         <SearchContainer onSubmit={handleSubmit}>
           <SearchInput
             type='text'
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleChange}
             value={searchTerm}
             placeholder='Search...'
           />

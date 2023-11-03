@@ -12,7 +12,7 @@ export const ContactContainer = tw.div`
 
 export const ContactForm = tw.form`
     space-y-4 
-    w-[90vw] md:w-[30vw] 
+    w-[90vw] md:w-[60vw] lg:w-[30vw]
     mx-auto 
     bg-white 
     p-8 
