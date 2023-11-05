@@ -35,6 +35,7 @@ const Search = () => {
 
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -69,11 +70,18 @@ const Search = () => {
     const fetchListings = async () => {
       try {
         setLoading(true);
+        setShowMore(false);
 
         const searchQuery = urlParams.toString();
 
         const res = await fetch(`${URL}/api/listing/get?${searchQuery}`);
         const data = await res.json();
+
+        if (data.length > 0) {
+          setShowMore(true);
+        } else {
+          setShowMore(false);
+        }
 
         setListings(data);
         setLoading(false);
@@ -154,6 +162,28 @@ const Search = () => {
     // Convert the search params to a string
     const searchQuery = urlParams.toString();
     router.push(`/search?${searchQuery}`);
+  };
+
+  const handleShowMore = async () => {
+    const numOfListings = listings.length;
+    const urlParams = new URLSearchParams(location.search);
+
+    // Set the start index to the number of listings
+    const startIndex = numOfListings;
+    urlParams.set("startIndex", startIndex);
+
+    const searchQuery = urlParams.toString();
+
+    const res = await fetch(`${URL}/api/listing/get?${searchQuery}`);
+
+    const data = await res.json();
+
+    if (data.length < 9) {
+      setShowMore(false);
+    }
+
+    // Add the new listings to the listings state
+    setListings([...listings, ...data]);
   };
 
   return (
@@ -294,6 +324,19 @@ const Search = () => {
               <ListingItem key={listing._id} listing={listing} />
             ))}
         </ListingsContainer>
+
+        {showMore && (
+          <div className='w-full text-center'>
+            <button
+              onClick={() => {
+                handleShowMore();
+              }}
+              className='mx-auto text-green-700 hover:underline p-7'
+            >
+              Show More
+            </button>
+          </div>
+        )}
       </SearchResults>
     </SearchContainer>
   );
