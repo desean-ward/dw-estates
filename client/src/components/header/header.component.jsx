@@ -29,7 +29,6 @@ const Header = () => {
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
 
   // Grab the searchTerm from the redux store
-  const { search } = useSelector((state) => state.persistedReducer.listing);
 
   
   const router = useRouter();

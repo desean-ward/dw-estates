@@ -39,9 +39,9 @@ const getListings = async (req, res, next) => {
 
     // Create a start index for pagination
     const startIndex = parseInt(req.query.startIndex) || 0;
-    let offer = req.query.offer;
 
     // Check if offer is undefined or false
+    let offer = req.query.offer;
     if (offer === undefined || offer === "false") {
       offer = { $in: [false, true] };
     }
@@ -61,7 +61,7 @@ const getListings = async (req, res, next) => {
     // Check if type is undefined or all
     let type = req.query.type;
     if (type === undefined || type === "all") {
-      type = { $in: ["sale", "rent"] };
+      type = { $in: ["sell", "rent"] };
     }
 
     // Check for query params
@@ -84,6 +84,7 @@ const getListings = async (req, res, next) => {
       .sort({ [sort]: order })
       .limit(limit)
       .skip(startIndex);
+    console.log("LISTINGS", listings);
 
     // Check if listings exist
     if (!listings) {

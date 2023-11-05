@@ -12,7 +12,7 @@ export const SearchContent = tw.div`
 `;
 
 export const SearchForm = tw.form`
-    flex flex-col 
+    flex flex-col
     border-b-2 md:border-r-2
     md:h-screen
     p-8
@@ -26,7 +26,7 @@ export const FormSection = tw.section`
  `;
 
 export const SearchInput = tw.input`
-w-full
+    w-full
     border border-slate-400
     p-3
     rounded-md
@@ -61,5 +61,12 @@ export const SearchButton = tw.button`
 `;
 
 export const SearchResults = tw.div`
+    flex-1
+`;
 
-`
+export const ListingsContainer = tw.div`
+    p-7
+    flex flex-wrap
+    gap-4
+    
+`;

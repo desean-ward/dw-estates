@@ -8,7 +8,7 @@ import "swiper/swiper-bundle.css";
 
 import {
   CopyImageUrl,
-  RentOrSale,
+  RentOrSell,
   ListingContainer,
   ListingContent,
   ListingTitle,
@@ -148,15 +148,15 @@ const Listing = () => {
            </ListingAddress>
           
            <section className='flex gap-4'>
-             {/* Rent or Sale */}
-             <RentOrSale>
-               {listing.type === "rent" ? "For Rent" : "For Sale"}
-             </RentOrSale>
+             {/* Rent or Sell */}
+             <RentOrSell>
+               {listing.type === "rent" ? "For Rent" : "For Sell"}
+             </RentOrSell>
           
              {/* Listing Offer */}
              {listing.offer && (
                <ListingOffer>
-                 ${listing.regularPrice - +listing.discountedPrice}
+                 ${listing.regularPrice - +listing.discountedPrice} OFF PROMO
                </ListingOffer>
              )}
            </section>

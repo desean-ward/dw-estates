@@ -52,7 +52,7 @@ export const ListingAddress = tw.p`
     text-slate-600
 `;
 
-export const RentOrSale = tw.p`
+export const RentOrSell = tw.p`
     w-full 
     bg-red-900 
     max-w-[200px] 

@@ -3,10 +3,9 @@ import React, { useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useSelector } from "react-redux";
-
 import {
   FormSection,
+  ListingsContainer,
   SearchButton,
   SearchContainer,
   SearchContent,
@@ -16,19 +15,13 @@ import {
   SearchResults,
   SearchSelect,
 } from "./search.styles";
+import ListingItem from "../listing-item/listing-item.component";
 
 const Search = () => {
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
-  // Grab the searchTerm from the redux store
-  const { search } = useSelector((state) => state.persistedReducer.listing);
-
   const router = useRouter();
   const searchParams = useSearchParams();
-  const urlParams = new URLSearchParams(location.search);
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const searchTermFromUrl = urlParams.get("searchTerm");
 
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
@@ -42,7 +35,6 @@ const Search = () => {
 
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
-  console.log("LISTINGS", listings);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -74,7 +66,6 @@ const Search = () => {
       });
     }
 
-    // TODO ---- Investigate why the search isn't filtering
     const fetchListings = async () => {
       try {
         setLoading(true);
@@ -83,6 +74,7 @@ const Search = () => {
 
         const res = await fetch(`${URL}/api/listing/get?${searchQuery}`);
         const data = await res.json();
+
         setListings(data);
         setLoading(false);
 
@@ -98,14 +90,14 @@ const Search = () => {
     };
 
     fetchListings();
-  }, [searchParams.get("searchTerm")]);
+  }, [searchParams]);
 
   const handleChange = (e) => {
-    // If the input id is all, rent or sale
+    // If the input id is all, rent or sell
     if (
       e.target.id === "all" ||
       e.target.id === "rent" ||
-      e.target.id === "sale"
+      e.target.id === "sell"
     ) {
       setSidebarData({
         ...sidebarData,
@@ -161,8 +153,6 @@ const Search = () => {
 
     // Convert the search params to a string
     const searchQuery = urlParams.toString();
-    console.log("PARAMS", searchQuery);
-
     router.push(`/search?${searchQuery}`);
   };
 
@@ -185,7 +175,7 @@ const Search = () => {
           <FormSection id='amenities' className='gap-8'>
             <label className='font-semibold'>Type:</label>
             <div className='flex flex-wrap gap-4 fitems-center'>
-              {/* Rent & Sale */}
+              {/* Rent & Sell */}
               <span className='flex gap-1'>
                 <SearchInput
                   type='checkbox'
@@ -193,7 +183,7 @@ const Search = () => {
                   onChange={handleChange}
                   checked={sidebarData.type === "all"}
                 />
-                Rent & Sale
+                Rent & Sell
               </span>
 
               {/* Rent */}
@@ -207,15 +197,15 @@ const Search = () => {
                 Rent
               </span>
 
-              {/* Sale */}
+              {/* sell */}
               <span className='flex gap-1'>
                 <SearchInput
                   type='checkbox'
-                  id='sale'
+                  id='sell'
                   onChange={handleChange}
-                  checked={sidebarData.type === "sale"}
+                  checked={sidebarData.type === "sell"}
                 />
-                Sale
+                Sell
               </span>
 
               {/* Offer */}
@@ -226,7 +216,7 @@ const Search = () => {
                   onChange={handleChange}
                   checked={sidebarData.offer}
                 />
-                Offer
+                Promo
               </span>
             </div>
           </FormSection>
@@ -285,11 +275,26 @@ const Search = () => {
         </SearchForm>
       </SearchContent>
 
-      <SearchContent>
-        <SearchResults>
-          <h1 className='p-3 mt-5 text-3xl font-semibold'>Listing Results:</h1>
-        </SearchResults>
-      </SearchContent>
+      <SearchResults>
+        <h1 className='p-3 mt-5 text-3xl font-semibold'>Listing Results:</h1>
+        <ListingsContainer>
+          {!loading && listings.length === 0 && (
+            <p className='text-lg text-slate-700'>No listings found</p>
+          )}
+
+          {loading && (
+            <p className='w-full text-xl text-center text-slate-700'>
+              Loading...
+            </p>
+          )}
+
+          {!loading &&
+            listings.length > 0 &&
+            listings.map((listing) => (
+              <ListingItem key={listing._id} listing={listing} />
+            ))}
+        </ListingsContainer>
+      </SearchResults>
     </SearchContainer>
   );
 };
