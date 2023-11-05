@@ -8,11 +8,11 @@ export const HeaderContainer = tw.header`
     w-full 
     shadow-md
     shadow-slate-800
-    p-4
+    py-4 px-8
     `;
 
 export const HeaderContent = tw.div`
-    max-w-6xl
+    max-w-7xl
     flex justify-between items-center
     mx-auto
 `;

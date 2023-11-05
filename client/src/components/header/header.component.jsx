@@ -73,7 +73,7 @@ const Header = () => {
         <LogoContainer>
           <Logo>
             <LogoLink href='/'>
-              <LogoImage src='/images/logo.png' alt='DW Estates' />
+              <LogoImage src='/images/logo.png' alt='' />
             </LogoLink>
           </Logo>
 

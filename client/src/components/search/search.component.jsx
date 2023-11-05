@@ -77,7 +77,7 @@ const Search = () => {
         const res = await fetch(`${URL}/api/listing/get?${searchQuery}`);
         const data = await res.json();
 
-        if (data.length > 0) {
+        if (data.length > 8) {
           setShowMore(true);
         } else {
           setShowMore(false);

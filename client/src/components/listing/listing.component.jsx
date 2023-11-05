@@ -28,6 +28,7 @@ import {
   FaShare,
 } from "react-icons/fa";
 import Contact from "../contact/contact.component";
+import Carousel from "../carousel/carousel.component";
 
 const Listing = () => {
   SwiperCore.use([Navigation, Pagination]);
@@ -58,6 +59,7 @@ const Listing = () => {
           },
         });
         const data = await res.json();
+        console.log(data);
 
         if (data.success === false) {
           setError(true);
@@ -88,133 +90,95 @@ const Listing = () => {
 
       {listing && !loading && !error && (
         <ListingContent>
-          <ListingCarousel>
-            <Swiper
-              navigation
-              pagination={{
-                clickable: true,
-              }}
-              className='mySwiper'
-            >
-              {listing.imageUrls.map((url, index) => (
-                <SwiperSlide key={index}>
-                  <ImageContainer>
-                    <Image src={url} alt='' className='object-fit' />
-                  </ImageContainer>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+          <Carousel listings={listing} type='listing' />
 
-            {/* Copy Image URL */}
-            <CopyImageUrl>
-              <FaShare
-                className='text-slate-500'
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  setCopied(true);
-                  setTimeout(() => {
-                    setCopied(false);
-                  }, 2000);
-                }}
-              />
-            </CopyImageUrl>
-
-            {/* Show copied message */}
-            {copied && (
-              <p className='fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2'>
-                Link Copied!
+          <div className='w-[80vw] mx-auto'>
+            {/* Listing Title  and Address*/}
+            <ListingTitle>
+              <p className='text-2xl font-semibold'>
+                {listing.title} - ${" "}
+                {listing.offer
+                  ? listing.discountedPrice.toLocaleString("en-US")
+                  : listing.regularPrice.toLocaleString("en-US")}
+                {listing.type === "rent" && (
+                  <span className='text-sm'> / month</span>
+                )}
               </p>
-            )}
-          </ListingCarousel>
+            </ListingTitle>
 
-         <div className="w-[80vw] mx-auto">
-           {/* Listing Title  and Address*/}
-           <ListingTitle>
-             <p className='text-2xl font-semibold'>
-               {listing.title} - ${" "}
-               {listing.offer
-                 ? listing.discountedPrice.toLocaleString("en-US")
-                 : listing.regularPrice.toLocaleString("en-US")}
-               {listing.type === "rent" && (
-                 <span className='text-sm'> / month</span>
-               )}
-             </p>
-           </ListingTitle>
-          
-           {/* Listing Address */}
-           <ListingAddress>
-             <FaMapMarkedAlt className='text-green-700' />
-             {listing.address}
-           </ListingAddress>
-          
-           <section className='flex gap-4'>
-             {/* Rent or Sell */}
-             <RentOrSell>
-               {listing.type === "rent" ? "For Rent" : "For Sell"}
-             </RentOrSell>
-          
-             {/* Listing Offer */}
-             {listing.offer && (
-               <ListingOffer>
-                 ${listing.regularPrice - +listing.discountedPrice} OFF PROMO
-               </ListingOffer>
-             )}
-           </section>
-          
-           {/* Listing Description */}
-           <section className='my-7 text-slate-800'>
-             {" "}
-             <span className='font-semibold text-black'>Description: </span>
-             {listing.description}
-           </section>
-          
-           {/* Listing Details */}
-           <section>
-             <ListingDetails className=''>
-               <Detail>
-                 <FaBed className='text-lg' />{" "}
-                 {listing.beds !== 1
-                   ? `${listing.beds} Beds`
-                   : `${listing.beds} Bed`}
-               </Detail>
-          
-               <Detail>
-                 <FaBath className='text-lg' />{" "}
-                 {listing.baths !== 1
-                   ? `${listing.baths} Baths`
-                   : `${listing.baths} Bath`}
-               </Detail>
-          
-               <Detail>
-                 <FaParking className='text-lg' />{" "}
-                 {listing.parking ? "Parking" : "No Parking"}
-               </Detail>
-          
-               <Detail>
-                 <FaChair className='text-lg' />{" "}
-                 {listing.furnished ? "Furnished" : "Unfurnished"}
-               </Detail>
-             </ListingDetails>
-           </section>
-          
-           {/* Contact Landlord */}
-           <div className='flex py-8'>
-             {((!currentUser) ||
-               (currentUser &&
-                 listing.userRef !== currentUser._id)) && (
-               <button
-                 type='button'
-                 className='p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95'
-                 onClick={() => setContact(true)}
-               >
-                 Contact Landlord
-               </button>
-             )}
-          
-             {/* Show contact form */}
-             {contact && <Contact listing={listing} show={setContact} />}
-           </div>
-         </div>
+            {/* Listing Address */}
+            <ListingAddress>
+              <FaMapMarkedAlt className='text-green-700' />
+              {listing.address}
+            </ListingAddress>
+
+            <section className='flex gap-4'>
+              {/* Rent or Sell */}
+              <RentOrSell>
+                {listing.type === "rent" ? "For Rent" : "For Sell"}
+              </RentOrSell>
+
+              {/* Listing Offer */}
+              {listing.offer && (
+                <ListingOffer>
+                  ${listing.regularPrice - +listing.discountedPrice} OFF PROMO
+                </ListingOffer>
+              )}
+            </section>
+
+            {/* Listing Description */}
+            <section className='my-7 text-slate-800'>
+              {" "}
+              <span className='font-semibold text-black'>Description: </span>
+              {listing.description}
+            </section>
+
+            {/* Listing Details */}
+            <section>
+              <ListingDetails className=''>
+                <Detail>
+                  <FaBed className='text-lg' />{" "}
+                  {listing.beds !== 1
+                    ? `${listing.beds} Beds`
+                    : `${listing.beds} Bed`}
+                </Detail>
+
+                <Detail>
+                  <FaBath className='text-lg' />{" "}
+                  {listing.baths !== 1
+                    ? `${listing.baths} Baths`
+                    : `${listing.baths} Bath`}
+                </Detail>
+
+                <Detail>
+                  <FaParking className='text-lg' />{" "}
+                  {listing.parking ? "Parking" : "No Parking"}
+                </Detail>
+
+                <Detail>
+                  <FaChair className='text-lg' />{" "}
+                  {listing.furnished ? "Furnished" : "Unfurnished"}
+                </Detail>
+              </ListingDetails>
+            </section>
+
+            {/* Contact Landlord */}
+            <div className='flex py-8'>
+              {(!currentUser ||
+                (currentUser && listing.userRef !== currentUser._id)) && (
+                <button
+                  type='button'
+                  className='p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95'
+                  onClick={() => setContact(true)}
+                >
+                  Contact Landlord
+                </button>
+              )}
+
+              {/* Show contact form */}
+              {contact && <Contact listing={listing} show={setContact} />}
+            </div>
+          </div>
         </ListingContent>
       )}
     </ListingContainer>
