@@ -67,6 +67,8 @@ export const SearchResults = tw.div`
 export const ListingsContainer = tw.div`
     p-7
     flex flex-wrap
+    justify-center sm:justify-start
     gap-4
+
     
 `;

@@ -28,7 +28,6 @@ const Contact = ({ listing, show }) => {
 
   useEffect(() => {
     const fetchLandlord = async () => {
-      console.log(listing.userRef);
       try {
         const res = await fetch(`${URL}/api/user/${listing.userRef}`, {
           method: "GET",
@@ -41,10 +40,18 @@ const Contact = ({ listing, show }) => {
         });
 
         const data = await res.json();
+
+        if (data.success === false) {
+          if (data.statusCode === 401) {
+            alert("Please login to contact landlord");
+          }
+          return;
+        }
+        console.log(data);
         setLandlord(data);
       } catch (error) {
         console.log(error);
-        handleShowForm();
+        handleCloseForm();
       }
     };
 
@@ -57,8 +64,9 @@ const Contact = ({ listing, show }) => {
         <ContactContainer id='overlay'>
           <ContactForm>
             <p>
-              Contact <span className='font-semibold'>{landlord.username}</span>{" "}
-              for <span className='font-semibold'>"{listing.title}"</span>
+              Requesting{" "}
+              <span className='font-semibold'>{landlord.username}</span> for{" "}
+              <span className='font-semibold'>"{listing.title}"</span>
             </p>
 
             <FormInput

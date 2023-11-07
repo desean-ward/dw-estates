@@ -1,7 +1,8 @@
-export default function AboutPage() {
-    return (
-        <div>
-            <h1>Hello</h1>
-        </div>
-    )
-}
+import About from "@/components/about/about.component";
+import React from "react";
+
+const AboutPage = () => {
+  return <About />;
+};
+
+export default AboutPage;

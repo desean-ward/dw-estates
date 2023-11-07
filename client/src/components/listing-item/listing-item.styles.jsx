@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 
 export const ListingItemContainer = tw.div`
-    w-full sm:w-[380px]
+    w-[90vw] sm:w-[380px]
     flex flex-col
     gap-4
     border border-slate-400

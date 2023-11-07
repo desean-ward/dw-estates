@@ -171,7 +171,7 @@ const Listing = () => {
                   className='p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95'
                   onClick={() => setContact(true)}
                 >
-                  Contact Landlord
+                  Contact Agent
                 </button>
               )}
 

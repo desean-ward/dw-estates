@@ -58,9 +58,13 @@ export default function Home() {
       {/* Hero */}
       <Hero promoListings={promoListings} />
 
-      <div id='listings' className="flex flex-col gap-16">
+      {/* Featured Properties */}
+      <div
+        id='listings'
+        className='flex flex-col w-full gap-16 px-4 mx-auto max-w-7xl'
+      >
         {/* Promo Properties */}
-        <div className='flex flex-col w-full gap-4 mx-auto max-w-7xl'>
+        <div className='flex flex-col w-full gap-4'>
           <section className='flex flex-col'>
             <h2 className='text-2xl font-bold text-slate-700'>
               Recent Promo Properties
@@ -71,7 +75,7 @@ export default function Home() {
             </Link>
           </section>
 
-          <section className='flex flex-wrap gap-4'>
+          <section className='flex flex-wrap justify-center gap-4 sm:justify-start'>
             {promoListings.map((listing) => (
               <ListingItem key={listing._id} listing={listing} />
             ))}
@@ -79,7 +83,7 @@ export default function Home() {
         </div>
 
         {/* Recent Selling Properties */}
-        <div className='flex flex-col w-full gap-4 mx-auto max-w-7xl'>
+        <div className='flex flex-col w-full gap-4'>
           <section className='flex flex-col'>
             <h2 className='text-2xl font-bold text-slate-700'>
               Recent Selling Properties
@@ -90,7 +94,7 @@ export default function Home() {
             </Link>
           </section>
 
-          <section className='flex flex-wrap gap-4'>
+          <section className='flex flex-wrap justify-center gap-4 sm:justify-start'>
             {sellListings.map((listing) => (
               <ListingItem key={listing._id} listing={listing} />
             ))}
@@ -98,7 +102,7 @@ export default function Home() {
         </div>
 
         {/* Recent Rental Properties */}
-        <div className='flex flex-col w-full gap-4 mx-auto max-w-7xl'>
+        <div className='flex flex-col w-full gap-4'>
           <section className='flex flex-col'>
             <h2 className='text-2xl font-bold text-slate-700'>
               Recent Rental Properties
@@ -109,7 +113,7 @@ export default function Home() {
             </Link>
           </section>
 
-          <section className='flex flex-wrap gap-4'>
+          <section className='flex flex-wrap justify-center gap-4 sm:justify-start'>
             {rentListings.map((listing) => (
               <ListingItem key={listing._id} listing={listing} />
             ))}
