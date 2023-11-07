@@ -106,7 +106,7 @@ const Header = () => {
                 {currentUser ? (
                   <NavLink href='/profile'>
                     <AvatarContainer>
-                      <img src={currentUser.avatar} alt='profile' />
+                      <img src={currentUser.avatar} alt='profile' className="w-full h-full"/>
                     </AvatarContainer>
                   </NavLink>
                 ) : (

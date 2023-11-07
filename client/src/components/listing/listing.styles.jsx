@@ -37,8 +37,16 @@ export const CopyImageUrl = tw.section`
     cursor-pointer
 `;
 
+export const AddToFavorites = tw.section`
+    
+    flex justify-center items-center gap-2
+`;
+
 export const ListingTitle = tw.section`
-    gap-4 
+    flex 
+    flex-col
+    gap-2
+    items-start
     py-3 
     mx-auto 
     my-7

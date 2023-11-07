@@ -7,6 +7,9 @@ import Footer from "@/components/footer/footer.component";
 
 const inter = Inter({ subsets: ["latin"] });
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export const metadata = {
   title: "DW Estates",
   description: "Destined to be the best real estate agency in the world.",
@@ -20,6 +23,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main id='app'>
             {children}
+            <ToastContainer />
           </main>
         </ReduxProvider>
       </body>

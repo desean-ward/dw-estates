@@ -5,11 +5,16 @@ const errorHandler = require("../../utils/errors");
 
 // Note: The 'next' parameter is used to call the next middleware function in the stack.
 const signup = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { role, username, email, password } = req.body;
+
+  if (!role || !username || !email || !password)
+    return next(errorHandler(400, "Please fill in all fields"));
+
   const hashedPassword = bcrypt.hashSync(password, 10);
 
   try {
     const user = await User.create({
+      role,
       username,
       email,
       password: hashedPassword,

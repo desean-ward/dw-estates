@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
+    role: {
+      type: String,
+      enum: ["customer", "agent", "admin"],
+      required: true,
+      
+    },
+
     username: {
       type: String,
       required: true,
@@ -21,6 +28,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "/images/avatar-placeholder.jpg",
     },
+
+    favorites: {
+      type: Array,
+    }
   },
   { timestamps: true }
 );

@@ -20,6 +20,7 @@ export const PropertiesSection = tw.section`
     flex-col 
     w-full 
     gap-4
+    mt-8
 `;
 
 export const PropertiesSectionHeader = tw.section`

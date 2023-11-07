@@ -16,6 +16,7 @@ import {
   ListingOffer,
   ListingDetails,
   Detail,
+  AddToFavorites,
 } from "../listing/listing.styles";
 import { Image, ImageContainer, ListingCarousel } from "./listing.styles";
 
@@ -27,14 +28,17 @@ import {
   FaParking,
   FaShare,
 } from "react-icons/fa";
+
 import Contact from "../contact/contact.component";
 import Carousel from "../carousel/carousel.component";
+import { AiOutlineHeart } from "react-icons/ai";
+import Link from "next/link";
 
 const Listing = () => {
   SwiperCore.use([Navigation, Pagination]);
   const { listingId } = useParams();
   const [listing, setListing] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [contact, setContact] = useState(false);
@@ -59,7 +63,6 @@ const Listing = () => {
           },
         });
         const data = await res.json();
-        console.log(data);
 
         if (data.success === false) {
           setError(true);
@@ -94,7 +97,7 @@ const Listing = () => {
 
           <div className='w-[80vw] mx-auto'>
             {/* Listing Title  and Address*/}
-            <ListingTitle>
+            <ListingTitle >
               <p className='text-2xl font-semibold'>
                 {listing.title} - $
                 {listing.offer
@@ -104,6 +107,13 @@ const Listing = () => {
                   <span className='text-sm'> / month</span>
                 )}
               </p>
+
+              {currentUser && currentUser.role === "customer" && (
+                <AddToFavorites>
+                  <AiOutlineHeart className="text-red-700" size={28} />
+                  <span>Add to favorites</span>
+                </AddToFavorites>
+              )}
             </ListingTitle>
 
             {/* Listing Address */}
@@ -121,7 +131,11 @@ const Listing = () => {
               {/* Listing Offer */}
               {listing.offer && (
                 <ListingOffer>
-                  ${(listing.regularPrice - +listing.discountedPrice).toLocaleString("en-US")} Price Drop
+                  $
+                  {(
+                    listing.regularPrice - +listing.discountedPrice
+                  ).toLocaleString("en-US")}{" "}
+                  Price Drop
                 </ListingOffer>
               )}
             </section>
@@ -164,16 +178,20 @@ const Listing = () => {
 
             {/* Contact Landlord */}
             <div className='flex py-8'>
-              {(!currentUser ||
-                (currentUser && listing.userRef !== currentUser._id)) && (
+              {currentUser && listing.userRef !== currentUser._id ? (
                 <button
                   type='button'
                   className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-slate-700 hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
                   onClick={() => setContact(true)}
                   disabled={currentUser === null}
                 >
-                  {currentUser ? 'Contact Agent' : 'Login to Contact'}
+                  Contact Agent
                 </button>
+              ) : (
+                <div className='p-3 font-semibold text-red-700 border rounded-lg border-slate-400'>
+                <Link href='/signin'> Please sign to contact agent or
+                  add to favorites</Link>
+                </div>
               )}
 
               {/* Show contact form */}

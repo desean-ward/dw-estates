@@ -13,11 +13,15 @@ import {
   SignInLink,
   SignInSection,
   SignUpWrapper,
+  RoleSelect,
+  RoleOption,
 } from "./signup.styles";
 import OAuth from "../oauth/oauth.component";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const defaultFormFields = {
+    role: "",
     username: "",
     email: "",
     password: "",
@@ -43,6 +47,8 @@ const SignUp = () => {
     setLoading(true);
     error && setError(null);
 
+    console.log(formFields);
+
     try {
       const res = await fetch(`${URL}/api/auth/signup`, {
         method: "POST",
@@ -60,7 +66,17 @@ const SignUp = () => {
       // If the user is not created successfully, display the error message
       if (data.success === false) {
         setLoading(false);
-        setError(data.message);
+
+        formFields.role === ""
+          ? setError("Please select an account type")
+          : formFields.username === ""
+          ? setError("Please enter a username")
+          : formFields.email === ""
+          ? setError("Please enter an email")
+          : formFields.password === ""
+          ? setError("Please enter a password")
+          : setError(data.message);
+
         return;
       }
 
@@ -68,11 +84,21 @@ const SignUp = () => {
       setLoading(false);
       setError(null);
       dispatch(signinSuccess(data));
+
+      toast("Account created successfully", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+
       router.push("/");
     } catch (error) {
       console.log(error);
       setLoading(false);
-      setError(error.message);
+      setError("Something went wrong. Please try again later.");
     }
 
     setFormFields(defaultFormFields);
@@ -84,6 +110,18 @@ const SignUp = () => {
         <h1 className='text-3xl font-semibold text-center my-7'>Sign Up</h1>
 
         <SignUpForm onSubmit={handleSubmit}>
+          <RoleSelect
+            id='role'
+            onChange={handleChange}
+            defaultValue='account-type'
+          >
+            <RoleOption value='account-type' disabled>
+              Account Type...
+            </RoleOption>
+            <RoleOption value='agent'>Agent</RoleOption>
+            <RoleOption value='customer'>Customer</RoleOption>
+          </RoleSelect>
+
           <SignUpInput
             type='text'
             placeholder='User Name'

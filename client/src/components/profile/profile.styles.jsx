@@ -28,6 +28,7 @@ export const ProfileImageContainer = tw.div`
 `;
 
 export const ProfileImage = tw.img`
+    w-full h-full
     object-cover
     
     cursor-pointer

@@ -30,6 +30,8 @@ import {
 } from "firebase/storage";
 import { firebase } from "@/firebase/firebase.config";
 
+import { toast } from "react-toastify";
+
 const UpdateListing = () => {
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -39,6 +41,7 @@ const UpdateListing = () => {
   const { listingId } = useParams();
 
   const [images, setImages] = useState([]);
+  const [imgUrl, setImgUrl] = useState(""); // [TODO
   const [uploading, setUploading] = useState(false);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [submitError, setSubmitError] = useState(null);
@@ -57,6 +60,20 @@ const UpdateListing = () => {
     parking: false,
     furnished: false,
   });
+  const [toastMessage, setToastMessage] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+
+  // Show the toast message
+  useEffect(() => {
+    if (toastMessage) {
+      setShowToast(true);
+
+      setTimeout(() => {
+        setShowToast(false);
+        setToastMessage(null);
+      }, 50);
+    }
+  }, [toastMessage]);
 
   // Fetch the listing data
   useEffect(() => {
@@ -118,13 +135,14 @@ const UpdateListing = () => {
       setUploading(false);
     }
   };
-  
+
   const handleImageUrlUpload = (e) => {
     const url = document.getElementById("url").value;
     setFormData({
       ...formData,
       imageUrls: formData.imageUrls.concat(url),
     });
+    setImgUrl("");
   };
 
   // Uploads a file to Firebase Cloud Storage.
@@ -237,9 +255,18 @@ const UpdateListing = () => {
 
       if (data.success === false) {
         setSubmitError(data.message);
+        return;
       }
 
       router.push(`/listing/${data._id}`);
+      toast("Listing updated successfully", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
     } catch (error) {
       setSubmitError(error.message);
       setLoading(false);
@@ -373,7 +400,7 @@ const UpdateListing = () => {
                 />
                 <section className='flex flex-wrap items-center text-sm md:text-base'>
                   <span>Regular Price</span>
-                  {formData.type === 'rent' && <span>{' '} /month</span>}
+                  {formData.type === "rent" && <span> /month</span>}
                 </section>
               </Option>
               {formData.offer && (
@@ -389,8 +416,7 @@ const UpdateListing = () => {
                   />
                   <section className='flex flex-wrap items-center text-sm md:text-base'>
                     <span>Promo Price</span>
-                    {formData.type === 'rent' && <span>{' '} /month</span>}
-
+                    {formData.type === "rent" && <span> /month</span>}
                   </section>
                 </Option>
               )}
@@ -423,12 +449,17 @@ const UpdateListing = () => {
           <p className='text-sm text-red-700'>
             {imageUploadError && imageUploadError}
           </p>
-          
+
           <span className='mt-4 font-semibold'>Or link to an image:</span>
 
           {/* Image URL */}
           <section className='flex justify-between gap-4'>
-            <FormInput type='text' id='url' />
+            <FormInput
+              type='text'
+              id='url'
+              value={imgUrl}
+              onChange={(e) => setImgUrl(e.target.value)}
+            />
 
             <FormButton type='button' onClick={handleImageUrlUpload}>
               {uploading ? "Uploading..." : "Upload"}

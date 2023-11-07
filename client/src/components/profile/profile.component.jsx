@@ -43,12 +43,13 @@ import {
   SignOutSection,
 } from "./profile.styles";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const fileRef = useRef(null);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
-  
+
   const [file, setFile] = useState(null);
   const [avatarUpdated, setAvatarUpdated] = useState(false);
   const [filePercentage, setFilePercentage] = useState(0);
@@ -60,7 +61,7 @@ const Profile = () => {
   const [userListings, setUserListings] = useState(null);
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
-  
+
   // Handle delete account
   const handleDeleteUser = async () => {
     try {
@@ -82,6 +83,14 @@ const Profile = () => {
       }
 
       dispatch(deleteUserSuccess(data));
+      toast("Account successfully deleted", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
@@ -117,6 +126,15 @@ const Profile = () => {
 
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
+
+      toast("Profile updated successfully", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
       return;
     } catch (error) {
       dispatch(updateUserFailure(error.message));
@@ -224,7 +242,6 @@ const Profile = () => {
       });
 
       const data = await res.json();
-      console.log("DATA", data);
 
       if (data.success === false) {
         console.log(data.message);
@@ -233,6 +250,15 @@ const Profile = () => {
 
       // Remove listing from state
       setUserListings(userListings.filter((listing) => listing._id !== id));
+
+      toast("Listing deleted successfully", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
     } catch (error) {
       console.log(error.message);
     }
@@ -304,6 +330,7 @@ const Profile = () => {
           id='password'
           defaultValue={currentUser.password}
           onChange={handleChange}
+          placeholder='Update Password...'
         />
 
         <FormButton type='submit'>Update</FormButton>
@@ -336,7 +363,7 @@ const Profile = () => {
       {userListings && userListings.length > 0 && (
         <div>
           <h2 className='text-2xl text-center mt-7 mfont-semibold'>
-            Your Listings
+            {currentUser.role === "agent" ? "Your Listings" : "Saved Listings"}
           </h2>
           {userListings.map((listing, index) => (
             <ListingContainer key={index}>
@@ -347,7 +374,9 @@ const Profile = () => {
               </Link>
 
               <Link href={`/listing/${listing._id}`} className='flex-1'>
-                <p className='truncate hover:text-[var(--clr-text-accent)]'>{listing.title}</p>
+                <p className='truncate hover:text-[var(--clr-text-accent)]'>
+                  {listing.title}
+                </p>
               </Link>
 
               <div className='relative z-50 flex flex-col'>

@@ -6,7 +6,7 @@ export const CarouselContainer = tw.div`
 `;
 
 export const ImageContainer = tw.section`
-    h-[400px]
+    h-[450px]
 `;
 
 export const Image = tw.img`

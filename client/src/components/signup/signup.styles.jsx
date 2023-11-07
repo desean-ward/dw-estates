@@ -27,6 +27,22 @@ export const SignUpForm = tw.form`
     flex flex-col gap-4
 `;
 
+export const RoleSelect = tw.select`
+    p-3
+    bg-white
+    text-slate-700
+    border border-slate-400
+    rounded-lg
+    cursor-pointer
+`;
+
+export const RoleOption = tw.option`
+    bg-white 
+    text-[--clr-body-secondary]
+    cursor-pointer
+    p-3
+`;
+
 export const SignUpInput = tw.input`
     border border-slate-400
     p-3
