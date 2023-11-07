@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   ContactContainer,
   ContactForm,
@@ -9,7 +10,6 @@ import {
 
 const Contact = ({ listing, show }) => {
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
-
   const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState(null);
 

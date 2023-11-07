@@ -168,10 +168,11 @@ const Listing = () => {
                 (currentUser && listing.userRef !== currentUser._id)) && (
                 <button
                   type='button'
-                  className='p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95'
+                  className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-slate-700 hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
                   onClick={() => setContact(true)}
+                  disabled={currentUser === null}
                 >
-                  Contact Agent
+                  {currentUser ? 'Contact Agent' : 'Login to Contact'}
                 </button>
               )}
 
