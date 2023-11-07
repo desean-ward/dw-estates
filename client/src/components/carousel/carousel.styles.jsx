@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 
 export const CarouselContainer = tw.div` 
-    ${({ type }) => type !== "listing" && "absolute bottom-0"}
+    ${({ type }) => type !== "listing" && "relative bottom-0"}
     w-screen 
 `;
 
@@ -14,7 +14,6 @@ export const Image = tw.img`
 `;
 
 export const CopyImageUrl = tw.section`
-    fixed 
     top-[13%] 
     right-[3%] 
     z-10 

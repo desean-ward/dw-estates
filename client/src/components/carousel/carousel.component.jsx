@@ -7,23 +7,17 @@ import {
 } from "./carousel.styles";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation, Pagination } from "swiper/core";
+import SwiperCore, { Navigation } from "swiper/core";
 import "swiper/swiper-bundle.css";
 import { FaShare } from "react-icons/fa";
 
 const Carousel = ({ listings, type = "hero" }) => {
-  SwiperCore.use([Navigation, Pagination]);
+  SwiperCore.use([Navigation]);
   const [copied, setCopied] = useState(false);
 
   return (
     <CarouselContainer type={type}>
-      <Swiper
-        navigation
-        pagination={{
-          clickable: true,
-        }}
-        className='mySwiper'
-      >
+      <Swiper navigation className='mySwiper'>
         {listings &&
           type === "hero" &&
           listings.map((listing, index) => (
@@ -46,7 +40,7 @@ const Carousel = ({ listings, type = "hero" }) => {
       </Swiper>
 
       {/* Copy Image URL */}
-      <CopyImageUrl>
+      <CopyImageUrl className={type === "listing" ? "fixed" : "hidden"}>
         <FaShare
           className='text-slate-500'
           onClick={() => {

@@ -1,5 +1,5 @@
 "use client";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -30,23 +30,22 @@ const Header = () => {
 
   // Grab the searchTerm from the redux store
 
-  
   const router = useRouter();
-  const dispatch = useDispatch();
-  
+
   // Get the searchTerm from the url
   const searchParams = useSearchParams();
-  
+
   // Get the searchTerm from the url for setting/updating the searchTerm state
   const urlParams = new URLSearchParams(location.search);
-  
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('searchTerm') || "");
+
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("searchTerm") || ""
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const urlParams = new URLSearchParams(location.search);
-
 
     // Set the searchTerm query param to the value of the input
     urlParams.set("searchTerm", searchTerm);
@@ -64,22 +63,22 @@ const Header = () => {
   };
 
   useEffect(() => {
-   setSearchTerm(searchParams.get('searchTerm') || "");
-  }, [searchParams.get('searchTerm')]);
+    setSearchTerm(searchParams.get("searchTerm") || "");
+  }, [searchParams.get("searchTerm")]);
 
   return (
     <HeaderContainer>
       <HeaderContent>
         <LogoContainer>
-          <Logo>
-            <LogoLink href='/'>
+          <LogoLink href='/'>
+            <Logo>
               <LogoImage src='/images/logo.png' alt='' />
-            </LogoLink>
-          </Logo>
+            </Logo>
 
-          <h2 className='flex flex-wrap text-sm font-bold sm:text-xl'>
-            <span className='text-[var(--clr-text-accent)]'>DW</span>Estates
-          </h2>
+            <h2 className='flex flex-wrap text-sm font-bold sm:text-xl'>
+              <span className='text-[var(--clr-text-accent)]'>DW</span>Estates
+            </h2>
+          </LogoLink>
         </LogoContainer>
 
         <SearchContainer onSubmit={handleSubmit}>

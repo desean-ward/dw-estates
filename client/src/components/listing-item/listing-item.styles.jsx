@@ -15,6 +15,7 @@ export const ListingItemContainer = tw.div`
 export const ListingImageContainer = tw.section`
     w-full
     rounded-lg
+    border border-slate-400
     transition duration-[1s] ease-in-out
     overflow-hidden 
     mx-auto
