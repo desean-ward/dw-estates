@@ -118,6 +118,14 @@ const UpdateListing = () => {
       setUploading(false);
     }
   };
+  
+  const handleImageUrlUpload = (e) => {
+    const url = document.getElementById("url").value;
+    setFormData({
+      ...formData,
+      imageUrls: formData.imageUrls.concat(url),
+    });
+  };
 
   // Uploads a file to Firebase Cloud Storage.
   const storeImage = async (file) => {
@@ -363,9 +371,9 @@ const UpdateListing = () => {
                   onChange={handleChange}
                   value={formData.regularPrice}
                 />
-                <section className='flex flex-col items-center'>
+                <section className='flex flex-wrap items-center text-sm md:text-base'>
                   <span>Regular Price</span>
-                  <span>($ / month)</span>
+                  {formData.type === 'rent' && <span>{' '} /month</span>}
                 </section>
               </Option>
               {formData.offer && (
@@ -379,9 +387,10 @@ const UpdateListing = () => {
                     onChange={handleChange}
                     value={formData.discountedPrice}
                   />
-                  <section className='flex flex-col items-center'>
-                    <span>Discounted Price</span>
-                    <span>($ / month)</span>
+                  <section className='flex flex-wrap items-center text-sm md:text-base'>
+                    <span>Promo Price</span>
+                    {formData.type === 'rent' && <span>{' '} /month</span>}
+
                   </section>
                 </Option>
               )}
@@ -414,6 +423,17 @@ const UpdateListing = () => {
           <p className='text-sm text-red-700'>
             {imageUploadError && imageUploadError}
           </p>
+          
+          <span className='mt-4 font-semibold'>Or link to an image:</span>
+
+          {/* Image URL */}
+          <section className='flex justify-between gap-4'>
+            <FormInput type='text' id='url' />
+
+            <FormButton type='button' onClick={handleImageUrlUpload}>
+              {uploading ? "Uploading..." : "Upload"}
+            </FormButton>
+          </section>
 
           {formData.imageUrls.length > 0 && (
             <section className='space-y-4'>

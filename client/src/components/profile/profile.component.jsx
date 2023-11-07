@@ -203,7 +203,6 @@ const Profile = () => {
       });
 
       const data = await res.json();
-      console.log(data);
       setUserListings(data);
 
       if (data.success === false) {
@@ -348,19 +347,19 @@ const Profile = () => {
               </Link>
 
               <Link href={`/listing/${listing._id}`} className='flex-1'>
-                <p className='truncate hover:underline'>{listing.title}</p>
+                <p className='truncate hover:text-[var(--clr-text-accent)]'>{listing.title}</p>
               </Link>
 
               <div className='relative z-50 flex flex-col'>
                 <Link
                   href={`/update-listing/${listing._id}`}
-                  className='hover:text-gray-500'
+                  className='hover:text-[var(--clr-text-accent)]'
                 >
                   Edit
                 </Link>
                 <button
                   type='button'
-                  className='text-red-700 hover:text-gray-700'
+                  className='text-red-700 hover:text-[var(--clr-text-accent)]'
                   onClick={() => handleListingDelete(listing._id)}
                 >
                   Delete

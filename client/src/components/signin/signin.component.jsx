@@ -14,6 +14,7 @@ import {
   SignInContainer,
   SignInForm,
   SignInInput,
+  SignInWrapper,
   SignUpLink,
   SignUpSection,
 } from "./signin.styles";
@@ -85,39 +86,41 @@ const SignIn = () => {
   };
 
   return (
-    <SignInContainer>
-      <h1 className='text-3xl font-semibold text-center my-7'>Sign In</h1>
-
-      <SignInForm onSubmit={handleSubmit}>
-        <SignInInput
-          type='email'
-          placeholder='Email'
-          id='email'
-          value={formFields.email}
-          onChange={handleChange}
-        />
-        <SignInInput
-          type='password'
-          placeholder='Password'
-          id='password'
-          value={formFields.password}
-          onChange={handleChange}
-        />
-        <SignInButton type='submit'>
-          {loading ? "Please Wait..." : "Sign In"}
-        </SignInButton>
-
-        <SignInButton type='button' $google>
-          <OAuth />
-        </SignInButton>
-      </SignInForm>
-
-      <SignUpSection>
-        <p>Don&#39;t have an account?</p>
-        <SignUpLink href='/signup'>Sign Up</SignUpLink>
-      </SignUpSection>
-      {error && <p className='text-center text-red-500'>{error}</p>}
-    </SignInContainer>
+    <SignInWrapper>
+      <SignInContainer>
+        <h1 className='text-3xl font-semibold text-center my-7'>Sign In</h1>
+      
+        <SignInForm onSubmit={handleSubmit}>
+          <SignInInput
+            type='email'
+            placeholder='Email'
+            id='email'
+            value={formFields.email}
+            onChange={handleChange}
+          />
+          <SignInInput
+            type='password'
+            placeholder='Password'
+            id='password'
+            value={formFields.password}
+            onChange={handleChange}
+          />
+          <SignInButton type='submit'>
+            {loading ? "Please Wait..." : "Sign In"}
+          </SignInButton>
+      
+          <SignInButton type='button' $google>
+            <OAuth />
+          </SignInButton>
+        </SignInForm>
+      
+        <SignUpSection>
+          <p>Don&#39;t have an account?</p>
+          <SignUpLink href='/signup'>Sign Up</SignUpLink>
+        </SignUpSection>
+        {error && <p className='text-center text-red-500'>{error}</p>}
+      </SignInContainer>
+    </SignInWrapper>
   );
 };
 

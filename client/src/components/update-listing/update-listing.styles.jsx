@@ -3,7 +3,7 @@ import tw from "tailwind-styled-components";
 
 export const UpdateListingContainer = tw.main`
     p-3
-    max-w-4xl
+    max-w-7xl
     mx-auto
 `;
 
@@ -15,8 +15,10 @@ export const UpdateListingHeader = tw.h1`
 `;
 
 export const UpdateListingForm = tw.form`
-    flex flex-col md:flex-row
-    gap-4
+    flex flex-col lg:flex-row
+    gap-16
+    w-[80vw] lg:w-full
+    mx-auto
 `;
 
 export const FormInputSection = tw.section`
@@ -27,7 +29,7 @@ export const FormInputSection = tw.section`
 `;
 
 export const FormInput = tw.input`
-    border border-gray-300
+    border border-slate-400
     p-3
     rounded-lg 
 
@@ -46,7 +48,7 @@ export const FormInput = tw.input`
     `}
 
     ${({ type }) =>
-      type === "file" &&
+      type === "file" || type === 'text' &&
       `
         w-full
     `}
@@ -57,7 +59,8 @@ export const FormInput = tw.input`
 
 export const FormTextArea = tw.textarea`
     w-full
-    border 
+    border
+    border-slate-400 
     p-3
     rounded-lg 
     resize-none
@@ -103,7 +106,7 @@ export const FormButton = tw.button`
       `
       bg-[transparent]
       text-slate-700 hover:text-white
-      border border-slate-700
+      border border-slate-400
       hover:bg-slate-700
     `}
 `;

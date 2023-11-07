@@ -24,19 +24,20 @@ const Hero = ({ promoListings }) => {
         <div className='text-sm sm:text-base'>
           <p>
             DW Estates is the go to source to find your next{" "}
-            <span className='font-semibold'>perfect</span> place to live.
-          
-            We have a wide selection of{" "}
+            <span className='font-semibold'>perfect</span> place to live. We
+            have a wide selection of{" "}
             <span className='font-semibold'>luxury properties</span>,{" "}
             <span className='font-semibold'>amenities</span> and{" "}
-            <span className='font-semibold'>award-winning</span> agents to help you
-            satisfy your heart's desire!
+            <span className='font-semibold'>award-winning</span> agents to help
+            satisfy your heart's desire. Let's find{" "}
+            <span className='text-[var(--clr-text-accent)] font-bold'>YOUR</span> dream
+            home today!
           </p>
         </div>
 
         <Link
           href='/search'
-          className='relative font-semibold top-8 hover:underline'
+          className='relative font-semibold top-8 hover:text-[var(--clr-text-accent)]'
         >
           Browse Listings...
         </Link>

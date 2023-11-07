@@ -96,7 +96,7 @@ const Listing = () => {
             {/* Listing Title  and Address*/}
             <ListingTitle>
               <p className='text-2xl font-semibold'>
-                {listing.title} - ${" "}
+                {listing.title} - $
                 {listing.offer
                   ? listing.discountedPrice.toLocaleString("en-US")
                   : listing.regularPrice.toLocaleString("en-US")}
@@ -121,7 +121,7 @@ const Listing = () => {
               {/* Listing Offer */}
               {listing.offer && (
                 <ListingOffer>
-                  ${listing.regularPrice - +listing.discountedPrice} OFF PROMO
+                  ${(listing.regularPrice - +listing.discountedPrice).toLocaleString("en-US")} Price Drop
                 </ListingOffer>
               )}
             </section>

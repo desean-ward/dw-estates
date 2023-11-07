@@ -9,7 +9,7 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     if (!currentUser) {
-      router.push("/signin");
+      router.push("/");
     }
   }, [currentUser, router]);
 

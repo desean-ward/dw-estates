@@ -12,6 +12,7 @@ import {
   SignUpInput,
   SignInLink,
   SignInSection,
+  SignUpWrapper,
 } from "./signup.styles";
 import OAuth from "../oauth/oauth.component";
 
@@ -78,46 +79,48 @@ const SignUp = () => {
   };
 
   return (
-    <SignUpContainer>
-      <h1 className='text-3xl font-semibold text-center my-7'>Sign Up</h1>
+    <SignUpWrapper>
+      <SignUpContainer>
+        <h1 className='text-3xl font-semibold text-center my-7'>Sign Up</h1>
 
-      <SignUpForm onSubmit={handleSubmit}>
-        <SignUpInput
-          type='text'
-          placeholder='User Name'
-          id='username'
-          value={formFields.username}
-          onChange={handleChange}
-        />
-        <SignUpInput
-          type='email'
-          placeholder='Email'
-          id='email'
-          value={formFields.email}
-          onChange={handleChange}
-        />
-        <SignUpInput
-          type='password'
-          placeholder='Password'
-          id='password'
-          value={formFields.password}
-          onChange={handleChange}
-        />
-        <SignUpButton type='submit'>
-          {loading ? "Please Wait..." : "Sign Up"}
-        </SignUpButton>
+        <SignUpForm onSubmit={handleSubmit}>
+          <SignUpInput
+            type='text'
+            placeholder='User Name'
+            id='username'
+            value={formFields.username}
+            onChange={handleChange}
+          />
+          <SignUpInput
+            type='email'
+            placeholder='Email'
+            id='email'
+            value={formFields.email}
+            onChange={handleChange}
+          />
+          <SignUpInput
+            type='password'
+            placeholder='Password'
+            id='password'
+            value={formFields.password}
+            onChange={handleChange}
+          />
+          <SignUpButton type='submit'>
+            {loading ? "Please Wait..." : "Sign Up"}
+          </SignUpButton>
 
-        <SignUpButton type='button' $google>
-          <OAuth />
-        </SignUpButton>
-      </SignUpForm>
+          <SignUpButton type='button' $google>
+            <OAuth />
+          </SignUpButton>
+        </SignUpForm>
 
-      <SignInSection>
-        <p>Already have an account?</p>
-        <SignInLink href='/signin'>Sign In</SignInLink>
-      </SignInSection>
-      {error && <p className='text-center text-red-500'>{error}</p>}
-    </SignUpContainer>
+        <SignInSection>
+          <p>Already have an account?</p>
+          <SignInLink href='/signin'>Sign In</SignInLink>
+        </SignInSection>
+        {error && <p className='text-center text-red-500'>{error}</p>}
+      </SignUpContainer>
+    </SignUpWrapper>
   );
 };
 

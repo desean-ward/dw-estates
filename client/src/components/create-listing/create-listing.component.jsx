@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -89,6 +89,15 @@ const CreateListing = () => {
       setUploading(false);
     }
   };
+
+  const handleImageUrlUpload = (e) => {
+    const url = document.getElementById("url").value;
+    setFormData({
+      ...formData,
+      imageUrls: formData.imageUrls.concat(url),
+    });
+  };
+
 
   // Uploads a file to Firebase Cloud Storage.
   const storeImage = async (file) => {
@@ -202,7 +211,7 @@ const CreateListing = () => {
         setSubmitError(data.message);
       }
 
-      router.push(`/listings/${data._id}`);
+      router.push(`/listing/${data._id}`);
     } catch (error) {
       setSubmitError(error.message);
       setLoading(false);
@@ -351,7 +360,7 @@ const CreateListing = () => {
                     value={formData.discountedPrice}
                   />
                   <section className='flex flex-col items-center'>
-                    <span>Discounted Price</span>
+                    <span>Promotional Price</span>
                     <span>($ / month)</span>
                   </section>
                 </Option>
@@ -369,6 +378,7 @@ const CreateListing = () => {
             </span>
           </p>
 
+          {/* Image Upload */}
           <section className='flex justify-between gap-4'>
             <FormInput
               type='file'
@@ -382,6 +392,18 @@ const CreateListing = () => {
               {uploading ? "Uploading..." : "Upload"}
             </FormButton>
           </section>
+
+          <span className='mt-4 font-semibold'>Or link to an image:</span>
+
+          {/* Image URL */}
+          <section className='flex justify-between gap-4'>
+            <FormInput type='text' id='url' />
+
+            <FormButton type='button' onClick={handleImageUrlUpload}>
+              {uploading ? "Uploading..." : "Upload"}
+            </FormButton>
+          </section>
+          
           <p className='text-sm text-red-700'>
             {imageUploadError && imageUploadError}
           </p>

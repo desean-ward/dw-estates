@@ -52,7 +52,7 @@ export const NavList = tw.ul`
 
 export const NavItem = tw.li`
    
-    hover:text-slate-800
+    hover:text-[var(--clr-text-accent)]
     cursor-pointer
     transition
     duration-200

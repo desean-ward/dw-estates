@@ -43,7 +43,7 @@ export const FormInput = tw.input`
 
 export const FormButton = tw.button`
     w-full
-    bg-slate-700
+    bg-[var(--clr-body-secondary)]
     text-white 
     rounded-lg 
     p-3
@@ -59,7 +59,7 @@ export const CreateListingsLink = tw(Link)`
     text-center
     uppercase 
     rounded-lg  
-    bg-green-700 
+    bg-slate-700 
     hover:opacity-95 
 `;
 
@@ -71,19 +71,19 @@ export const SignOutSection = tw.div`
 
 export const SignOutLink = tw.span`
     cursor-pointer
-    hover:text-gray-400
+    hover:text-[var(--clr-text-accent)]
 `;
 
 export const DeleteAccountLink = tw.span`
     cursor-pointer
     text-red-700
-    hover:text-gray-400
+    hover:text-[var(--clr-text-accent)]
 `;
 
 export const ShowListingsLink = tw.span`
     block
     cursor-pointer
-    hover:text-gray-400
+    hover:text-[var(--clr-text-accent)]
     text-center
 `;
 
@@ -94,7 +94,6 @@ export const ListingContainer = tw.div`
     gap-2
     p-3
     border-b-2 border-slate-700/20
-    rounded-lg
     mb-4
 `
 

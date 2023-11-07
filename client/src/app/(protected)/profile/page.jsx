@@ -1,7 +1,12 @@
+import PageTransition from "@/components/page-transition/page-transition";
 import Profile from "@/components/profile/profile.component";
 
 const ProfilePage = () => {
-  return <Profile />;
+  return (
+    <PageTransition>
+      <Profile />
+    </PageTransition>
+  );
 };
 
 export default ProfilePage;

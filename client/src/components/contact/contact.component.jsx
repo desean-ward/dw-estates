@@ -47,7 +47,6 @@ const Contact = ({ listing, show }) => {
           }
           return;
         }
-        console.log(data);
         setLandlord(data);
       } catch (error) {
         console.log(error);
@@ -64,7 +63,7 @@ const Contact = ({ listing, show }) => {
         <ContactContainer id='overlay'>
           <ContactForm>
             <p>
-              Requesting{" "}
+              Contact{" "}
               <span className='font-semibold'>{landlord.username}</span> for{" "}
               <span className='font-semibold'>"{listing.title}"</span>
             </p>

@@ -65,11 +65,11 @@ export default function Home() {
         <PropertiesSection>
           <PropertiesSectionHeader>
             <h2 className='text-2xl font-bold text-slate-700'>
-              Recent Promo Properties
+              Recent Promoted Properties
             </h2>
 
-            <Link className='hover:underline' href='/search?offer=true'>
-              See more promo properties
+            <Link className='hover:text-[var(--clr-text-accent)] w-fit' href='/search?offer=true'>
+              See more promoted properties
             </Link>
           </PropertiesSectionHeader>
 
@@ -87,8 +87,8 @@ export default function Home() {
               Recent Selling Properties
             </h2>
 
-            <Link className='hover:underline' href='/search?type=sell'>
-              See more promo properties
+            <Link className='hover:text-[var(--clr-text-accent)] w-fit' href='/search?type=sell'>
+              See more properties for sell
             </Link>
           </PropertiesSectionHeader>
 
@@ -106,8 +106,8 @@ export default function Home() {
               Recent Rental Properties
             </h2>
 
-            <Link className='hover:underline' href='/search?type=rent'>
-              See more promo properties
+            <Link className='hover:text-[var(--clr-text-accent)] w-fit' href='/search?type=rent'>
+              See more rental properties
             </Link>
           </PropertiesSectionHeader>
 

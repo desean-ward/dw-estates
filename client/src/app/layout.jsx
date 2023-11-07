@@ -18,8 +18,9 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <ReduxProvider>
           <Header />
-          <main id='app'>{children}</main>
-          
+          <main id='app'>
+            {children}
+          </main>
         </ReduxProvider>
       </body>
     </html>

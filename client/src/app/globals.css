@@ -39,7 +39,8 @@ body {
     flex flex-col 
     items-center 
     justify-between
-    
+    bg-cover
+
 }
 
 main {
@@ -51,6 +52,7 @@ main {
 main#app {
   @apply
     w-[100vw]
+
 }
 
 header {
