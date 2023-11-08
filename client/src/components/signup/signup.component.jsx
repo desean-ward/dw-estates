@@ -148,7 +148,7 @@ const SignUp = () => {
           </SignUpButton>
 
           <SignUpButton type='button' $google>
-            <OAuth />
+            <OAuth role={formFields.role} setError={setError} type='signup' />
           </SignUpButton>
         </SignUpForm>
 

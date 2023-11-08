@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { firebase } from "../../firebase/firebase.config";
@@ -7,14 +7,24 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
 import { signinSuccess } from "@/redux/features/user/userSlice";
+import { toast } from "react-toastify";
 
-const OAuth = () => {
+const OAuth = ({ role, setError, type = "signin" }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [chooseRole, setChooseRole] = useState(false);
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
+  const handleSelectRole = () => {};
+
   const handleGoogleClick = async () => {
+    console.log(role);
+    if (role === "") {
+      setError("Please select an account type, then try again");
+      return;
+    }
+
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(firebase);
@@ -33,11 +43,29 @@ const OAuth = () => {
           name: result.user.displayName,
           email: result.user.email,
           photo: result.user.photoURL,
+          role: role,
         }),
       });
 
       const data = await res.json();
+
+      if (data.success === false) {
+        setError(data.message);
+        return;
+      }
+
       dispatch(signinSuccess(data));
+
+      type === "signup" &&
+        toast("Account created successfully", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          draggable: true,
+          theme: "dark",
+        });
+
       router.push("/");
     } catch (error) {
       switch (error.code) {
@@ -86,7 +114,20 @@ const OAuth = () => {
       }
     }
   };
-  return <div onClick={handleGoogleClick}>Continue With Google</div>;
+  return (
+    <div onClick={handleGoogleClick}>
+      {type === "signup" ? "Sign up with Google" : "Sign in with Google"}
+    </div>
+  );
+  {
+    chooseRole && (
+      <div>
+        <div onClick={handleSelectRole}>Customer</div>
+        <div onClick={handleSelectRole}>Agent</div>
+        <div onClick={handleSelectRole}>Admin</div>
+      </div>
+    );
+  }
 };
 
 export default OAuth;

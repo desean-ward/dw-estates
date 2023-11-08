@@ -115,6 +115,7 @@ const google = async (req, res, next) => {
         email: req.body.email,
         password: hashedPassword,
         avatar: req.body.photo,
+        role: req.body.role,
       });
 
       // Create a JWT token

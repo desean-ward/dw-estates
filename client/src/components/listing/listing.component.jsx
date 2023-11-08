@@ -97,7 +97,7 @@ const Listing = () => {
 
           <div className='w-[80vw] mx-auto'>
             {/* Listing Title  and Address*/}
-            <ListingTitle >
+            <ListingTitle>
               <p className='text-2xl font-semibold'>
                 {listing.title} - $
                 {listing.offer
@@ -110,7 +110,7 @@ const Listing = () => {
 
               {currentUser && currentUser.role === "customer" && (
                 <AddToFavorites>
-                  <AiOutlineHeart className="text-red-700" size={28} />
+                  <AiOutlineHeart className='text-red-700' size={28} />
                   <span>Add to favorites</span>
                 </AddToFavorites>
               )}
@@ -178,7 +178,16 @@ const Listing = () => {
 
             {/* Contact Landlord */}
             <div className='flex py-8'>
-              {currentUser && listing.userRef !== currentUser._id ? (
+              {!currentUser && (
+                <div className='p-3 font-semibold text-red-700 border rounded-lg border-slate-400'>
+                  <Link href='/signin'>
+                    {" "}
+                    Please sign to contact agent or add to favorites
+                  </Link>
+                </div>
+              )}
+              
+              {currentUser && listing.userRef !== currentUser._id && (
                 <button
                   type='button'
                   className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-slate-700 hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
@@ -187,11 +196,6 @@ const Listing = () => {
                 >
                   Contact Agent
                 </button>
-              ) : (
-                <div className='p-3 font-semibold text-red-700 border rounded-lg border-slate-400'>
-                <Link href='/signin'> Please sign to contact agent or
-                  add to favorites</Link>
-                </div>
               )}
 
               {/* Show contact form */}

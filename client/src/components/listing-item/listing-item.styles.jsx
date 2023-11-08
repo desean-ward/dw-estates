@@ -2,7 +2,9 @@ import tw from "tailwind-styled-components";
 
 export const ListingItemContainer = tw.div`
     w-[90vw] sm:w-[380px]
+    h-full
     flex flex-col
+    justify-between
     gap-4
     border border-slate-400
     shadow-md hover:shadow-xl hover:shadow-slate-800 
