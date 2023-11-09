@@ -23,7 +23,7 @@ const Hero = ({ promoListings }) => {
 
         <div className='text-sm sm:text-base'>
           <p>
-            DW Estates is the go to source to find your next{" "}
+          <span className="font-semibold">LuxeLiving Estates</span> is the go to source to find your next{" "}
             <span className='font-semibold'>perfect</span> place to live. We
             have a wide selection of{" "}
             <span className='font-semibold'>luxury properties</span>,{" "}
