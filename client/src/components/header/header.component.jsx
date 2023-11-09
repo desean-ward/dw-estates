@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { FaSearch } from "react-icons/fa";
+import { FaRegWindowClose, FaSearch } from "react-icons/fa";
 
 import {
   HeaderContainer,
@@ -22,11 +22,69 @@ import {
   NavLink,
   AvatarContainer,
   HeaderContent,
+  MobileSidebarContainer,
+  MobileSidebarCloseButtonContainer,
+  MobileSidebarContent,
+  MenuContainer,
+  MenuContent,
 } from "./header.styles";
 
+import { AnimatePresence } from "framer-motion";
+import {
+  signoutFailure,
+  signoutStart,
+  signoutSuccess,
+} from "@/redux/features/user/userSlice";
+
 const Header = () => {
+  const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
+
+  // Animate the desktop menu
+  const slideIn = {
+    hidden: { y: "-200%", transition: { duration: 0.5, ease: "easeInOut" } },
+    visible: { y: "0", transition: { duration: 0.5, ease: "easeInOut" } },
+    exit: {
+      y: "-200%",
+      transition: { duration: 0.5, delay: 0.5, ease: "easeInOut" },
+    },
+  };
+
+  // Animate the mobile sidebar
+  const mobileSlideIn = {
+    hidden: { x: "100%", transition: { duration: 0.5, ease: "easeInOut" } },
+    visible: { x: 0, transition: { duration: 0.5, ease: "easeInOut" } },
+    exit: {
+      x: "100%",
+      transition: { duration: 0.5, delay: 0.5, ease: "easeInOut" },
+    },
+  };
+
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        delay: 0.5,
+        ease: "easeInOut",
+      },
+    },
+    exit: {
+      opacity: 0,
+    },
+  };
+
+  // Open and close the mobile sidebar state
+  const [open, setOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setOpen((prev) => !prev);
+  };
+
   // Grab the current user from the redux store
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
+
+  const dispatch = useDispatch();
 
   // Grab the searchTerm from the redux store
 
@@ -60,6 +118,31 @@ const Header = () => {
   const handleChange = (e) => {
     // Set the searchTerm state to the value of the input
     setSearchTerm(e.target.value);
+  };
+
+  const handleSignout = async () => {
+    try {
+      dispatch(signoutStart());
+
+      const res = await fetch(`${URL}/api/auth/signout`, {
+        method: "GET",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (data.success === false) {
+        dispatch(signoutFailure(data.message));
+        return;
+      }
+      toggleSidebar();
+      dispatch(signoutSuccess(data));
+    } catch (error) {
+      dispatch(signoutFailure(error.message));
+    }
   };
 
   useEffect(() => {
@@ -100,23 +183,92 @@ const Header = () => {
                 <NavLink href='/'>Home</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href='/about'>About</NavLink>
+                <NavLink className='hidden md:block' href='/about'>
+                  About
+                </NavLink>
               </NavItem>
-              <NavItem>
+              <span>
                 {currentUser ? (
-                  <NavLink href='/profile'>
-                    <AvatarContainer>
-                      <img src={currentUser.avatar} alt='profile' className="w-full h-full"/>
+                  <span className='flex flex-col items-center space-y-6'>
+                    <AvatarContainer onClick={toggleSidebar}>
+                      <img
+                        src={currentUser.avatar}
+                        alt='profile'
+                        className='w-full h-full'
+                      />
                     </AvatarContainer>
-                  </NavLink>
+
+                    {/* Desktop Mini-menu */}
+                    <AnimatePresence mode='wait'>
+                      <MenuContainer
+                        variants={slideIn}
+                        initial='hidden'
+                        animate={open ? "visible" : "exit"}
+                        exit='exit'
+                      >
+                        <MenuContent
+                          variants={fadeIn}
+                          initial='hidden'
+                          animate={open ? "visible" : "exit"}
+                          exit='exit'
+                        >
+                          <NavItem onClick={toggleSidebar}>
+                            <NavLink href='/profile'>Profile</NavLink>
+                          </NavItem>
+                          <NavItem>
+                            <NavLink href='/' onClick={handleSignout}>
+                              Sign Out
+                            </NavLink>
+                          </NavItem>
+                        </MenuContent>
+                      </MenuContainer>
+                    </AnimatePresence>
+                  </span>
                 ) : (
-                  <NavLink href='/signin'>Sign In</NavLink>
+                  <NavItem>
+                    <NavLink href='/signin'>Sign In</NavLink>
+                  </NavItem>
                 )}
-              </NavItem>
+              </span>
             </NavList>
           </Nav>
         </NavContainer>
       </HeaderContent>
+
+      {/* Mobile Sidebar */}
+      <AnimatePresence mode='wait'>
+        <MobileSidebarContainer
+          className='md:hidden'
+          variants={mobileSlideIn}
+          initial='hidden'
+          animate={open ? "visible" : "exit"}
+          exit='exit'
+        >
+          <MobileSidebarCloseButtonContainer onClick={toggleSidebar}>
+            <FaRegWindowClose size={42} />
+          </MobileSidebarCloseButtonContainer>
+
+          <MobileSidebarContent
+            variants={fadeIn}
+            initial='hidden'
+            animate={open ? "visible" : "exit"}
+            exit='exit'
+          >
+            <NavLink href='/' onClick={toggleSidebar}>
+              Home
+            </NavLink>
+            <NavLink href='/about' onClick={toggleSidebar}>
+              About
+            </NavLink>
+            <NavLink href='/profile' onClick={toggleSidebar}>
+              Profile
+            </NavLink>
+            <NavLink href='/' onClick={handleSignout}>
+              Sign Out
+            </NavLink>
+          </MobileSidebarContent>
+        </MobileSidebarContainer>
+      </AnimatePresence>
     </HeaderContainer>
   );
 };

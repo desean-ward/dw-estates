@@ -1,5 +1,6 @@
 import Link from "next/link";
 import tw from "tailwind-styled-components";
+import { motion } from "framer-motion";
 
 export const HeaderContainer = tw.header`
     sticky
@@ -8,7 +9,7 @@ export const HeaderContainer = tw.header`
     w-full 
     shadow-md
     shadow-slate-800
-    py-4 px-8
+    p-4 md:px-8
     `;
 
 export const HeaderContent = tw.div`
@@ -50,7 +51,7 @@ export const NavList = tw.ul`
     flex items-center gap-4
 `;
 
-export const NavItem = tw.li`
+export const NavItem = tw(motion.li)`
    
     hover:text-[var(--clr-text-accent)]
     cursor-pointer
@@ -67,4 +68,49 @@ export const AvatarContainer = tw.section`
     border-2 border-slate-500
     rounded-full
     overflow-hidden
+    cursor-pointer
+`;
+
+export const MenuContainer = tw(motion.aside)`
+    fixed 
+    z-[-50]
+    hidden md:flex
+    text-lg
+    w-[150px]
+    bg-[var(--clr-body-secondary)]
+    py-8
+    shadow-lg
+    shadow-slate-800
+`;
+
+export const MenuContent = tw(motion.section)`
+    flex 
+    flex-col 
+    items-center 
+    w-full h-full 
+    gap-2 text-lg  
+    translate-y-1/4`;
+
+export const MobileSidebarContainer = tw(motion.aside)`
+    fixed
+    z-50
+    top-0 left-0
+    w-full h-full
+    bg-[var(--clr-body-secondary)]
+    p-4
+`;
+
+export const MobileSidebarCloseButtonContainer = tw.section`
+    flex justify-end
+    cursor-pointer
+`;
+
+export const MobileSidebarContent = tw(motion.section)`
+    flex flex-col
+    origin-top 
+    w-full h-full
+    items-center
+    translate-y-1/4
+    gap-8
+    text-3xl
 `;
