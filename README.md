@@ -38,7 +38,7 @@ This full-stack application was built utilizing the MERN stack (Next.js). Users 
 
 The application is built upon MongoDB, Express.js, Next.js, and Node.js. 
 
-![nextjs](https://github.com/desean-ward/dw-estates/assets/66344466/34344d1d-40bf-469c-8419-6834599f1ca9)
+![nextjs](![249044456-14c5ca74-7e31-4a07-adb9-29b4f266a6bb](https://github.com/desean-ward/dw-estates/assets/66344466/2c18fd10-2c91-4fcf-abaf-c3d05da9023b))
 <img src="https://github.com/deseanward/PS-Capstone/assets/139034534/9dce6126-c414-4399-82cb-67b32319f665" width="80" alt="" />
 <img src="https://github.com/desean-ward/dw-fazhionz/assets/66344466/87cc28ce-c96d-4f83-ab95-78c1e6b621ee" width="80" alt="" />
 <img src="https://github.com/desean-ward/dw-fazhionz/assets/66344466/beb8b147-4461-47a2-a707-2e540443b303" width="80" alt="" /> 
