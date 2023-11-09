@@ -44,12 +44,13 @@ The application is built upon MongoDB, Express.js, Next.js, and Node.js.
 <img src="https://github.com/deseanward/PS-Capstone/assets/139034534/4ab37a82-8541-4cc4-a9f3-1aaee9d07146" width="80" alt="" />
 <img src="https://github.com/deseanward/PS-Capstone/assets/139034534/75765da7-b173-4fba-991c-c1f2555d6010" width="80" alt="" />
 <img src="https://github.com/deseanward/PS-Capstone/assets/139034534/2e5d8e8e-732b-474e-8ded-2200b880ad4e" width="80" alt="" />
-<img src="https://github.com/deseanward/PS-Capstone/assets/139034534/4ab3ef67-00d5-4730-a7b8-7d71ee79aa1c" width="80" alt="" />
+<img src="https://github.com/desean-ward/dw-estates/assets/66344466/9f77fd16-55ff-4d67-8d39-546c129fc018" width="80" alt="" />
 <img src="https://github.com/desean-ward/dw-fazhionz/assets/66344466/8b0a58e5-6dea-4f17-be24-703b913dfee1" width="80" alt="" />
 
 ## Roadmap
 
-In the near future, I plan on implementing 
+In the near future, I plan on implementing
+
 <ul>
 <li>TBA</li>
 </ul>
