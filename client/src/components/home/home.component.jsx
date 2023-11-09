@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 import Hero from "@/components/hero/hero.component";
 import ListingItem from "@/components/listing-item/listing-item.component";
 import Link from "next/link";
-import { HomeContainer, ListingsContainer, Properties, PropertiesSection, PropertiesSectionHeader } from "./home.styles";
+import {
+  HomeContainer,
+  ListingsContainer,
+  Properties,
+  PropertiesSection,
+  PropertiesSectionHeader,
+} from "./home.styles";
 
 export default function Home() {
   const [promoListings, setPromoListings] = useState([]);
@@ -15,7 +21,15 @@ export default function Home() {
   useEffect(() => {
     const fetchPromoListings = async () => {
       try {
-        const res = await fetch(`${URL}/api/listing/get?offer=true&limit=4`);
+        const res = await fetch(`${URL}/api/listing/get?offer=true&limit=4`, {
+          method: "GET",
+          credentials: "include",
+          sameSite: "none",
+          secure: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         const data = await res.json();
         setPromoListings(data);
@@ -29,7 +43,15 @@ export default function Home() {
     // Fetch the first 4 listings that are for rent
     const fetchRentListings = async () => {
       try {
-        const res = await fetch(`${URL}/api/listing/get?type=rent&limit=4`);
+        const res = await fetch(`${URL}/api/listing/get?type=rent&limit=4`, {
+          method: "GET",
+          credentials: "include",
+          sameSite: "none",
+          secure: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         const data = await res.json();
         setRentListings(data);
@@ -43,7 +65,15 @@ export default function Home() {
     // Fetch the first 4 listings that are for sale
     const fetchSellListings = async () => {
       try {
-        const res = await fetch(`${URL}/api/listing/get?type=sell&limit=4`);
+        const res = await fetch(`${URL}/api/listing/get?type=sell&limit=4`, {
+          method: "GET",
+          credentials: "include",
+          sameSite: "none",
+          secure: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         const data = await res.json();
         setSellListings(data);
@@ -68,7 +98,10 @@ export default function Home() {
               Recent Promoted Properties
             </h2>
 
-            <Link className='hover:text-[var(--clr-text-accent)] w-fit' href='/search?offer=true'>
+            <Link
+              className='hover:text-[var(--clr-text-accent)] w-fit'
+              href='/search?offer=true'
+            >
               See more promoted properties
             </Link>
           </PropertiesSectionHeader>
@@ -87,7 +120,10 @@ export default function Home() {
               Recent Selling Properties
             </h2>
 
-            <Link className='hover:text-[var(--clr-text-accent)] w-fit' href='/search?type=sell'>
+            <Link
+              className='hover:text-[var(--clr-text-accent)] w-fit'
+              href='/search?type=sell'
+            >
               See more properties for sell
             </Link>
           </PropertiesSectionHeader>
@@ -106,7 +142,10 @@ export default function Home() {
               Recent Rental Properties
             </h2>
 
-            <Link className='hover:text-[var(--clr-text-accent)] w-fit' href='/search?type=rent'>
+            <Link
+              className='hover:text-[var(--clr-text-accent)] w-fit'
+              href='/search?type=rent'
+            >
               See more rental properties
             </Link>
           </PropertiesSectionHeader>
