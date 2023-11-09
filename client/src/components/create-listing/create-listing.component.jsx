@@ -28,6 +28,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { firebase } from "@/firebase/firebase.config";
+import { toast } from "react-toastify";
 
 const CreateListing = () => {
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
@@ -92,12 +93,19 @@ const CreateListing = () => {
 
   const handleImageUrlUpload = (e) => {
     const url = document.getElementById("url").value;
+
+    if (url.length === 0 || url === "") {
+      setImageUploadError("Please enter a valid url");
+      return;
+    }
+
     setFormData({
       ...formData,
       imageUrls: formData.imageUrls.concat(url),
     });
-  };
 
+    document.getElementById("url").value = "";
+  };
 
   // Uploads a file to Firebase Cloud Storage.
   const storeImage = async (file) => {
@@ -210,6 +218,15 @@ const CreateListing = () => {
       if (data.success === false) {
         setSubmitError(data.message);
       }
+
+      toast("Listing created successfully", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
 
       router.push(`/listing/${data._id}`);
     } catch (error) {
@@ -345,7 +362,7 @@ const CreateListing = () => {
                 />
                 <section className='flex flex-col items-center'>
                   <span>Regular Price</span>
-                  <span>($ / month)</span>
+                  {formData.type === "rent" && <span> /month</span>}
                 </section>
               </Option>
               {formData.offer && (
@@ -361,7 +378,7 @@ const CreateListing = () => {
                   />
                   <section className='flex flex-col items-center'>
                     <span>Promotional Price</span>
-                    <span>($ / month)</span>
+                    {formData.type === "rent" && <span> /month</span>}
                   </section>
                 </Option>
               )}
@@ -403,7 +420,7 @@ const CreateListing = () => {
               {uploading ? "Uploading..." : "Upload"}
             </FormButton>
           </section>
-          
+
           <p className='text-sm text-red-700'>
             {imageUploadError && imageUploadError}
           </p>

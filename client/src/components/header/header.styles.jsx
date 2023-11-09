@@ -72,7 +72,7 @@ export const AvatarContainer = tw.section`
 `;
 
 export const MenuContainer = tw(motion.aside)`
-    fixed 
+    absolute
     z-[-50]
     hidden md:flex
     text-lg

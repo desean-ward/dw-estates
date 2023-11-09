@@ -3,7 +3,7 @@ import tw from "tailwind-styled-components";
 
 export const ProfileContainer = tw.div`
     p-3
-    max-w-lg 
+    max-w-lg
     mx-auto
 
 `;

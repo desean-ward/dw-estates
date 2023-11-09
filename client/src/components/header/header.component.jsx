@@ -159,7 +159,7 @@ const Header = () => {
             </Logo>
 
             <h2 className='flex flex-wrap text-sm font-bold sm:text-xl'>
-              <span className='text-[var(--clr-text-accent)]'>DW</span>Estates
+              <span className='text-[var(--clr-text-accent)]'>Luxe</span>Living Estates
             </h2>
           </LogoLink>
         </LogoContainer>

@@ -5,18 +5,16 @@ export const ListingItemContainer = tw.div`
     h-full
     flex flex-col
     justify-between
-    gap-4
     border border-slate-400
     shadow-md hover:shadow-xl hover:shadow-slate-800 
     transition duration-500 ease-in-out
     rounded-lg
-    p-4
     group
 `;
 
 export const ListingImageContainer = tw.section`
     w-full
-    rounded-lg
+    h-[200px]
     border border-slate-400
     transition duration-[1s] ease-in-out
     overflow-hidden 
@@ -24,7 +22,8 @@ export const ListingImageContainer = tw.section`
 `;
 
 export const ListingImage = tw.img`
-    object-cover
+    object-cover 
+    w-full h-full
     group-hover:scale-[120%]
     transition duration-[1s] ease-in-out
 `;

@@ -64,7 +64,7 @@ const Contact = ({ listing, show }) => {
           <ContactForm>
             <p>
               Contact{" "}
-              <span className='font-semibold'>{landlord.username}</span> for{" "}
+              <span className='font-semibold'>{landlord.username}</span> about{" "}
               <span className='font-semibold'>"{listing.title}"</span>
             </p>
 
