@@ -2,8 +2,11 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 
 export const ProfileContainer = tw.div`
-    p-3
-    max-w-lg
+    p-4 md:px-8
+    flex flex-col
+    lg:grid grid-cols-2
+    gap-8
+    w-lg md:max-w-7xl
     mx-auto
 
 `;
@@ -86,14 +89,15 @@ export const ShowListingsLink = tw.span`
     cursor-pointer
     hover:text-[var(--clr-text-accent)]
     text-center
+    my-8
 `;
 
 export const ListingContainer = tw.div`
-    h-fit
+    h-full
     font-semibold
     flex justify-between items-center
     gap-2
-    p-3
+    p-4
     border-b-2 border-slate-700/20
     mb-4
 `

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper/core";
 import "swiper/swiper-bundle.css";
@@ -31,8 +31,14 @@ import {
 
 import Contact from "../contact/contact.component";
 import Carousel from "../carousel/carousel.component";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import Link from "next/link";
+import {
+  updateUserFailure,
+  updateUserStart,
+  updateUserSuccess,
+} from "@/redux/features/user/userSlice";
+import { toast } from "react-toastify";
 
 const Listing = () => {
   SwiperCore.use([Navigation, Pagination]);
@@ -42,10 +48,65 @@ const Listing = () => {
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [contact, setContact] = useState(false);
+  const favorites = [];
 
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
+  const dispatch = useDispatch();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
+
+  const addToFavorites = async () => {
+    if (currentUser.favorites.includes(listing._id)) {
+      alert("Already in favorites");
+      return;
+    } else favorites.push(...currentUser.favorites, listing._id);
+
+    try {
+      dispatch(updateUserStart());
+
+      const res = await fetch(`${URL}/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ favorites: favorites }),
+      });
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        setUpdateError(data.message);
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+
+      toast("Favorite added", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+
+      return;
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+
+      toast(error.message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+    }
+  };
 
   // Fetch listing
   useEffect(() => {
@@ -77,6 +138,7 @@ const Listing = () => {
     };
     fetchListings();
   }, [listingId]);
+
   return (
     <ListingContainer>
       {
@@ -101,7 +163,7 @@ const Listing = () => {
               <p className='text-2xl font-semibold'>
                 {listing.title} - $
                 {listing.offer
-                  ? listing.discountedPrice.toLocaleString("en-US")
+                  ?  listing.discountedPrice.toLocaleString("en-US") 
                   : listing.regularPrice.toLocaleString("en-US")}
                 {listing.type === "rent" && (
                   <span className='text-sm'> / month</span>
@@ -109,10 +171,27 @@ const Listing = () => {
               </p>
 
               {currentUser && currentUser.role === "customer" && (
-                <AddToFavorites>
-                  <AiOutlineHeart className='text-red-700' size={28} />
-                  <span>Add to favorites</span>
-                </AddToFavorites>
+                <section>
+                  {currentUser.favorites.includes(listing._id) ? (
+                    <AddToFavorites>
+                      <AiFillHeart
+                        className='text-red-700 cursor-pointer'
+                        size={28}
+                        onClick={addToFavorites}
+                      />
+                      <span>Favorite</span>
+                    </AddToFavorites>
+                  ) : (
+                    <AddToFavorites>
+                      <AiOutlineHeart
+                        className='text-red-700 cursor-pointer'
+                        size={28}
+                        onClick={addToFavorites}
+                      />
+                      <span>Add to favorites</span>
+                    </AddToFavorites>
+                  )}
+                </section>
               )}
             </ListingTitle>
 
@@ -122,7 +201,7 @@ const Listing = () => {
               {listing.address}
             </ListingAddress>
 
-            <section className='flex gap-4'>
+            <section className='flex flex-wrap gap-4'>
               {/* Rent or Sell */}
               <RentOrSell>
                 {listing.type === "rent" ? "For Rent" : "For Sell"}
@@ -131,11 +210,11 @@ const Listing = () => {
               {/* Listing Offer */}
               {listing.offer && (
                 <ListingOffer>
-                  $
+                  -$
                   {(
                     listing.regularPrice - +listing.discountedPrice
                   ).toLocaleString("en-US")}{" "}
-                  Price Drop
+                  
                 </ListingOffer>
               )}
             </section>
@@ -186,7 +265,7 @@ const Listing = () => {
                   </Link>
                 </div>
               )}
-              
+
               {currentUser && listing.userRef !== currentUser._id && (
                 <button
                   type='button'

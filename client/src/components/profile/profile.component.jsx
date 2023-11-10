@@ -44,6 +44,7 @@ import {
 } from "./profile.styles";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { current } from "@reduxjs/toolkit";
 
 const Profile = () => {
   const fileRef = useRef(null);
@@ -59,6 +60,9 @@ const Profile = () => {
   const [updateError, setUpdateError] = useState(false);
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState(null);
+  const [userFavorites, setUserFavorites] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -221,6 +225,7 @@ const Profile = () => {
       });
 
       const data = await res.json();
+      console.log(data);
       setUserListings(data);
 
       if (data.success === false) {
@@ -264,6 +269,117 @@ const Profile = () => {
     }
   };
 
+  const handleRemoveFavorite = async (id) => {
+    // Remove listing from state
+    const favorites = userFavorites.filter((listing) => listing._id !== id);
+
+    // Map favorites to get ids
+    const favoritesIds = favorites.map((favorite) => favorite._id);
+
+    try {
+      const res = await fetch(`${URL}/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ favorites: favoritesIds }),
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (data.success === false) {
+        console.log(data);
+        dispatch(updateUserFailure(data.message));
+        setUpdateError(data.message);
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+      setUserFavorites(favorites);
+
+      toast("Favorite removed", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+
+      return;
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+
+      toast(error.message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+    }
+  };
+
+  // Fetch User Favorites
+  const handleGetFavorites = async () => {
+    setLoading(false);
+    setError(false);
+
+    if (!currentUser.favorites) return;
+
+    try {
+      setLoading(true);
+
+      const promises = currentUser.favorites.map(async (favorite) => {
+        console.log(favorite);
+        const res = await fetch(`${URL}/api/listing/get/${favorite}`, {
+          method: "GET",
+          credentials: "include",
+          sameSite: "none",
+          secure: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await res.json();
+
+        if (data.success === false) {
+          console.log(data);
+          dispatch(updateUserFailure(data.message));
+          setUpdateError(data.message);
+          return;
+        }
+
+        return data;
+      });
+
+      const favorites = await Promise.all(promises);
+
+      setUserFavorites(favorites);
+      setLoading(false);
+      setError(false);
+    } catch (error) {
+      console.log(error.message);
+      setError(true);
+      setLoading(false);
+    }
+  };
+
+  // Get Favorites and Property Listings
+  useEffect(() => {
+    if (currentUser.role === "agent") {
+      handleShowListings();
+    } else {
+      handleGetFavorites();
+    }
+  }, []);
+
   // Handle file upload
   useEffect(() => {
     if (file) {
@@ -278,126 +394,174 @@ const Profile = () => {
 
   return (
     <ProfileContainer>
-      <ProfileHeader>Profile</ProfileHeader>
+      <div>
+        <ProfileHeader>Profile</ProfileHeader>
 
-      <ProfileForm onSubmit={handleSubmit}>
-        <input
-          type='file'
-          ref={fileRef}
-          accept='image/*'
-          onChange={(e) => setFile(e.target.files[0])}
-          hidden
-        />
-        <ProfileImageContainer>
-          {!avatarUpdated ? (
-            <ProfileImage
-              src={formData.avatar || currentUser.avatar}
-              alt='profile'
-              onClick={() => fileRef.current.click()}
-            />
-          ) : (
-            <BeatLoader color='#334155' />
-          )}
-        </ProfileImageContainer>
-        <p>
-          {fileUploadError ? (
-            <span className='text-red-700'>
-              Error Uploading Image (must be less than 2mb)
-            </span>
-          ) : filePercentage > 0 && filePercentage < 100 ? (
-            <span className='text-slate-700'>Uploading {filePercentage}%</span>
-          ) : filePercentage === 100 ? (
-            <span className='text-green-700'>Upload Complete</span>
-          ) : (
-            ""
-          )}
+        <ProfileForm onSubmit={handleSubmit}>
+          <input
+            type='file'
+            ref={fileRef}
+            accept='image/*'
+            onChange={(e) => setFile(e.target.files[0])}
+            hidden
+          />
+          <ProfileImageContainer>
+            {!avatarUpdated ? (
+              <ProfileImage
+                src={formData.avatar || currentUser.avatar}
+                alt='profile'
+                onClick={() => fileRef.current.click()}
+              />
+            ) : (
+              <BeatLoader color='#334155' />
+            )}
+          </ProfileImageContainer>
+          <p>
+            {fileUploadError ? (
+              <span className='text-red-700'>
+                Error Uploading Image (must be less than 2mb)
+              </span>
+            ) : filePercentage > 0 && filePercentage < 100 ? (
+              <span className='text-slate-700'>
+                Uploading {filePercentage}%
+              </span>
+            ) : filePercentage === 100 ? (
+              <span className='text-green-700'>Upload Complete</span>
+            ) : (
+              ""
+            )}
+          </p>
+
+          <FormInput
+            type='text'
+            id='username'
+            defaultValue={currentUser.username}
+            onChange={handleChange}
+          />
+          <FormInput
+            type='email'
+            id='email'
+            defaultValue={currentUser.email}
+            onChange={handleChange}
+          />
+          <FormInput
+            type='password'
+            id='password'
+            defaultValue={currentUser.password}
+            onChange={handleChange}
+            placeholder='Update Password...'
+          />
+
+          <FormButton type='submit'>Update</FormButton>
+          <CreateListingsLink href='/create-listing'>
+            Create Listing
+          </CreateListingsLink>
+        </ProfileForm>
+        <SignOutSection>
+          <DeleteAccountLink onClick={handleDeleteUser}>
+            Delete Account
+          </DeleteAccountLink>
+
+          <SignOutLink onClick={handleSignout}>Sign Out</SignOutLink>
+        </SignOutSection>
+
+        <p className='mt-5 text-sm text-red-700'>
+          {updateError && updateError}
+        </p>
+        <p className='mt-5 text-sm text-green-700'>
+          {updateSuccess && "User updated successfully!"}
+        </p>
+      </div>
+
+      <div>
+        <p className='mt-5 text-red-700'>
+          {showListingsError && showListingsError}
         </p>
 
-        <FormInput
-          type='text'
-          id='username'
-          defaultValue={currentUser.username}
-          onChange={handleChange}
-        />
-        <FormInput
-          type='email'
-          id='email'
-          defaultValue={currentUser.email}
-          onChange={handleChange}
-        />
-        <FormInput
-          type='password'
-          id='password'
-          defaultValue={currentUser.password}
-          onChange={handleChange}
-          placeholder='Update Password...'
-        />
+        {/*If user is an agent, show user listings */}
+        {userListings && userListings.length > 0 ? (
+          <div>
+            <h2 className='text-2xl font-semibold text-center my-7'>
+              {currentUser.role === "agent"
+                ? "Your Listings"
+                : "Saved Favorites"}
+            </h2>
 
-        <FormButton type='submit'>Update</FormButton>
-        <CreateListingsLink href='/create-listing'>
-          Create Listing
-        </CreateListingsLink>
-      </ProfileForm>
-      <SignOutSection>
-        <DeleteAccountLink onClick={handleDeleteUser}>
-          Delete Account
-        </DeleteAccountLink>
-
-        <SignOutLink onClick={handleSignout}>Sign Out</SignOutLink>
-      </SignOutSection>
-
-      <p className='mt-5 text-sm text-red-700'>{updateError && updateError}</p>
-      <p className='mt-5 text-sm text-green-700'>
-        {updateSuccess && "User updated successfully!"}
-      </p>
-
-      <ShowListingsLink onClick={handleShowListings}>
-        Show Listings
-      </ShowListingsLink>
-
-      <p className='mt-5 text-red-700'>
-        {showListingsError && showListingsError}
-      </p>
-
-      {/* Show user listings */}
-      {userListings && userListings.length > 0 && (
-        <div>
-          <h2 className='text-2xl text-center mt-7 mfont-semibold'>
-            {currentUser.role === "agent" ? "Your Listings" : "Saved Listings"}
-          </h2>
-          {userListings.map((listing, index) => (
-            <ListingContainer key={index}>
-              <Link href={`/listing/${listing._id}`}>
-                <ListingImageContainer>
-                  <ListingImage src={listing.imageUrls} alt='' />
-                </ListingImageContainer>
-              </Link>
-
-              <Link href={`/listing/${listing._id}`} className='flex-1'>
-                <p className='truncate hover:text-[var(--clr-text-accent)]'>
-                  {listing.title}
-                </p>
-              </Link>
-
-              <div className='relative z-50 flex flex-col'>
-                <Link
-                  href={`/update-listing/${listing._id}`}
-                  className='hover:text-[var(--clr-text-accent)]'
-                >
-                  Edit
+            {userListings.map((listing, index) => (
+              <ListingContainer key={index}>
+                <Link href={`/listing/${listing._id}`}>
+                  <ListingImageContainer>
+                    <ListingImage src={listing.imageUrls} alt='' />
+                  </ListingImageContainer>
                 </Link>
-                <button
-                  type='button'
-                  className='text-red-700 hover:text-[var(--clr-text-accent)]'
-                  onClick={() => handleListingDelete(listing._id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </ListingContainer>
-          ))}
-        </div>
-      )}
+
+                <Link href={`/listing/${listing._id}`} className='flex-1'>
+                  <p className='hover:text-[var(--clr-text-accent)]'>
+                    <span>{listing.title}</span>
+                  </p>
+                </Link>
+
+                <div className='relative z-50 flex flex-col'>
+                  <Link
+                    href={`/update-listing/${listing._id}`}
+                    className='hover:text-[var(--clr-text-accent)]'
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    type='button'
+                    className='text-red-700 hover:text-[var(--clr-text-accent)]'
+                    onClick={() => handleListingDelete(listing._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </ListingContainer>
+            ))}
+          </div>
+        ) : (
+          currentUser.role === 'agent' && <span>No Listings Found</span>
+        )}
+
+        {/*If user is an customer, show user favorites */}
+        {userFavorites && userFavorites.length > 0 ? (
+          <div>
+            <h2 className='text-2xl font-semibold text-center mt-7'>
+              {currentUser.role === "agent"
+                ? "Your Listings"
+                : "Saved Favorites"}
+            </h2>
+
+            {userFavorites.map((listing, index) => (
+              <ListingContainer key={index}>
+                <Link href={`/listing/${listing._id}`}>
+                  <ListingImageContainer>
+                    <ListingImage src={listing.imageUrls} alt='' />
+                  </ListingImageContainer>
+                </Link>
+
+                <Link href={`/listing/${listing._id}`} className='flex-1'>
+                  <p className='truncate hover:text-[var(--clr-text-accent)]'>
+                  <span>{listing.title}</span>
+                  </p>
+                </Link>
+
+                <div className='relative z-50 flex flex-col'>
+                  <button
+                    type='button'
+                    className='text-red-700 hover:text-[var(--clr-text-accent)]'
+                    onClick={() => handleRemoveFavorite(listing._id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </ListingContainer>
+            ))}
+          </div>
+        ) : (
+          currentUser.role === 'customer' && <span>No Favorites Found</span>
+        )}
+      </div>
     </ProfileContainer>
   );
 };

@@ -6,6 +6,7 @@ export const ListingContainer = tw.div`
 `;
 
 export const ListingContent = tw.div`
+   
 `;
 
 export const ListingCarousel = tw.div`
@@ -49,13 +50,13 @@ export const ListingTitle = tw.section`
     items-start
     py-3 
     mx-auto 
-    my-7
+    mt-7
 `;
 
 export const ListingAddress = tw.p`
     flex 
     items-center gap-2 
-    my-2 mt-6 
+    mb-8
     text-sm 
     text-slate-600
 `;
@@ -66,7 +67,7 @@ export const RentOrSell = tw.p`
     max-w-[200px] 
     text-white 
     text-center 
-    p-1 
+    p-2 
     rounded-md
 `;
 
@@ -75,7 +76,7 @@ export const ListingOffer = tw.p`
     w-full 
     max-w-[200px] 
     text-white text-center 
-    p-1 
+    p-2 
     rounded-md
 `;
 

@@ -16,6 +16,7 @@ export const HeaderContent = tw.div`
     max-w-7xl
     flex justify-between items-center
     mx-auto
+    gap-2 md:gap-8
 `;
 
 export const LogoContainer = tw.div`
@@ -30,9 +31,11 @@ export const LogoImage = tw.img``;
 
 export const SearchContainer = tw.form`
     bg-slate-100
+    w-full
+    max-w-xl
     p-3
     rounded
-    flex items-center gap-2
+    flex items-center justify-between gap-2
 `;
 
 export const SearchInput = tw.input`

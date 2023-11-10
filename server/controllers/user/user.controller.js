@@ -14,16 +14,19 @@ const updateUser = async (req, res, next) => {
     if (req.body.password) {
       req.body.password = bcrypt.hashSync(req.body.password, 10);
     }
+    console.log("REQ", req.body);
 
     // Update user
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       {
         $set: {
+          role: req.body.role,
           username: req.body.username,
           email: req.body.email,
           password: req.body.password,
           avatar: req.body.avatar,
+          favorites: req.body.favorites,
         },
       },
       { new: true }
@@ -31,7 +34,7 @@ const updateUser = async (req, res, next) => {
 
     // Remove password from response
     const { password, ...rest } = updatedUser._doc;
-
+    console.log("REST", rest);
     // Send response
     res.status(200).json(rest);
   } catch (error) {

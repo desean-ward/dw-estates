@@ -154,12 +154,14 @@ const Header = () => {
       <HeaderContent>
         <LogoContainer>
           <LogoLink href='/'>
-            <Logo>
+            {/*<Logo>
               <LogoImage src='/images/logo.png' alt='' />
-            </Logo>
+  </Logo> */}
 
             <h2 className='flex flex-wrap text-sm font-bold sm:text-xl'>
-              <span className='text-[var(--clr-text-accent)]'>Luxe</span>Living Estates
+              <span>
+                <span className='text-[var(--clr-text-accent)]'>Luxe</span>Living
+              </span> Estates
             </h2>
           </LogoLink>
         </LogoContainer>
