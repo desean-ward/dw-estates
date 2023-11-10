@@ -33,6 +33,8 @@ import {
   ListingContainer,
   ListingImage,
   ListingImageContainer,
+  ListingItem,
+  Listings,
   ProfileContainer,
   ProfileForm,
   ProfileHeader,
@@ -480,86 +482,90 @@ const Profile = () => {
 
         {/*If user is an agent, show user listings */}
         {userListings && userListings.length > 0 ? (
-          <div>
+          <ListingContainer>
             <h2 className='text-2xl font-semibold text-center my-7'>
               {currentUser.role === "agent"
                 ? "Your Listings"
                 : "Saved Favorites"}
             </h2>
 
-            {userListings.map((listing, index) => (
-              <ListingContainer key={index}>
-                <Link href={`/listing/${listing._id}`}>
-                  <ListingImageContainer>
-                    <ListingImage src={listing.imageUrls} alt='' />
-                  </ListingImageContainer>
-                </Link>
-
-                <Link href={`/listing/${listing._id}`} className='flex-1'>
-                  <p className='hover:text-[var(--clr-text-accent)]'>
-                    <span>{listing.title}</span>
-                  </p>
-                </Link>
-
-                <div className='relative z-50 flex flex-col'>
-                  <Link
-                    href={`/update-listing/${listing._id}`}
-                    className='hover:text-[var(--clr-text-accent)]'
-                  >
-                    Edit
+            <Listings>
+              {userListings.map((listing, index) => (
+                <ListingItem key={index}>
+                  <Link href={`/listing/${listing._id}`}>
+                    <ListingImageContainer>
+                      <ListingImage src={listing.imageUrls} alt='' />
+                    </ListingImageContainer>
                   </Link>
-                  <button
-                    type='button'
-                    className='text-red-700 hover:text-[var(--clr-text-accent)]'
-                    onClick={() => handleListingDelete(listing._id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </ListingContainer>
-            ))}
-          </div>
+
+                  <Link href={`/listing/${listing._id}`} className='flex-1'>
+                    <p className='hover:text-[var(--clr-text-accent)]'>
+                      <span>{listing.title}</span>
+                    </p>
+                  </Link>
+
+                  <div className='relative z-50 flex flex-col'>
+                    <Link
+                      href={`/update-listing/${listing._id}`}
+                      className='hover:text-[var(--clr-text-accent)]'
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      type='button'
+                      className='text-red-700 hover:text-[var(--clr-text-accent)]'
+                      onClick={() => handleListingDelete(listing._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </ListingItem>
+              ))}
+            </Listings>
+          </ListingContainer>
         ) : (
-          currentUser.role === 'agent' && <span>No Listings Found</span>
+          currentUser.role === "agent" && <span>No Listings Found</span>
         )}
 
         {/*If user is an customer, show user favorites */}
         {userFavorites && userFavorites.length > 0 ? (
-          <div>
-            <h2 className='text-2xl font-semibold text-center mt-7'>
+          <ListingContainer>
+            <h2 className='text-2xl font-semibold text-center my-7'>
               {currentUser.role === "agent"
                 ? "Your Listings"
                 : "Saved Favorites"}
             </h2>
 
-            {userFavorites.map((listing, index) => (
-              <ListingContainer key={index}>
-                <Link href={`/listing/${listing._id}`}>
-                  <ListingImageContainer>
-                    <ListingImage src={listing.imageUrls} alt='' />
-                  </ListingImageContainer>
-                </Link>
+            <Listings>
+              {userFavorites.map((listing, index) => (
+                <ListingItem key={index}>
+                  <Link href={`/listing/${listing._id}`}>
+                    <ListingImageContainer>
+                      <ListingImage src={listing.imageUrls} alt='' />
+                    </ListingImageContainer>
+                  </Link>
 
-                <Link href={`/listing/${listing._id}`} className='flex-1'>
-                  <p className='truncate hover:text-[var(--clr-text-accent)]'>
-                  <span>{listing.title}</span>
-                  </p>
-                </Link>
+                  <Link href={`/listing/${listing._id}`} className='flex-1'>
+                    <p className='truncate hover:text-[var(--clr-text-accent)]'>
+                      <span>{listing.title}</span>
+                    </p>
+                  </Link>
 
-                <div className='relative z-50 flex flex-col'>
-                  <button
-                    type='button'
-                    className='text-red-700 hover:text-[var(--clr-text-accent)]'
-                    onClick={() => handleRemoveFavorite(listing._id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </ListingContainer>
-            ))}
-          </div>
+                  <div className='relative z-50 flex flex-col'>
+                    <button
+                      type='button'
+                      className='text-red-700 hover:text-[var(--clr-text-accent)]'
+                      onClick={() => handleRemoveFavorite(listing._id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </ListingItem>
+              ))}
+            </Listings>
+          </ListingContainer>
         ) : (
-          currentUser.role === 'customer' && <span>No Favorites Found</span>
+          currentUser.role === "customer" && <span>No Favorites Found</span>
         )}
       </div>
     </ProfileContainer>

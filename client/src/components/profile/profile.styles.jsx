@@ -4,14 +4,17 @@ import tw from "tailwind-styled-components";
 export const ProfileContainer = tw.div`
     p-4 md:px-8
     flex flex-col
+    justify-center
     lg:grid grid-cols-2
-    gap-8
+    gap-16
+    
     w-lg md:max-w-7xl
     mx-auto
-
 `;
 
 export const ProfileHeader = tw.h1`
+    w-screen
+    max-w-7xl
     text-3xl text-center
     font-semibold
     my-8
@@ -93,7 +96,21 @@ export const ShowListingsLink = tw.span`
 `;
 
 export const ListingContainer = tw.div`
-    h-full
+    relative 
+    lg:top-[6em]
+    
+`
+export const Listings = tw.section`
+    relative 
+    top-12
+    h-[400px]
+    overflow-scroll
+    border-2 border-slate-700/20
+    p-4
+    rounded-lg
+    
+`
+export const ListingItem = tw.section`
     font-semibold
     flex justify-between items-center
     gap-2
