@@ -14,6 +14,7 @@ export const HeroContent = tw.section`
     max-w-7xl
     mx-auto
     px-4
-    flex flex-col gap-8
+    flex flex-col
+    gap-4 md:gap-8
     
 `;
