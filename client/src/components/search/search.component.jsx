@@ -331,7 +331,7 @@ const Search = () => {
               onClick={() => {
                 handleShowMore();
               }}
-              className='mx-auto text-green-700 hover:underline p-7'
+              className='mx-auto text-[var(--clr-body-secondary)] hover:underline p-7'
             >
               Show More
             </button>

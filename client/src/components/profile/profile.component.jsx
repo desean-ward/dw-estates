@@ -538,11 +538,9 @@ const Profile = () => {
               </CreateListingsLink>
             </div>
           )}
-        </ListingContainer>
 
-        {/*If user is an customer, show user favorites */}
-        {userFavorites && userFavorites.length > 0 ? (
-          <ListingContainer>
+          {/*If user is an customer, show user favorites */}
+          {userFavorites && userFavorites.length > 0 ? (
             <Listings>
               {userFavorites.map((listing, index) => (
                 <ListingItem key={index}>
@@ -575,12 +573,12 @@ const Profile = () => {
                 </ListingItem>
               ))}
             </Listings>
-          </ListingContainer>
-        ) : (
-          currentUser.role === "customer" && (
-            <span className='flex justify-center'>No Favorites Found</span>
-          )
-        )}
+          ) : (
+            currentUser.role === "customer" && (
+              <span className='flex justify-center'>No Favorites Found</span>
+            )
+          )}
+        </ListingContainer>
       </div>
     </ProfileContainer>
   );
