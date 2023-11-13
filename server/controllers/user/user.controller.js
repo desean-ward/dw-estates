@@ -92,10 +92,31 @@ const getUser = async (req, res, next) => {
   }
 };
 
+// Get first 4 agents
+const getAgents = async (req, res, next) => {
+  try {
+    const agents = await User.find({ role: "agent" });
+
+    if (!agents) {
+      return next(errorHandler(404, "Agents not found!"));
+    }
+
+    // Remove password from response
+    for (let agent in agents) {
+      const { password: pass, ...rest } = agents[agent]._doc;
+      agents[agent] = rest;
+    }
+    res.status(200).json(agents);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Export routes
 module.exports = {
   updateUser,
   deleteUser,
   getUserListings,
   getUser,
+  getAgents,
 };

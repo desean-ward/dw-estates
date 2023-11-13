@@ -13,6 +13,7 @@ export const ListingsContainer = tw.section`
     px-4 
     mx-auto 
     max-w-7xl
+    mb-16
 `;
 
 export const PropertiesSection = tw.section`

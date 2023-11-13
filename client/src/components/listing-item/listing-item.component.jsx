@@ -14,7 +14,7 @@ const ListingItem = ({ listing }) => {
     <Link href={`/listing/${listing._id}`}>
       <ListingItemContainer>
         <ListingImageContainer>
-          <ListingImage src={listing.imageUrls[0]} alt='listing image' />
+          <ListingImage src={listing.imageUrls[0]} width='500' height='400' alt='listing image' />
         </ListingImageContainer>
         <div className="flex flex-col justify-between gap-4 p-4">
           <h3 className='text-lg font-semibold truncate text-slate-700'>

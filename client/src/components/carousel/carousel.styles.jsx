@@ -1,3 +1,4 @@
+import Image from "next/image";
 import tw from "tailwind-styled-components";
 
 export const CarouselContainer = tw.div` 
@@ -9,8 +10,10 @@ export const ImageContainer = tw.section`
     h-[350px] md:h-[450px]
 `;
 
-export const Image = tw.img`
-    object-cover w-full h-full 
+export const PropertyImage = tw(Image)`
+    object-cover 
+    w-full 
+    h-full 
 `;
 
 export const CopyImageUrl = tw.section`

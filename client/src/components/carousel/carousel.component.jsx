@@ -4,6 +4,7 @@ import {
   CopyImageUrl,
   ImageContainer,
   Image,
+  PropertyImage,
 } from "./carousel.styles";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -25,7 +26,12 @@ const Carousel = ({ listings, type = "hero" }) => {
           listings.map((listing, index) => (
             <SwiperSlide key={index}>
               <ImageContainer>
-                <Image src={listing.imageUrls} alt='' className='object-fit' />
+                <PropertyImage
+                  src={listing.imageUrls[0]}
+                  alt=''
+                  width='1000'
+                  height='600'
+                />
               </ImageContainer>
             </SwiperSlide>
           ))}
@@ -35,7 +41,7 @@ const Carousel = ({ listings, type = "hero" }) => {
           listings.imageUrls.map((url, index) => (
             <SwiperSlide key={index}>
               <ImageContainer>
-                <Image src={url} alt='' className='object-fit' />
+                <PropertyImage src={url} alt='' width='1000' height='600' />
               </ImageContainer>
             </SwiperSlide>
           ))}

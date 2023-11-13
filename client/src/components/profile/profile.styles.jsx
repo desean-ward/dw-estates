@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 
@@ -33,11 +34,11 @@ export const ProfileImageContainer = tw.div`
     overflow-hidden
 `;
 
-export const ProfileImage = tw.img`
-    w-full h-full
+export const ProfileImage = tw(Image)`
     object-cover
-    
-    cursor-pointer
+    w-full 
+    h-full 
+    cursor-pointer 
 `;
 
 export const FormInput = tw.input`
@@ -60,8 +61,12 @@ export const FormButton = tw.button`
 `;
 
 export const CreateListingsLink = tw(Link)`
+    relative
+    top-16
     w-full 
+    flex justify-center
     p-3 
+    my-4
     text-white 
     text-center
     uppercase 
@@ -99,17 +104,17 @@ export const ListingContainer = tw.div`
     relative 
     lg:top-[6em]
     
-`
+`;
 export const Listings = tw.section`
     relative 
     top-12
-    h-[400px]
+    max-h-[400px]
     overflow-scroll
     border-2 border-slate-700/20
     p-4
     rounded-lg
     
-`
+`;
 export const ListingItem = tw.section`
     font-semibold
     flex justify-between items-center
@@ -117,14 +122,18 @@ export const ListingItem = tw.section`
     p-4
     border-b-2 border-slate-700/20
     mb-4
-`
+`;
 
-export const ListingImageContainer = tw.div`
-   
-`
-
-export const ListingImage = tw.img`
+export const ListingImageContainer = tw.section`
     w-16
-    object-contain 
-`
+    h-12
+    flex items-center justify-center
+    
+`;
 
+export const ListingImage = tw(Image)`
+    w-full
+    h-full
+    object-contain 
+     
+`;

@@ -44,7 +44,9 @@ import {
   SignOutLink,
   SignOutSection,
 } from "./profile.styles";
+
 import Link from "next/link";
+
 import { toast } from "react-toastify";
 import { current } from "@reduxjs/toolkit";
 
@@ -227,7 +229,6 @@ const Profile = () => {
       });
 
       const data = await res.json();
-      console.log(data);
       setUserListings(data);
 
       if (data.success === false) {
@@ -412,12 +413,15 @@ const Profile = () => {
               <ProfileImage
                 src={formData.avatar || currentUser.avatar}
                 alt='profile'
+                width='100'
+                height='100'
                 onClick={() => fileRef.current.click()}
               />
             ) : (
               <BeatLoader color='#334155' />
             )}
           </ProfileImageContainer>
+          <p>Update Photo</p>
           <p>
             {fileUploadError ? (
               <span className='text-red-700'>
@@ -455,9 +459,6 @@ const Profile = () => {
           />
 
           <FormButton type='submit'>Update</FormButton>
-          <CreateListingsLink href='/create-listing'>
-            Create Listing
-          </CreateListingsLink>
         </ProfileForm>
         <SignOutSection>
           <DeleteAccountLink onClick={handleDeleteUser}>
@@ -480,21 +481,24 @@ const Profile = () => {
           {showListingsError && showListingsError}
         </p>
 
-        {/*If user is an agent, show user listings */}
-        {userListings && userListings.length > 0 ? (
-          <ListingContainer>
-            <h2 className='text-2xl font-semibold text-center my-7'>
-              {currentUser.role === "agent"
-                ? "Your Listings"
-                : "Saved Favorites"}
-            </h2>
+        <ListingContainer>
+          <h2 className='text-2xl font-semibold text-center my-7'>
+            {currentUser.role === "agent" ? "Your Listings" : "Saved Favorites"}
+          </h2>
 
+          {/*If user is an agent, show user listings */}
+          {userListings && userListings.length > 0 ? (
             <Listings>
               {userListings.map((listing, index) => (
                 <ListingItem key={index}>
                   <Link href={`/listing/${listing._id}`}>
                     <ListingImageContainer>
-                      <ListingImage src={listing.imageUrls} alt='' />
+                      <ListingImage
+                        src={listing.imageUrls[0]}
+                        width='100'
+                        height='100'
+                        alt='Listing'
+                      />
                     </ListingImageContainer>
                   </Link>
 
@@ -522,26 +526,34 @@ const Profile = () => {
                 </ListingItem>
               ))}
             </Listings>
-          </ListingContainer>
-        ) : (
-          currentUser.role === "agent" && <span>No Listings Found</span>
-        )}
+          ) : (
+            currentUser.role === "agent" && (
+              <span className='flex justify-center'>No Listings Found</span>
+            )
+          )}
+          {currentUser.role === "agent" && (
+            <div className='flex justify-center'>
+              <CreateListingsLink href='/create-listing'>
+                Create Listing
+              </CreateListingsLink>
+            </div>
+          )}
+        </ListingContainer>
 
         {/*If user is an customer, show user favorites */}
         {userFavorites && userFavorites.length > 0 ? (
           <ListingContainer>
-            <h2 className='text-2xl font-semibold text-center my-7'>
-              {currentUser.role === "agent"
-                ? "Your Listings"
-                : "Saved Favorites"}
-            </h2>
-
             <Listings>
               {userFavorites.map((listing, index) => (
                 <ListingItem key={index}>
                   <Link href={`/listing/${listing._id}`}>
                     <ListingImageContainer>
-                      <ListingImage src={listing.imageUrls} alt='' />
+                      <ListingImage
+                        src={listing.imageUrls[0]}
+                        width='100'
+                        height='100'
+                        alt=''
+                      />
                     </ListingImageContainer>
                   </Link>
 
@@ -565,7 +577,9 @@ const Profile = () => {
             </Listings>
           </ListingContainer>
         ) : (
-          currentUser.role === "customer" && <span>No Favorites Found</span>
+          currentUser.role === "customer" && (
+            <span className='flex justify-center'>No Favorites Found</span>
+          )
         )}
       </div>
     </ProfileContainer>

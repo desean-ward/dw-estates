@@ -105,6 +105,8 @@ const CreateListing = () => {
     });
 
     document.getElementById("url").value = "";
+    setImageUploadError(false);
+    setUploading(false);
   };
 
   // Uploads a file to Firebase Cloud Storage.

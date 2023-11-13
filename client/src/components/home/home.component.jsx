@@ -11,10 +11,13 @@ import {
   PropertiesSectionHeader,
 } from "./home.styles";
 
+import TheAgents from "../the-agents/the-agents.component";
+
 export default function Home() {
   const [promoListings, setPromoListings] = useState([]);
   const [sellListings, setSellListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
+  const [agents, setAgents] = useState([]);
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -77,7 +80,31 @@ export default function Home() {
 
         const data = await res.json();
         setSellListings(data);
+
+        fetchAgents();
       } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // Fetch the first 4 listings that are for rent
+    const fetchAgents = async () => {
+      try {
+        const res = await fetch(`${URL}/api/user/agents`, {
+          method: "GET",
+          credentials: "include",
+          sameSite: "none",
+          secure: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await res.json();
+        setAgents(data);
+        
+      } catch (error) {
+        console.log(error);
         console.log(error);
       }
     };
@@ -158,8 +185,8 @@ export default function Home() {
         </PropertiesSection>
       </ListingsContainer>
 
-      {/*// TODO ---- CREATE FEATURED AGENTS SECTION}
       {/* Featured Agents */}
+      <TheAgents agents={agents} />
     </HomeContainer>
   );
 }

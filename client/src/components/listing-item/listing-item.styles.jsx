@@ -1,3 +1,4 @@
+import Image from "next/image";
 import tw from "tailwind-styled-components";
 
 export const ListingItemContainer = tw.div`
@@ -21,7 +22,7 @@ export const ListingImageContainer = tw.section`
     mx-auto
 `;
 
-export const ListingImage = tw.img`
+export const ListingImage = tw(Image)`
     object-cover 
     w-full h-full
     group-hover:scale-[120%]
