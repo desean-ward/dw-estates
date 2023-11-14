@@ -55,7 +55,6 @@ export const NavList = tw.ul`
 `;
 
 export const NavItem = tw(motion.li)`
-   
     hover:text-[var(--clr-text-accent)]
     cursor-pointer
     transition

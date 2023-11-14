@@ -229,8 +229,8 @@ const Header = () => {
                     </AnimatePresence>
                   </span>
                 ) : (
-                  <NavItem>
-                    <NavLink href='/signin'>Sign In</NavLink>
+                  <NavItem className='p-2 border rounded-lg'>
+                      <NavLink href='/signin'>Sign In</NavLink>
                   </NavItem>
                 )}
               </span>

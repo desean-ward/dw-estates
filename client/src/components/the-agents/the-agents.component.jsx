@@ -10,7 +10,7 @@ import {
 const TheAgents = ({ agents }) => {
   return (
     <AgentsContainer>
-      <h2 className='text-2xl font-bold text-slate-700'>Meet The Team</h2>
+      <h2 className='mx-4 text-2xl font-bold text-slate-700 md:mx-0'>Meet The Team</h2>
 
       <AgentsSection className='flex flex-wrap gap-4'>
         {agents.map((agent) => (

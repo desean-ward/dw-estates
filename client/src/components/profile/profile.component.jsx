@@ -532,7 +532,7 @@ const Profile = () => {
             )
           )}
           {currentUser.role === "agent" && (
-            <div className='flex justify-center'>
+            <div className='flex justify-center mb-16'>
               <CreateListingsLink href='/create-listing'>
                 Create Listing
               </CreateListingsLink>

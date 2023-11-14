@@ -12,6 +12,7 @@ export const AgentsContainer = tw.div`
 
 export const AgentsSection = tw.section`
     flex
+    justify-center md:justify-start
     gap-8
     w-full 
     max-w-7xl
@@ -20,7 +21,7 @@ export const AgentCard = tw.section`
     flex 
     flex-col
     items-center
-    w-[400px] 
+    w-[90vw] sm:w-[380px]
     gap-4
     mt-8
     border border-slate-400
