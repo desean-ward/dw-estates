@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
-  title: "DW Estates",
+  title: "LuxeLiving Estates",
   description: "Destined to be the best real estate agency in the world.",
 };
 
