@@ -81,7 +81,7 @@ export const SignOutSection = tw.div`
     mt-8
 `;
 
-export const SignOutLink = tw.span`
+export const SignOutLink = tw(Link)`
     cursor-pointer
     hover:text-[var(--clr-text-accent)]
 `;

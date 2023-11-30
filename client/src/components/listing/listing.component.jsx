@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -60,12 +60,7 @@ const Listing = () => {
 
   const removeFromFavorites = async (id) => {
     // Remove listing from state
-    const favorites = currentUser.favorites.filter(
-      (listing) => listing._id !== id
-    );
-
-    // Map favorites to get ids
-    const favoritesIds = favorites.map((favorite) => favorite._id);
+    const favorites = currentUser.favorites.filter((listing) => listing !== id);
 
     try {
       dispatch(updateUserStart());
@@ -78,9 +73,10 @@ const Listing = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ favorites: favoritesIds }),
+        body: JSON.stringify({ favorites: favorites }),
       });
       const data = await res.json();
+      console.log(data);
 
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
@@ -116,7 +112,6 @@ const Listing = () => {
 
   const addToFavorites = async () => {
     if (currentUser.favorites.includes(listing._id)) {
-      // alert("Already in favorites");
       removeFromFavorites(listing._id);
       return;
     } else favorites.push(...currentUser.favorites, listing._id);

@@ -48,7 +48,6 @@ import {
 import Link from "next/link";
 
 import { toast } from "react-toastify";
-import { current } from "@reduxjs/toolkit";
 
 const Profile = () => {
   const fileRef = useRef(null);
@@ -167,7 +166,6 @@ const Profile = () => {
         dispatch(signoutFailure(data.message));
         return;
       }
-
       dispatch(signoutSuccess(data));
     } catch (error) {
       dispatch(signoutFailure(error.message));
@@ -334,11 +332,12 @@ const Profile = () => {
     setError(false);
 
     if (!currentUser.favorites) return;
-
+    console.log(currentUser.favorites);
     try {
       setLoading(true);
 
       const promises = currentUser.favorites.map(async (favorite) => {
+        console.log(favorite);
         const res = await fetch(`${URL}/api/listing/get/${favorite}`, {
           method: "GET",
           credentials: "include",
@@ -464,7 +463,9 @@ const Profile = () => {
             Delete Account
           </DeleteAccountLink>
 
-          <SignOutLink onClick={handleSignout}>Sign Out</SignOutLink>
+          <SignOutLink href='/' onClick={handleSignout}>
+            Sign Out
+          </SignOutLink>
         </SignOutSection>
 
         <p className='mt-5 text-sm text-red-700'>
