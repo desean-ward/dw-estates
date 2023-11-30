@@ -13,4 +13,4 @@ db.on("connected", function () {
   .on("error", function (err) {
     console.log(`Error connecting to ${db.name} at ${db.host}:${db.port}`);
     console.log(err);
-  });
+  })

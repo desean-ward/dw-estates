@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import {
+  ContactAvatar,
   ContactContainer,
   ContactForm,
   FormButton,
@@ -62,10 +63,12 @@ const Contact = ({ listing, show }) => {
       {landlord && (
         <ContactContainer id='overlay'>
           <ContactForm>
+            <section className='rounded-full overflow-hidden w-[125px] mx-auto'>
+              <img src={landlord.avatar} className='object-contain w-full' />
+            </section>
             <p>
-              Contact{" "}
-              <span className='font-semibold'>{landlord.username}</span> about{" "}
-              <span className='font-semibold'>"{listing.title}"</span>
+              Contact <span className='font-semibold'>{landlord.username}</span>{" "}
+              about <span className='font-semibold'>"{listing.title}"</span>
             </p>
 
             <FormInput

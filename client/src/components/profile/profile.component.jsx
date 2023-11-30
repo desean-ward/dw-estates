@@ -339,7 +339,6 @@ const Profile = () => {
       setLoading(true);
 
       const promises = currentUser.favorites.map(async (favorite) => {
-        console.log(favorite);
         const res = await fetch(`${URL}/api/listing/get/${favorite}`, {
           method: "GET",
           credentials: "include",

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -15,7 +15,11 @@ import {
   SearchResults,
   SearchSelect,
 } from "./search.styles";
-import ListingItem from "../listing-item/listing-item.component";
+import Loading from "../loading/loading.component";
+// import ListingItem from "../listing-item/listing-item.component";
+const ListingItem = lazy(() =>
+  import("@/components/listing-item/listing-item.component")
+);
 
 const Search = () => {
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
@@ -313,9 +317,9 @@ const Search = () => {
           )}
 
           {loading && (
-            <p className='w-full text-xl text-center text-slate-700'>
-              Loading...
-            </p>
+            <div className='grid w-full place-items-center pt-[25%]'>
+              <Loading />
+            </div>
           )}
 
           {!loading &&

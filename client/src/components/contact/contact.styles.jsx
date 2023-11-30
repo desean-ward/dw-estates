@@ -1,3 +1,4 @@
+import Image from "next/image";
 import tw from "tailwind-styled-components";
 
 export const ContactContainer = tw.div`
@@ -8,6 +9,10 @@ export const ContactContainer = tw.div`
     w-screen h-screen 
     overflow-hidden 
     bg-slate-800/80
+`;
+
+export const ContactAvatar = tw(Image)`
+    
 `;
 
 export const ContactForm = tw.form`
@@ -44,6 +49,6 @@ export const FormButton = tw.button`
     text-white 
     uppercase 
     rounded-lg 
-    bg-slate-700 
+    bg-[var(--clr-body-secondary)]
     hover:opacity-95
 `;

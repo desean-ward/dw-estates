@@ -75,6 +75,9 @@ export const ListingOffer = tw.p`
     bg-green-900 
     w-full 
     max-w-[200px] 
+    flex
+    justify-center items-center
+    gap-2
     text-white text-center 
     p-2 
     rounded-md

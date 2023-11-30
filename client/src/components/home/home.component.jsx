@@ -1,7 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import Hero from "@/components/hero/hero.component";
-import ListingItem from "@/components/listing-item/listing-item.component";
+import { useEffect, useState, lazy, Suspense } from "react";
+const Hero = lazy(() => import("@/components/hero/hero.component"));
+const ListingItem = lazy(() =>
+  import("@/components/listing-item/listing-item.component")
+);
+
 import Link from "next/link";
 import {
   HomeContainer,
@@ -12,12 +15,23 @@ import {
 } from "./home.styles";
 
 import TheAgents from "../the-agents/the-agents.component";
+import Loading from "../loading/loading.component";
+
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 export default function Home() {
   const [promoListings, setPromoListings] = useState([]);
   const [sellListings, setSellListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
   const [agents, setAgents] = useState([]);
+
+  const [promoRef, inView] = useInView();
+  const [sellRef, sellInView] = useInView();
+  const [rentRef, rentInView] = useInView();
+  const promoAnimation = useAnimation();
+  const sellAnimation = useAnimation();
+  const rentAnimation = useAnimation();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -102,7 +116,6 @@ export default function Home() {
 
         const data = await res.json();
         setAgents(data);
-        
       } catch (error) {
         console.log(error);
         console.log(error);
@@ -111,6 +124,69 @@ export default function Home() {
 
     fetchPromoListings();
   }, []);
+
+  // Animate into view
+  useEffect(() => {
+    if (inView) {
+      promoAnimation.start({
+        y: 0,
+        opacity: 1,
+        transition: {
+          type: "spring",
+          duration: 1.5,
+          bounce: 0.3,
+          delay: 0.5,
+        },
+      });
+    }
+    if (!inView) {
+      promoAnimation.start({
+        y: 0,
+        opacity: 0,
+        transition: { type: "spring", duration: 1.5, bounce: 0.3 },
+      });
+    }
+
+    if (sellInView) {
+      sellAnimation.start({
+        y: 0,
+        opacity: 1,
+        transition: {
+          type: "spring",
+          duration: 1.5,
+          bounce: 0.3,
+          delay: 0.5,
+        },
+      });
+    }
+    if (!sellInView) {
+      sellAnimation.start({
+        y: 0,
+        opacity: 0,
+        transition: { type: "spring", duration: 1.5, bounce: 0.3 },
+      });
+    }
+
+    if (rentInView) {
+      rentAnimation.start({
+        y: 0,
+        opacity: 1,
+        transition: {
+          type: "spring",
+          duration: 1.5,
+          bounce: 0.3,
+          delay: 0.5,
+        },
+      });
+    }
+    if (!rentInView) {
+      rentAnimation.start({
+        y: 0,
+        opacity: 0,
+        transition: { type: "spring", duration: 1.5, bounce: 0.3 },
+      });
+    }
+  }, [inView, sellInView, rentInView]);
   return (
     <HomeContainer>
       {/* Hero */}
@@ -119,70 +195,94 @@ export default function Home() {
       {/* Featured Properties */}
       <ListingsContainer>
         {/* Promo Properties */}
-        <PropertiesSection>
-          <PropertiesSectionHeader>
-            <h2 className='text-2xl font-bold text-slate-700'>
-              Recent Promoted Properties
-            </h2>
+        <motion.div
+          ref={promoRef}
+          initial={{ y: 100, opacity: 0 }}
+          animate={promoAnimation}
+        >
+          <PropertiesSection>
+            <PropertiesSectionHeader>
+              <h2 className='text-2xl font-bold text-slate-700'>
+                Recent Promoted Properties
+              </h2>
 
-            <Link
-              className='hover:text-[var(--clr-text-accent)] w-fit'
-              href='/search?offer=true'
-            >
-              See more promoted properties
-            </Link>
-          </PropertiesSectionHeader>
+              <Link
+                className='hover:text-[var(--clr-text-accent)] w-fit'
+                href='/search?offer=true'
+              >
+                See more promoted properties
+              </Link>
+            </PropertiesSectionHeader>
 
-          <Properties>
-            {promoListings.map((listing) => (
-              <ListingItem key={listing._id} listing={listing} />
-            ))}
-          </Properties>
-        </PropertiesSection>
+            <Properties>
+              {promoListings.map((listing) => (
+                <Suspense fallback={<Loading />}>
+                  <ListingItem key={listing._id} listing={listing} />
+                </Suspense>
+              ))}
+            </Properties>
+          </PropertiesSection>
+        </motion.div>
 
         {/* Recent Selling Properties */}
-        <PropertiesSection>
-          <PropertiesSectionHeader>
-            <h2 className='text-2xl font-bold text-slate-700'>
-              Recent Selling Properties
-            </h2>
+        <motion.div
+          ref={sellRef}
+          initial={{ y: 100, opacity: 0 }}
+          animate={sellAnimation}
+        >
+          <PropertiesSection>
+            <PropertiesSectionHeader>
+              <h2 className='text-2xl font-bold text-slate-700'>
+                Recent Selling Properties
+              </h2>
 
-            <Link
-              className='hover:text-[var(--clr-text-accent)] w-fit'
-              href='/search?type=sell'
-            >
-              See more properties for sell
-            </Link>
-          </PropertiesSectionHeader>
+              <Link
+                className='hover:text-[var(--clr-text-accent)] w-fit'
+                href='/search?type=sell'
+              >
+                See more properties for sell
+              </Link>
+            </PropertiesSectionHeader>
 
-          <Properties>
-            {sellListings.map((listing) => (
-              <ListingItem key={listing._id} listing={listing} />
-            ))}
-          </Properties>
-        </PropertiesSection>
+            <Properties>
+              {sellListings.map((listing) => (
+                <Suspense fallback={<Loading />}>
+                  <ListingItem key={listing._id} listing={listing} />
+                </Suspense>
+              ))}
+            </Properties>
+          </PropertiesSection>
+        </motion.div>
 
         {/* Recent Rental Properties */}
-        <PropertiesSection>
-          <PropertiesSectionHeader>
-            <h2 className='text-2xl font-bold text-slate-700'>
-              Recent Rental Properties
-            </h2>
+        <motion.div
+          ref={rentRef}
+          initial={{ y: 100, opacity: 0 }}
+          animate={rentAnimation}
+        >
+          <PropertiesSection>
+            <PropertiesSectionHeader>
+              <h2 className='text-2xl font-bold text-slate-700'>
+                Recent Rental Properties
+              </h2>
 
-            <Link
-              className='hover:text-[var(--clr-text-accent)] w-fit'
-              href='/search?type=rent'
-            >
-              See more rental properties
-            </Link>
-          </PropertiesSectionHeader>
+              <Link
+                className='hover:text-[var(--clr-text-accent)] w-fit'
+                href='/search?type=rent'
+              >
+                See more rental properties
+              </Link>
+            </PropertiesSectionHeader>
 
-          <Properties>
-            {rentListings.map((listing) => (
-              <ListingItem key={listing._id} listing={listing} />
-            ))}
-          </Properties>
-        </PropertiesSection>
+            <Properties>
+              {rentListings.map((listing) => (
+                <Suspense fallback={<Loading />}>
+                  <ListingItem key={listing._id} listing={listing} />
+                </Suspense>
+              ))}
+            </Properties>
+          </PropertiesSection>
+        </motion.div>
       </ListingsContainer>
 
       {/* Featured Agents */}

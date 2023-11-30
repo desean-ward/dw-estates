@@ -29,6 +29,8 @@ import {
   FaShare,
 } from "react-icons/fa";
 
+import { IoMdArrowRoundDown } from "react-icons/io";
+
 import Contact from "../contact/contact.component";
 import Carousel from "../carousel/carousel.component";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
@@ -48,16 +50,74 @@ const Listing = () => {
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [contact, setContact] = useState(false);
-  const favorites = [];
+  // const [favorites, setFavorites] = useState([]);
+  let favorites = [];
 
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
   const dispatch = useDispatch();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
+  const removeFromFavorites = async (id) => {
+    // Remove listing from state
+    const favorites = currentUser.favorites.filter(
+      (listing) => listing._id !== id
+    );
+
+    // Map favorites to get ids
+    const favoritesIds = favorites.map((favorite) => favorite._id);
+
+    try {
+      dispatch(updateUserStart());
+
+      const res = await fetch(`${URL}/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        credentials: "include",
+        sameSite: "none",
+        secure: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ favorites: favoritesIds }),
+      });
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        setUpdateError(data.message);
+        return;
+      }
+
+      dispatch(updateUserSuccess(data));
+
+      toast("Favorite removed", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+
+      return;
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+
+      toast(error.message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+    }
+  };
+
   const addToFavorites = async () => {
     if (currentUser.favorites.includes(listing._id)) {
-      alert("Already in favorites");
+      // alert("Already in favorites");
+      removeFromFavorites(listing._id);
       return;
     } else favorites.push(...currentUser.favorites, listing._id);
 
@@ -163,7 +223,7 @@ const Listing = () => {
               <p className='text-2xl font-semibold'>
                 {listing.title} - $
                 {listing.offer
-                  ?  listing.discountedPrice.toLocaleString("en-US") 
+                  ? listing.discountedPrice.toLocaleString("en-US")
                   : listing.regularPrice.toLocaleString("en-US")}
                 {listing.type === "rent" && (
                   <span className='text-sm'> / month</span>
@@ -214,7 +274,7 @@ const Listing = () => {
                   {(
                     listing.regularPrice - +listing.discountedPrice
                   ).toLocaleString("en-US")}{" "}
-                  
+                  <IoMdArrowRoundDown size={28} />
                 </ListingOffer>
               )}
             </section>
@@ -269,7 +329,7 @@ const Listing = () => {
               {currentUser && listing.userRef !== currentUser._id && (
                 <button
                   type='button'
-                  className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-slate-700 hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
+                  className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-[var(--clr-body-secondary)] hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
                   onClick={() => setContact(true)}
                   disabled={currentUser === null}
                 >
