@@ -63,8 +63,8 @@ const Contact = ({ listing, show }) => {
       {landlord && (
         <ContactContainer id='overlay'>
           <ContactForm>
-            <section className='rounded-full overflow-hidden w-[125px] mx-auto'>
-              <img src={landlord.avatar} className='object-contain w-full' />
+            <section className='rounded-full overflow-hidden w-[125px] h-[125px] mx-auto'>
+              <img src={landlord.avatar} className='object-cover w-full h-full' />
             </section>
             <p>
               Contact <span className='font-semibold'>{landlord.username}</span>{" "}
