@@ -62,7 +62,9 @@ export const NavItem = tw(motion.li)`
     ease-in-out
 `;
 
-export const NavLink = tw(Link)``;
+export const NavLink = tw(Link)`
+    
+`;
 
 export const AvatarContainer = tw.section`
     w-10 h-10
@@ -83,6 +85,7 @@ export const MenuContainer = tw(motion.aside)`
     py-8
     shadow-lg
     shadow-slate-800
+   
 `;
 
 export const MenuContent = tw(motion.section)`

@@ -41,14 +41,16 @@ const Hero = ({ promoListings }) => {
 
         <Link
           href='/search'
-          className='relative font-semibold top-8 hover:text-[var(--clr-text-accent)]'
+          className='relative font-semibold top-8 hover:text-[var(--clr-text-accent)] '
         >
           Browse Listings...
         </Link>
       </HeroContent>
 
       <Suspense fallback={<Loading />}>
-        {promoListings.length && <Carousel listings={promoListings} />}
+        {promoListings.length && (
+          <Carousel listings={promoListings} type='hero' />
+        )}
       </Suspense>
     </HeroContainer>
   );

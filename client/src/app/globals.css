@@ -37,9 +37,12 @@ body {
     bg-[--clr-body-primary] 
     text-[--clr-text-primary]
     flex flex-col 
+    
     items-center 
     justify-between
     bg-cover
+    box-border
+    
 
 }
 
@@ -59,4 +62,12 @@ header {
  @apply 
  bg-[--clr-body-secondary]
  text-[--clr-text-secondary]
+}
+
+footer {
+  @apply
+  w-screen
+  bg-[--clr-body-secondary] text-white
+  p-4
+  mt-auto
 }

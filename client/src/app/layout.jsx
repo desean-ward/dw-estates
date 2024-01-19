@@ -20,11 +20,14 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body className={inter.className}>
         <ReduxProvider>
-          <Header />
-          <main id='app'>
-            {children}
-            <ToastContainer />
-          </main>
+          <div className='min-h-screen'>
+            <Header />
+            <main id='app'>
+              {children}
+              <ToastContainer />
+            </main>
+            <Footer />
+          </div>
         </ReduxProvider>
       </body>
     </html>

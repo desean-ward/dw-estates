@@ -38,7 +38,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPromoListings = async () => {
       try {
-        const res = await fetch(`${URL}/api/listing/get?offer=true&limit=4`, {
+        const res = await fetch(`${URL}/api/listing/get?offer=true&limit=3`, {
           method: "GET",
           credentials: "include",
           sameSite: "none",
@@ -60,7 +60,7 @@ export default function Home() {
     // Fetch the first 4 listings that are for rent
     const fetchRentListings = async () => {
       try {
-        const res = await fetch(`${URL}/api/listing/get?type=rent&limit=4`, {
+        const res = await fetch(`${URL}/api/listing/get?type=rent&limit=3`, {
           method: "GET",
           credentials: "include",
           sameSite: "none",
@@ -82,7 +82,7 @@ export default function Home() {
     // Fetch the first 4 listings that are for sale
     const fetchSellListings = async () => {
       try {
-        const res = await fetch(`${URL}/api/listing/get?type=sell&limit=4`, {
+        const res = await fetch(`${URL}/api/listing/get?type=sell&limit=3`, {
           method: "GET",
           credentials: "include",
           sameSite: "none",
@@ -135,7 +135,7 @@ export default function Home() {
           type: "spring",
           duration: 1.5,
           bounce: 0.3,
-          delay: 0.5,
+          delay: 0.25,
         },
       });
     }
@@ -155,7 +155,7 @@ export default function Home() {
           type: "spring",
           duration: 1.5,
           bounce: 0.3,
-          delay: 0.5,
+          delay: 0.25,
         },
       });
     }
@@ -175,7 +175,7 @@ export default function Home() {
           type: "spring",
           duration: 1.5,
           bounce: 0.3,
-          delay: 0.5,
+          delay: 0.25,
         },
       });
     }

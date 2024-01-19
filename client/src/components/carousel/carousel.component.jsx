@@ -26,7 +26,7 @@ const Carousel = ({ listings, type = "hero" }) => {
           type === "hero" &&
           listings.map((listing, index) => (
             <SwiperSlide key={index}>
-              <ImageContainer>
+              <ImageContainer type={type}>
                 <PropertyImage
                   src={listing.imageUrls[0]}
                   alt=''

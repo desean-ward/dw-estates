@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 
 import { FaRegWindowClose, FaSearch } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 import {
   HeaderContainer,
@@ -42,7 +43,7 @@ const Header = () => {
   // Animate the desktop menu
   const slideIn = {
     hidden: { y: "-200%", transition: { duration: 0.5, ease: "easeInOut" } },
-    visible: { y: "0", transition: { duration: 0.5, ease: "easeInOut" } },
+    visible: { y: "2.5em", transition: { duration: 0.5, ease: "easeInOut" } },
     exit: {
       y: "-200%",
       transition: { duration: 0.5, delay: 0.5, ease: "easeInOut" },
@@ -182,18 +183,28 @@ const Header = () => {
         <NavContainer>
           <Nav>
             <NavList>
-              <NavItem className='hidden sm:inline'>
-                <NavLink href='/'>Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink className='hidden md:block' href='/about'>
-                  About
-                </NavLink>
-              </NavItem>
+              <div className='hidden gap-4 md:flex '>
+                <NavItem>
+                  <NavLink className='hidden sm:inline' href='/'>
+                    Home
+                  </NavLink>
+                </NavItem>
+                <span>| </span>
+                <NavItem>
+                  <NavLink className='hidden md:block' href='/about'>
+                    About
+                  </NavLink>
+                </NavItem>
+                <span>| </span>
+              </div>
+
               <span>
                 {currentUser ? (
-                  <span className='flex flex-col items-center space-y-6'>
-                    <AvatarContainer onClick={toggleSidebar}>
+                  <span className='flex flex-col items-center justify-center space-y-6'>
+                    <AvatarContainer
+                      className='hidden md:inline-block'
+                      onClick={toggleSidebar}
+                    >
                       <img
                         src={currentUser.avatar}
                         alt='profile'
@@ -228,10 +239,16 @@ const Header = () => {
                     </AnimatePresence>
                   </span>
                 ) : (
-                  <NavItem className='p-2 border rounded-lg'>
-                      <NavLink href='/signin'>Sign In</NavLink>
+                  <NavItem className='hidden p-2 border rounded-lg lg:flex'>
+                    <NavLink href='/signin'>Sign In</NavLink>
                   </NavItem>
                 )}
+                {/* Hambuger */}
+                <GiHamburgerMenu
+                  size={42}
+                  className='cursor-pointer md:hidden '
+                  onClick={toggleSidebar}
+                />
               </span>
             </NavList>
           </Nav>
@@ -239,6 +256,7 @@ const Header = () => {
       </HeaderContent>
 
       {/* Mobile Sidebar */}
+
       <AnimatePresence mode='wait'>
         <MobileSidebarContainer
           className='md:hidden'
@@ -248,7 +266,10 @@ const Header = () => {
           exit='exit'
         >
           <MobileSidebarCloseButtonContainer onClick={toggleSidebar}>
-            <FaRegWindowClose size={42} />
+            <FaRegWindowClose
+              size={42}
+              className={currentUser ? "mr-10" : "mr-0"}
+            />
           </MobileSidebarCloseButtonContainer>
 
           <MobileSidebarContent
@@ -266,7 +287,16 @@ const Header = () => {
             <NavLink href='/profile' onClick={toggleSidebar}>
               Profile
             </NavLink>
-            <NavLink href='/' onClick={handleSignout}>
+            <span className={currentUser ? "hidden" : "block"}>
+              <NavLink href='/signin' onClick={toggleSidebar}>
+                Sign In
+              </NavLink>
+            </span>
+            <NavLink
+              href='/'
+              className={currentUser ? "block" : "hidden"}
+              onClick={handleSignout}
+            >
               Sign Out
             </NavLink>
           </MobileSidebarContent>

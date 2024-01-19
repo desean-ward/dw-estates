@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 
 export const ListingContainer = tw.div`
-   
+   min-h-[85vh]
     
 `;
 

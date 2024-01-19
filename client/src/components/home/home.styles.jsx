@@ -8,6 +8,7 @@ export const HomeContainer = tw.div`
 
 export const ListingsContainer = tw.section`
     flex flex-col 
+    items-center
     w-full 
     gap-16 
     px-4 

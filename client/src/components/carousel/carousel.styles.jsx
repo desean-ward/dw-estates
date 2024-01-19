@@ -7,7 +7,9 @@ export const CarouselContainer = tw.div`
 `;
 
 export const ImageContainer = tw.section`
-    h-[350px] md:h-[450px]
+    h-[300px]
+    ${({ type }) => type === "hero" && "h-[450px]"} 
+    
 `;
 
 export const PropertyImage = tw(Image)`
