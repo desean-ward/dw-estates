@@ -1,6 +1,6 @@
 "use client";
 import { use, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper/core";
@@ -17,6 +17,10 @@ import {
   ListingDetails,
   Detail,
   AddToFavorites,
+  ListingInfo,
+  ListingGallery,
+  GalleryImage,
+  InfoAndGallery,
 } from "../listing/listing.styles";
 import { Image, ImageContainer, ListingCarousel } from "./listing.styles";
 
@@ -41,6 +45,7 @@ import {
   updateUserSuccess,
 } from "@/redux/features/user/userSlice";
 import { toast } from "react-toastify";
+import GalleryImageView from "../gallary-image-view/gallery-image-view.compoent";
 
 const Listing = () => {
   SwiperCore.use([Navigation, Pagination]);
@@ -50,11 +55,12 @@ const Listing = () => {
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [contact, setContact] = useState(false);
-  // const [favorites, setFavorites] = useState([]);
+  const [showImage, setShowImage] = useState(false);
   let favorites = [];
 
   const { currentUser } = useSelector((state) => state.persistedReducer.user);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
 
@@ -212,131 +218,156 @@ const Listing = () => {
         <ListingContent>
           <Carousel listings={listing} type='listing' />
 
-          <div className='w-[80vw] mx-auto'>
-            {/* Listing Title  and Address*/}
-            <ListingTitle>
-              <p className='text-2xl font-semibold'>
-                {listing.title} - $
-                {listing.offer
-                  ? listing.discountedPrice.toLocaleString("en-US")
-                  : listing.regularPrice.toLocaleString("en-US")}
-                {listing.type === "rent" && (
-                  <span className='text-sm'> / month</span>
-                )}
-              </p>
-
-              {currentUser && currentUser.role === "customer" && (
-                <section>
-                  {currentUser.favorites.includes(listing._id) ? (
-                    <AddToFavorites>
-                      <AiFillHeart
-                        className='text-red-700 cursor-pointer'
-                        size={28}
-                        onClick={addToFavorites}
-                      />
-                      <span>Favorite</span>
-                    </AddToFavorites>
-                  ) : (
-                    <AddToFavorites>
-                      <AiOutlineHeart
-                        className='text-red-700 cursor-pointer'
-                        size={28}
-                        onClick={addToFavorites}
-                      />
-                      <span>Add to favorites</span>
-                    </AddToFavorites>
+          <InfoAndGallery>
+            <ListingInfo>
+              {/* Listing Title  and Address*/}
+              <ListingTitle>
+                <p className='text-2xl font-semibold'>
+                  {listing.title} - $
+                  {listing.offer
+                    ? listing.discountedPrice.toLocaleString("en-US")
+                    : listing.regularPrice.toLocaleString("en-US")}
+                  {listing.type === "rent" && (
+                    <span className='text-sm'> / month</span>
                   )}
-                </section>
-              )}
-            </ListingTitle>
+                </p>
 
-            {/* Listing Address */}
-            <ListingAddress>
-              <FaMapMarkedAlt className='text-green-700' />
-              {listing.address}
-            </ListingAddress>
+                {currentUser && currentUser.role === "customer" && (
+                  <section>
+                    {currentUser.favorites.includes(listing._id) ? (
+                      <AddToFavorites>
+                        <AiFillHeart
+                          className='text-red-700 cursor-pointer'
+                          size={28}
+                          onClick={addToFavorites}
+                        />
+                        <span>Favorite</span>
+                      </AddToFavorites>
+                    ) : (
+                      <AddToFavorites>
+                        <AiOutlineHeart
+                          className='text-red-700 cursor-pointer'
+                          size={28}
+                          onClick={addToFavorites}
+                        />
+                        <span>Add to favorites</span>
+                      </AddToFavorites>
+                    )}
+                  </section>
+                )}
+              </ListingTitle>
 
-            <section className='flex flex-wrap gap-4'>
-              {/* Rent or Sell */}
-              <RentOrSell>
-                {listing.type === "rent" ? "For Rent" : "For Sell"}
-              </RentOrSell>
+              {/* Listing Address */}
+              <ListingAddress>
+                <FaMapMarkedAlt className='text-green-700' />
+                {listing.address}
+              </ListingAddress>
 
-              {/* Listing Offer */}
-              {listing.offer && (
-                <ListingOffer>
-                  -$
-                  {(
-                    listing.regularPrice - +listing.discountedPrice
-                  ).toLocaleString("en-US")}{" "}
-                  <IoMdArrowRoundDown size={28} />
-                </ListingOffer>
-              )}
-            </section>
+              <section className='flex flex-wrap gap-4'>
+                {/* Rent or Sell */}
+                <RentOrSell>
+                  {listing.type === "rent" ? "For Rent" : "For Sell"}
+                </RentOrSell>
 
-            {/* Listing Description */}
-            <section className='my-7 text-slate-800'>
-              {" "}
-              <span className='font-semibold text-black'>Description: </span>
-              {listing.description}
-            </section>
+                {/* Listing Offer */}
+                {listing.offer && (
+                  <ListingOffer>
+                    -$
+                    {(
+                      listing.regularPrice - +listing.discountedPrice
+                    ).toLocaleString("en-US")}{" "}
+                    <IoMdArrowRoundDown size={28} />
+                  </ListingOffer>
+                )}
+              </section>
 
-            {/* Listing Details */}
-            <section>
-              <ListingDetails className=''>
-                <Detail>
-                  <FaBed className='text-lg' />{" "}
-                  {listing.beds !== 1
-                    ? `${listing.beds} Beds`
-                    : `${listing.beds} Bed`}
-                </Detail>
+              {/* Listing Description */}
+              <section className='my-7 text-slate-800'>
+                {" "}
+                <span className='font-semibold text-black'>Description: </span>
+                {listing.description}
+              </section>
 
-                <Detail>
-                  <FaBath className='text-lg' />{" "}
-                  {listing.baths !== 1
-                    ? `${listing.baths} Baths`
-                    : `${listing.baths} Bath`}
-                </Detail>
+              {/* Listing Details */}
+              <section>
+                <ListingDetails className=''>
+                  <Detail>
+                    <FaBed className='text-lg' />{" "}
+                    {listing.beds !== 1
+                      ? `${listing.beds} Beds`
+                      : `${listing.beds} Bed`}
+                  </Detail>
 
-                <Detail>
-                  <FaParking className='text-lg' />{" "}
-                  {listing.parking ? "Parking" : "No Parking"}
-                </Detail>
+                  <Detail>
+                    <FaBath className='text-lg' />{" "}
+                    {listing.baths !== 1
+                      ? `${listing.baths} Baths`
+                      : `${listing.baths} Bath`}
+                  </Detail>
 
-                <Detail>
-                  <FaChair className='text-lg' />{" "}
-                  {listing.furnished ? "Furnished" : "Unfurnished"}
-                </Detail>
-              </ListingDetails>
-            </section>
+                  <Detail>
+                    <FaParking className='text-lg' />{" "}
+                    {listing.parking ? "Parking" : "No Parking"}
+                  </Detail>
 
-            {/* Contact Landlord */}
-            <div className='flex py-8'>
-              {!currentUser && (
-                <div className='p-3 font-semibold text-red-700 border rounded-lg border-slate-400'>
-                  <Link href='/signin'>
-                    {" "}
-                    Please sign to contact agent or add to favorites
-                  </Link>
-                </div>
-              )}
+                  <Detail>
+                    <FaChair className='text-lg' />{" "}
+                    {listing.furnished ? "Furnished" : "Unfurnished"}
+                  </Detail>
+                </ListingDetails>
+              </section>
 
-              {currentUser && listing.userRef !== currentUser._id && (
+              {/* Contact Landlord */}
+              <div className='flex py-8'>
+                {!currentUser && (
+                  <div className='p-4 font-semibold text-red-700 border-2 rounded-lg border-slate-400 hover:text-red-400'>
+                    <Link href='/signin'>
+                      {" "}
+                      Please sign to contact agent or add to favorites
+                    </Link>
+                  </div>
+                )}
+
+                {currentUser && listing.userRef !== currentUser._id && (
+                  <button
+                    type='button'
+                    className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-[var(--clr-body-secondary)] hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
+                    onClick={() => setContact(true)}
+                    disabled={currentUser === null}
+                  >
+                    Contact Agent
+                  </button>
+                )}
+
+                {/* Back Button */}
                 <button
                   type='button'
-                  className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-[var(--clr-body-secondary)] hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
-                  onClick={() => setContact(true)}
-                  disabled={currentUser === null}
+                  className='p-3 text-[var(--clr-body-secondary)] uppercase bg-white border-[var(--clr-body-secondary)] rounded-lg hover:opacity-95 border ml-4 hover:text-white hover:bg-[var(--clr-body-secondary)]'
+                  onClick={() => router.back()}
                 >
-                  Contact Agent
+                  Back
                 </button>
-              )}
 
-              {/* Show contact form */}
-              {contact && <Contact listing={listing} show={setContact} />}
-            </div>
-          </div>
+                {/* Show contact form */}
+                {contact && <Contact listing={listing} show={setContact} />}
+              </div>
+            </ListingInfo>
+
+            {/* Listing Gallery */}
+            <ListingGallery>
+              {listing.imageUrls.map((image, index) => (
+                <GalleryImage
+                  src={image}
+                  key={index}
+                  onClick={() => setShowImage(listing.imageUrls[index])}
+                />
+              ))}
+            </ListingGallery>
+          </InfoAndGallery>
         </ListingContent>
+      )}
+      {listing && showImage && (
+        <GalleryImageView img={showImage} show={setShowImage} />
       )}
     </ListingContainer>
   );

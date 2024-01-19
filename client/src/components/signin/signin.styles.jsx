@@ -2,20 +2,19 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 
 export const SignInWrapper = tw.div`
-    absolute top-0 left-0
-    h-screen
+    min-h-[78.5vh]
     w-screen
     bg-[url('https://images.pexels.com/photos/276554/pexels-photo-276554.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')]
-
+    flex flex-col 
+    justify-center
     bg-cover
-overflow-hidden
-
+    overflow-hidden
 `;
 
 export const SignInContainer = tw.div`
+    w-full
     max-w-lg
     mx-auto
-    translate-y-2/3
     shadow-xl shadow-slate-900
     p-8 pt-0
     rounded-lg

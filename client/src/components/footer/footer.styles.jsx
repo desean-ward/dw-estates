@@ -1,9 +1,8 @@
 import tw from "tailwind-styled-components";
 
 export const FooterContainer = tw.footer`
-    bottom-0
     relative
-    mt-auto
+    bottom-0
 `;
 
 export const FooterContent = tw.div`

@@ -10,7 +10,7 @@ export const ProfileContainer = tw.div`
     gap-16
     
     w-lg md:max-w-7xl
-    min-h-[85vh]
+    min-h-[78.5vh]
     mx-auto
 `;
 

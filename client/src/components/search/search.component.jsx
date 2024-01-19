@@ -306,6 +306,13 @@ const Search = () => {
           <FormSection id='submit-button'>
             <SearchButton type='submit'>Search</SearchButton>
           </FormSection>
+          <button
+            type='button'
+            className='p-3 text-[var(--clr-body-secondary)] uppercase bg-white border-[var(--clr-body-secondary)] rounded-lg hover:opacity-95 border mt-4 hover:text-white hover:bg-[var(--clr-body-secondary)] cursor-pointer text-center'
+            onClick={() => router.back()}
+          >
+            Back
+          </button>
         </SearchForm>
       </SearchContent>
 

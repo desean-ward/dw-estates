@@ -2,25 +2,24 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 
 export const SignUpWrapper = tw.div`
-absolute top-0 left-0
-h-screen
-w-screen
-bg-[url('https://images.pexels.com/photos/276554/pexels-photo-276554.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')]
-
-bg-cover
-overflow-hidden
-
+    min-h-[78.5vh]
+    w-screen
+    bg-[url('https://images.pexels.com/photos/276554/pexels-photo-276554.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')]
+    flex flex-col 
+    justify-center
+    bg-cover
+    overflow-hidden
 `;
 
 export const SignUpContainer = tw.div`
-   max-w-lg
-   mx-auto
-   translate-y-1/2
-   shadow-xl shadow-slate-900
-   p-8 pt-0
-   rounded-lg
-   border
-   bg-white
+    w-full
+    max-w-lg
+    mx-auto
+    shadow-xl shadow-slate-900
+    p-8 pt-0
+    rounded-lg
+    border
+    bg-white
 `;
 
 export const SignUpForm = tw.form`
@@ -50,7 +49,8 @@ export const SignUpInput = tw.input`
 `;
 
 export const SignUpButton = tw.button`
-    ${(props) => (props.$google ? "bg-google" : "bg-[var(--clr-body-secondary)]")}
+    ${(props) =>
+      props.$google ? "bg-google" : "bg-[var(--clr-body-secondary)]"}
     text-white 
     p-3
     rounded-lg 
