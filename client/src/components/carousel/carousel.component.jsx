@@ -9,19 +9,32 @@ import {
 } from "./carousel.styles";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation, Pagination, Loop } from "swiper/core";
+import SwiperCore, {
+  Navigation,
+  Pagination,
+  Loop,
+  Autoplay,
+} from "swiper/core";
 import { register } from "swiper/element/bundle";
 import "swiper/swiper-bundle.css";
+import "swiper/css/autoplay";
+
 import { FaShare } from "react-icons/fa";
 
 const Carousel = ({ listings, type = "hero" }) => {
-  register([Navigation, Pagination, Loop]);
-  SwiperCore.use([Navigation, Pagination, Loop]);
+  register([Navigation, Pagination, Loop, Autoplay]);
+  SwiperCore.use([Navigation, Pagination, Loop, Autoplay]);
   const [copied, setCopied] = useState(false);
 
   return (
     <CarouselContainer type={type}>
-      <Swiper navigation pagination loop className='mySwiper'>
+      <Swiper
+        navigation
+        pagination={{ clickable: true }}
+        loop
+        autoplay={true}
+        className='mySwiper'
+      >
         {listings &&
           type === "hero" &&
           listings.map((listing, index) => (
