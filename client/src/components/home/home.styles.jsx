@@ -3,7 +3,6 @@ import tw from "tailwind-styled-components";
 export const HomeContainer = tw.div`
     flex flex-col 
     gap-4 
-    pb-16
 `;
 
 export const ListingsContainer = tw.section`

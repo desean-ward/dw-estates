@@ -19,6 +19,7 @@ import Loading from "../loading/loading.component";
 
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import ContactBanner from "../contact-banner/contact-banner.component";
 
 export default function Home() {
   const [promoListings, setPromoListings] = useState([]);
@@ -287,6 +288,9 @@ export default function Home() {
 
       {/* Featured Agents */}
       <TheAgents agents={agents} />
+
+      {/* Contact Banner */}
+      <ContactBanner />
     </HomeContainer>
   );
 }
