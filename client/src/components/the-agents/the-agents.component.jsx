@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AgentAvatar,
   AgentAvatarContainer,
@@ -7,17 +6,38 @@ import {
   AgentsSection,
 } from "./the-agents.styles";
 
+import { useInView } from "react-intersection-observer";
+
 const TheAgents = ({ agents }) => {
+  const [agentRef, inView] = useInView();
+
+  // Animate the agents section with staggerChildren
+  const staggerIn = {
+    initial: { scale: 0 },
+    animate: (idx) => ({
+      scale: 1,
+      transition: { duration: 0.3, delay: 0.2 * idx },
+    }),
+  };
+
+
   return (
     <AgentsContainer>
-      <div className="max-w-7xl">
+      <div className='max-w-7xl'>
         <h2 className='mx-4 text-2xl font-bold text-slate-700 '>
           Meet The Team
         </h2>
-        
+
         <AgentsSection>
-          {agents.map((agent) => (
-            <AgentCard key={agent._id}>
+          {agents.map((agent, idx) => (
+            <AgentCard
+              key={agent._id}
+              ref={agentRef}
+              variants={staggerIn}
+              initial='initial'
+              animate={inView ? "animate" : "initial"}
+              custom={idx}
+            >
               <AgentAvatarContainer>
                 <AgentAvatar src={agent.avatar} width='100' height='100' />
               </AgentAvatarContainer>

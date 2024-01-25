@@ -141,7 +141,7 @@ export default function Home() {
     }
     if (!inView) {
       promoAnimation.start({
-        y: 0,
+        y: 100,
         opacity: 0,
         transition: { type: "spring", duration: 1.5, bounce: 0.3 },
       });
@@ -161,7 +161,7 @@ export default function Home() {
     }
     if (!sellInView) {
       sellAnimation.start({
-        y: 0,
+        y: 100,
         opacity: 0,
         transition: { type: "spring", duration: 1.5, bounce: 0.3 },
       });
@@ -181,7 +181,7 @@ export default function Home() {
     }
     if (!rentInView) {
       rentAnimation.start({
-        y: 0,
+        y: 100,
         opacity: 0,
         transition: { type: "spring", duration: 1.5, bounce: 0.3 },
       });

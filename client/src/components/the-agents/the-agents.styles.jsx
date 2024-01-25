@@ -1,5 +1,6 @@
 import Image from "next/image";
 import tw from "tailwind-styled-components";
+import { motion } from "framer-motion";
 
 export const AgentsContainer = tw.div`
     flex 
@@ -10,15 +11,17 @@ export const AgentsContainer = tw.div`
     px-2
 `;
 
-export const AgentsSection = tw.section`
-    flex
-    flex-wrap lg:flex-nowrap
+export const AgentsSection = tw(motion.section)`
+    flex 
+    flex-wrap 
     justify-center 
-    gap-4 lg:gap-8
-    w-full
-    max-w-7xl
+    w-full 
+    gap-4 
+    lg:flex-nowrap 
+    lg:gap-8 max-w-7xl
 `;
-export const AgentCard = tw.section`
+
+export const AgentCard = tw(motion.section)`
     flex 
     flex-col
     items-center

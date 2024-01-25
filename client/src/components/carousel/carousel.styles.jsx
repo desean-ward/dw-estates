@@ -1,7 +1,8 @@
 import Image from "next/image";
 import tw from "tailwind-styled-components";
+import { motion } from "framer-motion";
 
-export const CarouselContainer = tw.div` 
+export const CarouselContainer = tw(motion.div)` 
     ${({ type }) => type !== "listing" && "relative bottom-0"}
     w-screen 
 `;

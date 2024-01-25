@@ -9,11 +9,11 @@ export const HomeContainer = tw.div`
 export const ListingsContainer = tw.section`
     flex flex-col 
     items-center
-    w-full 
     gap-16 
-    px-4 
-    mx-auto 
+    w-full
     max-w-7xl
+    mx-auto
+    px-4 
     mb-16
 `;
 
@@ -28,7 +28,7 @@ export const PropertiesSection = tw.section`
 export const PropertiesSectionHeader = tw.section`
     flex 
     flex-col 
-`
+`;
 
 export const Properties = tw.div`
     flex 

@@ -26,8 +26,18 @@ const Carousel = ({ listings, type = "hero" }) => {
   SwiperCore.use([Navigation, Pagination, Loop, Autoplay]);
   const [copied, setCopied] = useState(false);
 
+  const fadeIn = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.3 } },
+  };
+
   return (
-    <CarouselContainer type={type}>
+    <CarouselContainer
+      type={type}
+      variants={fadeIn}
+      initial='initial'
+      animate='animate'
+    >
       <Swiper
         navigation
         pagination={{ clickable: true }}
