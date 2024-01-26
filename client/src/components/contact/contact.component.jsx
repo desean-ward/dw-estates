@@ -10,28 +10,62 @@ import {
   FormTextarea,
 } from "./contact.styles";
 
-const Contact = ({ listing }) => {
-  const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
-  const [landlord, setLandlord] = useState(null);
-  const [message, setMessage] = useState(null);
+import { toast } from "react-toastify";
 
-  const handleChange = (e) => {
-    setMessage(e.target.value);
+const Contact = ({ listing }) => {
+  const defaultFormFields = {
+    name: "",
+    email: "",
+    message: "",
   };
 
-  // const handleCloseForm = () => {
-  //   setLandlord(null);
-  //   show(false);
-  // };
+  const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
+  const [landlord, setLandlord] = useState(null);
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [validFields, setValidFields] = useState(false);
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setFormFields({
+      ...formFields,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   /**
    // TODO - Add email functionality
    */
 
+  const sendMessage = async () => {
+    setFormFields(defaultFormFields);
+
+    toast("Message sent!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      draggable: true,
+      theme: "dark",
+    });
+  };
+
+  useEffect(() => {
+    if (
+      formFields.name.length &&
+      formFields.email.length &&
+      formFields.message.length
+    ) {
+      setValidFields(true);
+    } else {
+      setValidFields(false);
+    }
+  }, [formFields]);
+
   useEffect(() => {
     const fetchLandlord = async () => {
       try {
-        const res = await fetch(`${URL}/api/user/${listing.userRef}`, {
+        console.log("LISTING", listing);
+        const res = await fetch(`${URL}/api/user/agent/${listing.userRef}`, {
           method: "GET",
           credentials: "include",
           sameSite: "none",
@@ -45,7 +79,14 @@ const Contact = ({ listing }) => {
 
         if (data.success === false) {
           if (data.statusCode === 401) {
-            alert("Please login to contact landlord");
+            toast("To save to favorites, please sign in", {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              draggable: true,
+              theme: "dark",
+            });
           }
           return;
         }
@@ -82,13 +123,18 @@ const Contact = ({ listing }) => {
               type='text'
               name='name'
               id='name'
+              value={formFields.name}
+              onChange={handleChange}
               placeholder='Enter your name...'
+              required
             />
 
             <FormInput
               type='email'
               name='email'
               id='email'
+              value={formFields.email}
+              onChange={handleChange}
               placeholder='Enter your email address...'
             />
             <FormTextarea
@@ -96,20 +142,24 @@ const Contact = ({ listing }) => {
               id='message'
               rows='5'
               cols='50'
-              value={message}
-              placeholder='Enter your message here...'
+              value={formFields.message}
               onChange={handleChange}
+              placeholder='Enter your message here...'
             ></FormTextarea>
-            
-            <div id='buttons' className="space-x-2">
-              <FormButton type='button' onClick={() => {}}>
+
+            <div id='buttons' className='space-x-2'>
+              <FormButton
+                type='button'
+                onClick={() => sendMessage()}
+                disabled={!validFields}
+              >
                 Send Message
               </FormButton>
-              
+
               <FormButton
                 type='button'
                 className='bg-red-700'
-                onClick={() => {}}
+                onClick={() => setFormFields(defaultFormFields)}
               >
                 Cancel
               </FormButton>

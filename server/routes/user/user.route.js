@@ -11,7 +11,8 @@ router.get("/listings/:id", verifyToken, userCtrl.getUserListings);
 // Get a user's profile
 router.get("/:id", verifyToken, userCtrl.getUser);
 
-// Get all agents
+// Get an agent's profile
+router.get("/agent/:id", userCtrl.getUser);
 
 // POST routes
 // Update the user's profile

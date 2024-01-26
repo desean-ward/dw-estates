@@ -1,5 +1,6 @@
 import Link from "next/link";
 import tw from "tailwind-styled-components";
+import { motion } from "framer-motion";
 
 export const FooterContainer = tw.footer`
     relative
@@ -17,10 +18,11 @@ export const FooterContent = tw.div`
     mx-auto
 `;
 
-export const FooterTopSection = tw.div`
+export const FooterTopSection = tw(motion.div)`
     flex 
-    flex-col md:flex-row
-    gap-8
+    flex-col 
+    gap-8  
+    md:flex-row
 `;
 
 export const Left = tw.section`

@@ -54,4 +54,7 @@ export const FormButton = tw.button`
     bg-[var(--clr-body-secondary)]
     hover:opacity-90
     active:scale-95
+    disabled:cursor-not-allowed
+    disabled:pointer-events-none
+    disabled:opacity-30
 `;

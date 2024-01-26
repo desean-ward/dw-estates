@@ -46,6 +46,11 @@ import {
 } from "@/redux/features/user/userSlice";
 import { toast } from "react-toastify";
 import GalleryImageView from "../gallary-image-view/gallery-image-view.compoent";
+import {
+  FadeIn,
+  SlideInLeft,
+  SlideInRight,
+} from "../animations/animations.component";
 
 const Listing = () => {
   SwiperCore.use([Navigation, Pagination]);
@@ -117,6 +122,19 @@ const Listing = () => {
   };
 
   const addToFavorites = async () => {
+    // If user is not logged in, redirect to signin page
+    if (!currentUser) {
+      toast("To save to favorites, please sign in", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
+
     if (currentUser.favorites.includes(listing._id)) {
       removeFromFavorites(listing._id);
       return;
@@ -219,156 +237,155 @@ const Listing = () => {
           <Carousel listings={listing} type='listing' />
 
           <InfoAndGallery>
-            <ListingInfo>
-              {/* Listing Title  and Address*/}
-              <ListingTitle>
-                <p className='text-2xl font-semibold'>
-                  {listing.title} - $
-                  {listing.offer
-                    ? listing.discountedPrice.toLocaleString("en-US")
-                    : listing.regularPrice.toLocaleString("en-US")}
-                  {listing.type === "rent" && (
-                    <span className='text-sm'> / month</span>
-                  )}
-                </p>
-
-                {currentUser && currentUser.role === "customer" && (
-                  <section>
-                    {currentUser.favorites.includes(listing._id) ? (
-                      <AddToFavorites>
-                        <AiFillHeart
-                          className='text-red-700 cursor-pointer'
-                          size={28}
-                          onClick={addToFavorites}
-                        />
-                        <span>Favorite</span>
-                      </AddToFavorites>
-                    ) : (
-                      <AddToFavorites>
-                        <AiOutlineHeart
-                          className='text-red-700 cursor-pointer'
-                          size={28}
-                          onClick={addToFavorites}
-                        />
-                        <span>Add to favorites</span>
-                      </AddToFavorites>
+            <SlideInLeft>
+              <ListingInfo>
+                {/* Listing Title  and Address*/}
+                <ListingTitle>
+                  <p className='text-2xl font-semibold'>
+                    {listing.title} - $
+                    {listing.offer
+                      ? listing.discountedPrice.toLocaleString("en-US")
+                      : listing.regularPrice.toLocaleString("en-US")}
+                    {listing.type === "rent" && (
+                      <span className='text-sm'> / month</span>
                     )}
-                  </section>
-                )}
-              </ListingTitle>
+                  </p>
 
-              {/* Listing Address */}
-              <ListingAddress>
-                <FaMapMarkedAlt className='text-green-700' />
-                {listing.address}
-              </ListingAddress>
+                  {/* Add to favorites */}
+                  {currentUser?.role !== "agent" && (
+                    <section>
+                      {currentUser?.favorites.includes(listing._id) ? (
+                        <AddToFavorites>
+                          <AiFillHeart
+                            className='text-red-700 cursor-pointer'
+                            size={28}
+                            onClick={addToFavorites}
+                          />
+                          <span>Favorite</span>
+                        </AddToFavorites>
+                      ) : (
+                        <AddToFavorites>
+                          <AiOutlineHeart
+                            className='text-red-700 cursor-pointer'
+                            size={28}
+                            onClick={addToFavorites}
+                          />
+                          <span>Add to favorites</span>
+                        </AddToFavorites>
+                      )}
+                    </section>
+                  )}
+                </ListingTitle>
 
-              <section className='flex flex-wrap gap-4'>
-                {/* Rent or Sell */}
-                <RentOrSell>
-                  {listing.type === "rent" ? "For Rent" : "For Sell"}
-                </RentOrSell>
+                {/* Listing Address */}
+                <ListingAddress>
+                  <FaMapMarkedAlt className='text-green-700' />
+                  {listing.address}
+                </ListingAddress>
 
-                {/* Listing Offer */}
-                {listing.offer && (
-                  <ListingOffer>
-                    -$
-                    {(
-                      listing.regularPrice - +listing.discountedPrice
-                    ).toLocaleString("en-US")}{" "}
-                    <IoMdArrowRoundDown size={28} />
-                  </ListingOffer>
-                )}
-              </section>
+                <section className='flex flex-wrap gap-4'>
+                  {/* Rent or Sell */}
+                  <RentOrSell>
+                    {listing.type === "rent" ? "For Rent" : "For Sell"}
+                  </RentOrSell>
 
-              {/* Listing Description */}
-              <section className='my-7 text-slate-800'>
-                {" "}
-                <span className='font-semibold text-black'>Description: </span>
-                {listing.description}
-              </section>
+                  {/* Listing Offer */}
+                  {listing.offer && (
+                    <ListingOffer>
+                      -$
+                      {(
+                        listing.regularPrice - +listing.discountedPrice
+                      ).toLocaleString("en-US")}{" "}
+                      <IoMdArrowRoundDown size={28} />
+                    </ListingOffer>
+                  )}
+                </section>
 
-              {/* Listing Details */}
-              <section>
-              <h3 className="text-lg font-semibold text-[var(--clr-body-secondary)]">Amenities</h3>
-                <ListingDetails className=''>
-                  <Detail>
-                    <FaBed className='text-lg' />{" "}
-                    {listing.beds !== 1
-                      ? `${listing.beds} Beds`
-                      : `${listing.beds} Bed`}
-                  </Detail>
+                {/* Listing Description */}
+                <section className='my-7 text-slate-800'>
+                  {" "}
+                  <span className='font-semibold text-black'>
+                    Description:{" "}
+                  </span>
+                  {listing.description}
+                </section>
 
-                  <Detail>
-                    <FaBath className='text-lg' />{" "}
-                    {listing.baths !== 1
-                      ? `${listing.baths} Baths`
-                      : `${listing.baths} Bath`}
-                  </Detail>
+                {/* Listing Details */}
+                <section>
+                  <h3 className='text-lg font-semibold text-[var(--clr-body-secondary)]'>
+                    Amenities
+                  </h3>
+                  <ListingDetails className=''>
+                    <Detail>
+                      <FaBed className='text-lg' />{" "}
+                      {listing.beds !== 1
+                        ? `${listing.beds} Beds`
+                        : `${listing.beds} Bed`}
+                    </Detail>
 
-                  <Detail>
-                    <FaParking className='text-lg' />{" "}
-                    {listing.parking ? "Parking" : "No Parking"}
-                  </Detail>
+                    <Detail>
+                      <FaBath className='text-lg' />{" "}
+                      {listing.baths !== 1
+                        ? `${listing.baths} Baths`
+                        : `${listing.baths} Bath`}
+                    </Detail>
 
-                  <Detail>
-                    <FaChair className='text-lg' />{" "}
-                    {listing.furnished ? "Furnished" : "Unfurnished"}
-                  </Detail>
-                </ListingDetails>
-              </section>
+                    <Detail>
+                      <FaParking className='text-lg' />{" "}
+                      {listing.parking ? "Parking" : "No Parking"}
+                    </Detail>
 
-              {/* Contact Landlord */}
-              <div className='flex py-8'>
-                {!currentUser && (
-                  <div className='p-4 font-semibold text-red-700 border-2 rounded-lg border-slate-400 hover:text-red-400'>
-                    <Link href='/signin'>
-                      {" "}
-                      Please sign in to add to favorites
-                    </Link>
-                  </div>
-                )}
+                    <Detail>
+                      <FaChair className='text-lg' />{" "}
+                      {listing.furnished ? "Furnished" : "Unfurnished"}
+                    </Detail>
+                  </ListingDetails>
+                </section>
 
-                {/*currentUser && listing.userRef !== currentUser._id && (
+                {/* Contact Landlord */}
+                <div className='flex gap-2 py-8'>
+                  {/*!currentUser && (
+                    <div className='p-4 font-semibold text-red-700 border-2 rounded-lg border-slate-400 hover:text-red-400'>
+                      <Link href='/signin'>
+                        {" "}
+                        Please sign in to add to favorites
+                      </Link>
+                    </div>
+                  ) */}
+
+                  {/* Back Button */}
                   <button
                     type='button'
-                    className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-[var(--clr-body-secondary)] hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
-                    onClick={() => setContact(true)}
-                    disabled={currentUser === null}
+                    className='p-3 text-[var(--clr-body-secondary)] uppercase bg-white border-[var(--clr-body-secondary)] rounded-lg hover:opacity-95 border hover:text-white hover:bg-[var(--clr-body-secondary)]'
+                    onClick={() => router.back()}
                   >
-                    Contact Agent
+                    Back
                   </button>
-                ) */}
-
-                {/* Back Button */}
-                <button
-                  type='button'
-                  className='p-3 text-[var(--clr-body-secondary)] uppercase bg-white border-[var(--clr-body-secondary)] rounded-lg hover:opacity-95 border hover:text-white hover:bg-[var(--clr-body-secondary)]'
-                  onClick={() => router.back()}
-                >
-                  Back
-                </button>
-
-                
-              </div>
-            </ListingInfo>
+                </div>
+              </ListingInfo>
+            </SlideInLeft>
 
             {/* Listing Gallery */}
             <ListingGallery>
               {listing.imageUrls.map((image, index) => (
-                <GalleryImage
-                  src={image}
-                  key={index}
-                  onClick={() => setShowImage(listing.imageUrls[index])}
-                />
+                <FadeIn>
+                  <GalleryImage
+                    src={image}
+                    key={index}
+                    onClick={() => setShowImage(listing.imageUrls[index])}
+                  />
+                </FadeIn>
               ))}
-               {/* Show contact form */}
-          <Contact listing={listing} />
+              {/* Show contact form */}
+              <SlideInRight>
+                <Contact listing={listing} />
+              </SlideInRight>
             </ListingGallery>
           </InfoAndGallery>
-         
         </ListingContent>
       )}
+
+      {/* Show image in full screen */}
       {listing && showImage && (
         <GalleryImageView img={showImage} show={setShowImage} />
       )}
