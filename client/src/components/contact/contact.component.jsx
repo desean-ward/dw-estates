@@ -4,12 +4,13 @@ import {
   ContactAvatar,
   ContactContainer,
   ContactForm,
+  ContactHeader,
   FormButton,
   FormInput,
   FormTextarea,
 } from "./contact.styles";
 
-const Contact = ({ listing, show }) => {
+const Contact = ({ listing }) => {
   const URL = process.env.NEXT_PUBLIC_APP_SERVER_URL;
   const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState(null);
@@ -18,10 +19,10 @@ const Contact = ({ listing, show }) => {
     setMessage(e.target.value);
   };
 
-  const handleCloseForm = () => {
-    setLandlord(null);
-    show(false);
-  };
+  // const handleCloseForm = () => {
+  //   setLandlord(null);
+  //   show(false);
+  // };
 
   /**
    // TODO - Add email functionality
@@ -63,13 +64,19 @@ const Contact = ({ listing, show }) => {
       {landlord && (
         <ContactContainer id='overlay'>
           <ContactForm>
-            <section className='rounded-full overflow-hidden w-[125px] h-[125px] mx-auto'>
-              <img src={landlord.avatar} className='object-cover w-full h-full' />
-            </section>
-            <p>
-              Contact <span className='font-semibold'>{landlord.username}</span>{" "}
-              about <span className='font-semibold'>"{listing.title}"</span>
-            </p>
+            <ContactHeader>
+              <section className='overflow-hidden w-[125px] h-[125px]'>
+                <img
+                  src={landlord.avatar}
+                  className='object-cover w-full h-full rounded-lg'
+                />
+              </section>
+              <p className='w-2/3'>
+                Contact{" "}
+                <span className='font-semibold'>{landlord.username}</span> about{" "}
+                <span className='font-semibold'>"{listing.title}"</span>
+              </p>
+            </ContactHeader>
 
             <FormInput
               type='text'
@@ -93,16 +100,20 @@ const Contact = ({ listing, show }) => {
               placeholder='Enter your message here...'
               onChange={handleChange}
             ></FormTextarea>
-            <FormButton type='button' onClick={() => handleCloseForm()}>
-              Send Message
-            </FormButton>
-            <FormButton
-              type='button'
-              className='bg-red-700'
-              onClick={() => handleCloseForm()}
-            >
-              Cancel
-            </FormButton>
+            
+            <div id='buttons' className="space-x-2">
+              <FormButton type='button' onClick={() => {}}>
+                Send Message
+              </FormButton>
+              
+              <FormButton
+                type='button'
+                className='bg-red-700'
+                onClick={() => {}}
+              >
+                Cancel
+              </FormButton>
+            </div>
           </ContactForm>
         </ContactContainer>
       )}

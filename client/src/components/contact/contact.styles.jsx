@@ -2,13 +2,10 @@ import Image from "next/image";
 import tw from "tailwind-styled-components";
 
 export const ContactContainer = tw.div`
-    fixed 
-    top-0 left-0 
-    z-50 
-    flex items-center justify-center 
-    w-screen h-screen 
-    overflow-hidden 
-    bg-slate-800/80
+    flex  justify-center lg:justify-end
+    w-full h-full
+    
+    
 `;
 
 export const ContactAvatar = tw(Image)`
@@ -17,13 +14,19 @@ export const ContactAvatar = tw(Image)`
 
 export const ContactForm = tw.form`
     space-y-4 
-    w-[90vw] md:w-[60vw] lg:w-[30vw]
-    mx-auto 
+    w-[90vw] lg:w-[25vw]
     bg-white 
-    p-8 
+    p-4 md:p-8
     rounded-lg 
-    shadow-xl 
-    shadow-slate-900
+    shadow-xl
+    shadow-slate-400
+`;
+
+export const ContactHeader = tw.section`
+    flex
+    items-center
+    justify-between md:justify-start 
+    gap-4 
 `;
 
 export const FormInput = tw.input`
@@ -44,11 +47,11 @@ export const FormTextarea = tw.textarea`
 `;
 
 export const FormButton = tw.button`
-    w-full 
     p-3 
     text-white 
     uppercase 
     rounded-lg 
     bg-[var(--clr-body-secondary)]
-    hover:opacity-95
+    hover:opacity-90
+    active:scale-95
 `;

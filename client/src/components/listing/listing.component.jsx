@@ -290,6 +290,7 @@ const Listing = () => {
 
               {/* Listing Details */}
               <section>
+              <h3 className="text-lg font-semibold text-[var(--clr-body-secondary)]">Amenities</h3>
                 <ListingDetails className=''>
                   <Detail>
                     <FaBed className='text-lg' />{" "}
@@ -323,12 +324,12 @@ const Listing = () => {
                   <div className='p-4 font-semibold text-red-700 border-2 rounded-lg border-slate-400 hover:text-red-400'>
                     <Link href='/signin'>
                       {" "}
-                      Please sign to contact agent or add to favorites
+                      Please sign in to add to favorites
                     </Link>
                   </div>
                 )}
 
-                {currentUser && listing.userRef !== currentUser._id && (
+                {/*currentUser && listing.userRef !== currentUser._id && (
                   <button
                     type='button'
                     className='p-3 text-white uppercase border rounded-lg disabled:pointer-events-none bg-[var(--clr-body-secondary)] hover:opacity-95 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-700'
@@ -337,19 +338,18 @@ const Listing = () => {
                   >
                     Contact Agent
                   </button>
-                )}
+                ) */}
 
                 {/* Back Button */}
                 <button
                   type='button'
-                  className='p-3 text-[var(--clr-body-secondary)] uppercase bg-white border-[var(--clr-body-secondary)] rounded-lg hover:opacity-95 border ml-4 hover:text-white hover:bg-[var(--clr-body-secondary)]'
+                  className='p-3 text-[var(--clr-body-secondary)] uppercase bg-white border-[var(--clr-body-secondary)] rounded-lg hover:opacity-95 border hover:text-white hover:bg-[var(--clr-body-secondary)]'
                   onClick={() => router.back()}
                 >
                   Back
                 </button>
 
-                {/* Show contact form */}
-                {contact && <Contact listing={listing} show={setContact} />}
+                
               </div>
             </ListingInfo>
 
@@ -362,8 +362,11 @@ const Listing = () => {
                   onClick={() => setShowImage(listing.imageUrls[index])}
                 />
               ))}
+               {/* Show contact form */}
+          <Contact listing={listing} />
             </ListingGallery>
           </InfoAndGallery>
+         
         </ListingContent>
       )}
       {listing && showImage && (

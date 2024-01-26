@@ -122,13 +122,15 @@ export const Detail = tw.li`
 
 export const ListingGallery = tw.section`
     w-full
+    h-full
     flex
     flex-col
     flex-wrap
     justify-center
     items-center
-    gap-4
-    mb-16 lg:mb-0
+    gap-8
+    mt-8
+    mb-16 
     pointer-events-none
     lg:pointer-events-auto
 `;
