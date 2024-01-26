@@ -10,6 +10,9 @@ export const BannerContainer = tw(motion.div)`
     px-12 py-24
 `;
 
+export const BannerContent = tw(motion.section)`
+`;
+
 export const ContactButton = tw.div`
     w-max
     border-2 
