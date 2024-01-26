@@ -26,7 +26,9 @@ export const PropertiesSection = tw.section`
 
 export const PropertiesSectionHeader = tw.section`
     flex 
-    flex-col 
+    flex-col md:flex-row
+    justify-between
+    items-center
 `;
 
 export const Properties = tw.div`

@@ -13,13 +13,15 @@ const TheAgents = ({ agents }) => {
 
   // Animate the agents section with staggerChildren
   const staggerIn = {
-    initial: { scale: 0 },
+    initial: (idx) => ({
+      scale: 0,
+      transition: { duration: 0.3, delay: 0.2 * idx },
+    }),
     animate: (idx) => ({
       scale: 1,
       transition: { duration: 0.3, delay: 0.2 * idx },
     }),
   };
-
 
   return (
     <AgentsContainer>
@@ -28,11 +30,10 @@ const TheAgents = ({ agents }) => {
           Meet The Team
         </h2>
 
-        <AgentsSection>
+        <AgentsSection ref={agentRef}>
           {agents.map((agent, idx) => (
             <AgentCard
               key={agent._id}
-              ref={agentRef}
               variants={staggerIn}
               initial='initial'
               animate={inView ? "animate" : "initial"}
