@@ -120,29 +120,35 @@ export const Detail = tw.li`
     whitespace-nowrap
 `;
 
-export const ListingGallery = tw.section`
+export const GalleryAndContact = tw.section`
     w-full
     h-full
     flex
     flex-col
     flex-wrap
     justify-center
-    items-center
-    gap-8
+    items-center lg:items-end
+    gap-4
     mt-8
     mb-16 
     pointer-events-none
     lg:pointer-events-auto
 `;
 
-export const GalleryImage = tw.img`
+export const GalleryImageContainer = tw.div`
     w-full
     lg:max-w-[300px]
-    lg:max-h-[100px]
-    object-cover
+    lg:max-h-[125px]
     rounded-lg
     cursor-pointer
     ml-auto
     hover:opacity-50
-    
+    border
+    mb-4
+    overflow-hidden
+   
+`;
+
+export const GalleryImage = tw.img`
+    object-contain
 `;

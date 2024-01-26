@@ -18,9 +18,10 @@ import {
   Detail,
   AddToFavorites,
   ListingInfo,
-  ListingGallery,
   GalleryImage,
   InfoAndGallery,
+  GalleryImageContainer,
+  GalleryAndContact,
 } from "../listing/listing.styles";
 import { Image, ImageContainer, ListingCarousel } from "./listing.styles";
 
@@ -35,7 +36,7 @@ import {
 
 import { IoMdArrowRoundDown } from "react-icons/io";
 
-import Contact from "../contact/contact.component";
+import Contact from "../contact-agent/contact.component";
 import Carousel from "../carousel/carousel.component";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import Link from "next/link";
@@ -302,11 +303,7 @@ const Listing = () => {
                 </section>
 
                 {/* Listing Description */}
-                <section className='my-7 text-slate-800'>
-                  {" "}
-                  <span className='font-semibold text-black'>
-                    Description:{" "}
-                  </span>
+                <section className='mb-32 my-7 text-slate-800'>
                   {listing.description}
                 </section>
 
@@ -366,21 +363,23 @@ const Listing = () => {
             </SlideInLeft>
 
             {/* Listing Gallery */}
-            <ListingGallery>
+            <GalleryAndContact>
               {listing.imageUrls.map((image, index) => (
                 <FadeIn>
-                  <GalleryImage
-                    src={image}
-                    key={index}
-                    onClick={() => setShowImage(listing.imageUrls[index])}
-                  />
+                  <GalleryImageContainer>
+                    <GalleryImage
+                      src={image}
+                      key={index}
+                      onClick={() => setShowImage(listing.imageUrls[index])}
+                    />
+                  </GalleryImageContainer>
                 </FadeIn>
               ))}
               {/* Show contact form */}
               <SlideInRight>
                 <Contact listing={listing} />
               </SlideInRight>
-            </ListingGallery>
+            </GalleryAndContact>
           </InfoAndGallery>
         </ListingContent>
       )}

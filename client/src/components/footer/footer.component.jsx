@@ -112,7 +112,7 @@ const Footer = () => {
             <span>&copy; {new Date().getFullYear()} LuxeLiving Estates</span>
           </SlideInLeft>
           
-          <SlideInRight>De Sean Ward Dezignz</SlideInRight>
+          <SlideInRight><span>De Sean Ward Dezignz</span></SlideInRight>
         </FooterCopyright>
       </FooterContent>
     </FooterContainer>

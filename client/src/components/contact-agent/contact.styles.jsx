@@ -4,6 +4,10 @@ import tw from "tailwind-styled-components";
 export const ContactContainer = tw.div`
     flex  justify-center lg:justify-end
     w-full h-full
+    border
+    rounded-lg 
+    shadow-xl
+    shadow-slate-400
     
     
 `;
@@ -17,9 +21,7 @@ export const ContactForm = tw.form`
     w-[90vw] lg:w-[25vw]
     bg-white 
     p-4 md:p-8
-    rounded-lg 
-    shadow-xl
-    shadow-slate-400
+    
 `;
 
 export const ContactHeader = tw.section`

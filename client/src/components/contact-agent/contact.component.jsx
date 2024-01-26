@@ -16,6 +16,7 @@ const Contact = ({ listing }) => {
   const defaultFormFields = {
     name: "",
     email: "",
+    phone: "",
     message: "",
   };
 
@@ -125,18 +126,29 @@ const Contact = ({ listing }) => {
               id='name'
               value={formFields.name}
               onChange={handleChange}
-              placeholder='Enter your name...'
+              placeholder='Name'
               required
             />
+            <section id='name-name' className='flex gap-4'>
+              <FormInput
+                type='email'
+                name='email'
+                id='email'
+                value={formFields.email}
+                onChange={handleChange}
+                placeholder='Email'
+              />
 
-            <FormInput
-              type='email'
-              name='email'
-              id='email'
-              value={formFields.email}
-              onChange={handleChange}
-              placeholder='Enter your email address...'
-            />
+              <FormInput
+                type='text'
+                name='phone'
+                id='phone'
+                value={formFields.phone}
+                onChange={handleChange}
+                placeholder='Phone'
+              />
+            </section>
+
             <FormTextarea
               name='message'
               id='message'
@@ -144,7 +156,7 @@ const Contact = ({ listing }) => {
               cols='50'
               value={formFields.message}
               onChange={handleChange}
-              placeholder='Enter your message here...'
+              placeholder='Message'
             ></FormTextarea>
 
             <div id='buttons' className='space-x-2'>

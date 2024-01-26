@@ -24,7 +24,7 @@ export const FadeIn = ({ children }) => {
   const [fadeInRef, fadeInView] = useInView();
 
   return (
-    <div ref={fadeInRef} className='w-full'>
+    <div ref={fadeInRef}>
       <motion.div
         variants={fadeIn}
         initial='hidden'
@@ -39,7 +39,7 @@ export const SlideUp = ({ children }) => {
   const [slideUpRef, slideUpInView] = useInView();
 
   return (
-    <div ref={slideUpRef} className='w-full'>
+    <div ref={slideUpRef}>
       <motion.div
         variants={slideUp}
         initial='hidden'
@@ -75,7 +75,6 @@ export const SlideInRight = ({ children }) => {
         variants={slideInRight}
         initial='hidden'
         animate={slideInRightView ? "visible" : "hidden"}
-        className='w-max'
       >
         {children}
       </motion.div>
